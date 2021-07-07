@@ -61,7 +61,7 @@
 
   <dt-byline></dt-byline>
   <h2> The system </h2>
-  <img src="leniawall.png" alt="scheme" width="100%" >
+  <img src="LeniaWall.png" alt="scheme" width="100%" >
 
 
   <h4> Lenia </h4>
@@ -99,7 +99,7 @@
       To learn these parameters we chose to use gradient descent method. Thus we tried to make Lenia as Differentiable friendly as possible. To do so, the main shift is to use "free kernels", using kernels in the form of a sum of n overlapping gaussian bumps: $$x \rightarrow \sum_i^{n} b_i exp(-\frac{(x-rk_i)^2}{w_i}) $$. The parameters are then 3  n dimensional vectors: b for height of the bump, w for the size of the bump and rk for the center of the bump.
   </p>
 
-  <img src="freek.png" alt="schemeK" width="100%" class='l-body' >
+  <img src="freeK.png" alt="schemeK" width="100%" class='l-body' >
   <p>
     We did this shift because in the vanilla version of Lenia, the shape of the kernel was only given by a vector b of arbitrary size (but often max size 4). The number of bumps was given by the number of coefficient in b>0. However, the fact that the number of bumps depends on the number of coefficient > 0 prevents proper differentiation.
 (if a coefficient is at 0 then it won't change with gradient descent as it doesn't play a role, and if a coefficient is >0 a gradient step can put it <0 which will make a strong unexpected change). We could have left the number of bumps to an arbitrary value like 3, and only optimizing the height such as they stay >0  but this would have been a strong limitation on the shape. The "free kernels", in addition to differentiation, allow more flexibility than the vanilla bumps but at the cost of more parameters.
