@@ -3,7 +3,7 @@
 <script src="template.v1.js"></script>
 
 <script type="text/front-matter">
-  title: "Article Title"
+  title: "Learning Sensorimotor Capabilities in Cellular Automata"
   description: "Description of the post"
   authors:
   - Chris Olah: http://colah.github.io
@@ -14,13 +14,43 @@
 </script>
 
 <dt-article>
-  <h1>Hello World</h1>
-  <h2>A description of the article</h2>
+  <h1>Learning Sensorimotor Capabilities in Cellular Automata</h1>
+  <h2> Learning robust creatures </h2>
   <dt-byline></dt-byline>
-  <p>This is the first paragraph of the article.</p>
+  <p>Spatially localized patterns in cellular automata have shown a lot of interesting behavior that led to new understanding of self-organizing system. While the notion of environment is a keypoint in Maturana and Varela biology of cognition, studies on cellular automata rarely introduced a well defined environment in their system. In this paper, we propose to add walls in a cellular automata to study how we can learn a self-organizing creature capable of reacting to the perturbations induced by the environment, ie robust creatures with sensorimotor capabilities. We provide a method based on curriculum learning able to learn the CA rule leading to such creature. The creature obtained,using only local update rules, are able to regenerate and preserve their individuality and structure while dealing with the obstacles in their way..</p>
   <p>We can also cite <dt-cite key="autopoiesisBeer2004"></dt-cite> external publications.</p>
   <p>We can also cite <dt-cite key="mordvintsev2020growing"></dt-cite> external publications.</p>
+  <h2>Introduction</h2>
+  <p>
+     In Maturana and Varela work(cite), cognition is centered around how an agent "reacts" to the perturbation induced by it's environment . More precisely, they introduce the notion of cognitive domain of a self-organizing system which are all the perturbations induced by the environment which do  not result in the destruction of the self-organizing system. Their notion of cognition is thus deeply linked with how a self-organizing creature will try to preserve its integrity in its environment. ("living is ")
+  </p>
 
+  <p>
+      From their theories, studies has been made to apply those notion to examples of self-organizing systems. For example, the game of life and especially the glider has been studied under their paradigm <dt-cite key="PMID:24494612"></dt-cite> showing again the richness and complexity of such system. However, even if the glider in the game of life has shown to be a good toy model to explicit those theories with interesting interaction, they're also quite simple entity that are not very robust, with a lot of perturbation leading to destruction. (Also in those work, the environment wasn't well defined like walls food etc, but rather other structure.)
+  </p>
+
+  <p>
+    In biology, We also find sensorimotor capabilities at the macro scale for example in swarm of  bacteria \cite{PhysRevE.101.012407} where a group of bacteria seem to avoid a wall of antibiotics. group decision making for obstacle avoidance
+  </p>
+
+  <p>
+    Other studies, taking inspiration from biological regrowth in some animals, focused on the recovery from Deformation/ damage \cite{horibe2021regenerating} \cite{mordvintsev2020growing}, applying Cellular automata to build and regenerating damaged parts.
+  </p>
+  <p>
+    IN Lenia \cite{chan2020lenia}  \cite{chan2019lenia}, we can see some sort of sensorimotor capabilities. However, even if there are interaction between some entity, there is no well define environment. The search for new creature in Lenia was first done manually testing parameters and mutating it or with simple evolutionary algorithm for moving creature for example. Other studies \cite{etcheverry2020hierarchically} \cite{reinke2020intrinsically} focused on exploring as much as possible the space of creature in Lenia using intrinsically motivated explorer  . However this last techniques had a hard time finding moving creature.
+  </p>
+
+  <p>
+    In cellular automata, what's interesting is that we have the same local update rule  applied to every cell (no cell has a special role ), yet it allows to have very complex self organizing structure. In this work, we'll show how to learn the Ca update rule leading to robustness and sensorimotor capabilities with walls. The creature we obtain, from the deformation induced by the walls on some part of it make new deicision at the macro level on where to go/how to react. What's even more interesting is that the computation made for the decision are all made in the creature itself, at the morphology level. (Each cell then from its neighboors know what it should do.)
+  </p>
+
+  <p>
+    In this work, we
+    no well define environment and creature obtained by luck and not very robust.
+    swarm robotics ?
+  </p>
+  <h2> The system </h2>
+  <p></p>
 </dt-article>
 
 <dt-appendix>
