@@ -23,11 +23,15 @@
 <dt-article  >
   <h1>Learning Sensorimotor Capabilities in Cellular Automata</h1>
   <h2> Learning robust creatures </h2>
+  <img src="demo.gif" alt="demo GIF" width="100%" class=l-middle-outset>
   <dt-byline></dt-byline>
+
+
+
 
   <p>Spatially localized patterns in cellular automata have shown a lot of interesting behavior that led to new understanding of self-organizing system. While the notion of environment is a keypoint in Maturana and Varela biology of cognition, studies on cellular automata rarely introduced a well defined environment in their system. In this paper, we propose to add walls in a cellular automata to study how we can learn a self-organizing creature capable of reacting to the perturbations induced by the environment, ie robust creatures with sensorimotor capabilities. We provide a method based on curriculum learning able to learn the CA rule leading to such creature. The creature obtained,using only local update rules, are able to regenerate and preserve their individuality and structure while dealing with the obstacles in their way..</p>
 
-  <img src="demo.gif" alt="demo GIF" width="100%" class=l-body-outset>
+
 
   <!--
   <d-contents>
@@ -45,7 +49,7 @@
 
   <h2 id="introduction">Introduction</h2>
   <p>
-     In Maturana and Varela work(cite), cognition is centered around how an agent "reacts" to the perturbation induced by it's environment . More precisely, they introduce the notion of cognitive domain of a self-organizing system which are all the perturbations induced by the environment which do  not result in the destruction of the self-organizing system. Their notion of cognition is thus deeply linked with how a self-organizing creature will try to preserve its integrity in its environment. ("living is ")
+     In Maturana and Varela work <dt-cite key="VarelaThompsonEmbo"></dt-cite>, cognition is centered around how an agent "reacts" to the perturbation induced by it's environment . More precisely, they introduce the notion of cognitive domain of a self-organizing system which are all the perturbations induced by the environment which do  not result in the destruction of the self-organizing system. Their notion of cognition is thus deeply linked with how a self-organizing creature will try to preserve its integrity in its environment. ("living is ")
   </p>
 
   <p>
@@ -57,7 +61,7 @@
   </p>
 
   <p>
-    Other studies, taking inspiration from biological regrowth in some animals, focused on the recovery from Deformation/ damage  <dt-cite key="horibe2021regenerating"></dt-cite> <dt-cite key="mordvintsev2020growing"></dt-cite>, applying Cellular automata to build and regenerating damaged parts.
+    Other studies, taking inspiration from biological regrowth in some animals, focused on the recovery from Deformation/ damage  <dt-cite key="horibe2021regenerating"></dt-cite> <dt-cite key="mordvintsev2020growing"></dt-cite>, applying Cellular automata to build and regenerate damaged parts.
   </p>
   <p>
     IN Lenia <dt-cite key="chan2020lenia"></dt-cite> <dt-cite key="chan2019lenia"></dt-cite> , we can see some sort of sensorimotor capabilities. However, even if there are interaction between some entity, there is no well define environment. The search for new creature in Lenia was first done manually testing parameters and mutating it or with simple evolutionary algorithm for moving creature for example. Other studies <dt-cite key="etcheverry2020hierarchically"></dt-cite>  <dt-cite key="reinke2020intrinsically"></dt-cite> focused on exploring as much as possible the space of creature in Lenia using intrinsically motivated explorer  . However this last techniques had a hard time finding moving creature.
@@ -192,7 +196,7 @@
 
  <h2 id="robustCrea"> Learning robust creatures with sensorimotor capabilities </h2>
  <img src="merge.png" alt="schemeLearn" width="100%" class="l-middle-outset" >
- <p>
+ <p >
   Initialization is the yellow square; Left: reached goal library in green, target goal in read. THe policy selected is the one reaching the position in purple circle; Right:  Blue is the obstacle, red the target shape and green the creature before optimisation at last timestep. Green dashed line is at the same position in both.
  </p>
 
@@ -269,16 +273,43 @@
  <p>
    However we tried with half circle, star and sharp star without success. For all of these shape we still obtained roundish morphologies. This may be due to the kernel shape which bias the shape of the creature. However as shown in the appendix, we can optimize the growth toward a complicated gecco shape. The failure of these optimisation may be due to the difficulty added by the fact that we want a moving creature.Thus When we optimize the MSE loss, before trying to make this complicated shape the optimization first learns to get the creature to where it should be, and trying to grow it into this star shape may not be well aligned with this.
  </p>
+<img src="2circlewall.gif" alt="demo GIF" width="100%" class=l-body>
+ <p>
+   We still tried to have roundish shape different from a single disk. For example we put as our target 2 disk target(defined \ref{}) close, overlapping a little bit. And the creature it produced was a creature seemingly composed of two roundish creature stuck together. But the force of their attraction is quite big as even when one of the creature collide an obstacle, they keep being stuck. And even when they seem to separate from a collision with an obstacle, they each independently follow the obstacle until they merge again.(However we can see at the end of the clip that they start to explode at the end) This type of behavior might be hard to get from random exploration as small mutation on the CA rule easily break this attraction leading to 2 separate creature going their own way from initialization or even worse lead to repealing creature.
+ </p>
+
+
+
+
+
+
+ <h2 id="discussion"> Discussion </h2>
 
  <p>
-   We still tried to have roundish shape different from a single disk. For example we put as our target 2 disk target(defined \ref{}) close, overlapping a little bit. And the creature it produced was a creature seemingly composed of two roundish creature stuck together. But the force of their attraction is quite big as even when one of the creature collide an obstacle, they keep being stuck. And even when they seem to separate from a collision with an obstacle, they each independently follow the obstacle until they merge again. This type of behavior might be hard to get from random exploration as small mutation on the CA rule easily break this attraction leading to 2 separate creature going their own way from initialization or even worse lead to repealing creature.
+    Surprising to see that the creature is able to do all the computation required for changing direction in itself.
  </p>
+
+ <p>
+   radius is quite big while \cite{mordvintsev2020growing} Moore neighbourhood size 3. (but no hidden channel)
+   Even if this, this work still provides interesting idea on how to learn parameters in complex systems that can be very sensitive, especially how to deal with certain problems such that vanishing gradient, bad initialization.
+
+ </p>
+
+ <p>
+   food?
+   discussion difficulty coming from other agents becoming stronger competition in evolution/\cite{baker2020emergent}). Future work might use these creature as basis for species mutate them and make them compete for food.
+ </p>
+
+
 
 
 
 </dt-article>
 
 <dt-appendix>
+
+  <h3> Breeding and mutation </h3>
+  <h3> Food </h3>
 </dt-appendix>
 
 <script type="text/bibliography">
@@ -447,5 +478,11 @@
     journal={ArXiv},
     year={2017},
     volume={abs/1708.02190}
+  }
+  @book{VarelaThompsonEmbo,
+    title={The embodied mind.},
+    author={Varela ,F. J. and Thompson, E., and Rosch, E.},
+    year={1991}
+
   }
 </script>
