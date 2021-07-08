@@ -110,8 +110,17 @@
     In this study, the creature can't have any impact on the walls. This differs from other studies such as <dt-cite key="PMID:24494612"></dt-cite> in the game of life where the creature also perturb it's environment.
   </p>
   <p>
-      How Lenia glider behave with walls:
+      Glider type of creature has been found in 1 channel lenia. However, they're not very robust to walls as shown here:
   </p>
+  <div class="row l-body">
+  <div class="column">
+    <img src="orbium.gif" alt="demo GIF" width="85%" >
+  </div>
+  <div class="column">
+    <img src="orbiumb.gif" alt="demo GIF" width="85%" >
+  </div>
+  </div>
+
 
   <h4> Differentiable Lenia </h4>
   <p>
@@ -149,7 +158,7 @@
  </p>
 
  <p>
-   However simply putting a target shape far from initialization and optimize towards it does not work most of the times. In fact,  it works only when the target is not too far from where the creature ended before optimization (so after the random initialization) . This comes from the fact that applying a lot of steps, each clipped, prevents gradient from flowing. The solution we propose to go further than this is curriculum learning. https://avariengien.github.io/self-organized-control/
+   However simply putting a target shape far from initialization and optimize towards it does not work most of the times. In fact,  it works only when the target is not too far from where the creature ended before optimization (so after the random initialization) . This comes from the fact that applying a lot of steps, each clipped, prevents gradient from flowing. The solution we propose to go further than this is curriculum learning.
 
  </p>
 
@@ -163,7 +172,7 @@
  </p>
 
  <p>
-   The effectiveness of curriculum with complex task has already been shown in <dt-cite key="DBLP:journals/corr/abs-1901-01753"></dt-cite>. And in complex self organizing systems in https://avariengien.github.io/self-organized-control/ (wait for the paper)
+   The effectiveness of curriculum with complex task has already been shown in <dt-cite key="DBLP:journals/corr/abs-1901-01753"></dt-cite>. And in complex self organizing systems in <dt-cite key="variengien2021selforganized"></dt-cite>
 
  </p>
 
@@ -485,4 +494,13 @@
     year={1991}
 
   }
+
+  @misc{variengien2021selforganized,
+      title={Towards self-organized control: Using neural cellular automata to robustly control a cart-pole agent},
+      author={Alexandre Variengien and Stefano Nichele and Tom Glover and Sidney Pontes-Filho},
+      year={2021},
+      eprint={2106.15240},
+      archivePrefix={arXiv},
+      primaryClass={cs.NE}
+}
 </script>
