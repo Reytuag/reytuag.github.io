@@ -154,7 +154,7 @@
  </p>
 
  <p>
-    Target image with MSE error seems effective to learn CA rule leading to certain pattern <dt-cite key="mordvintsev2020growing"></dt-cite>. ANd the fact that it's a very informative loss, thus helping with vanishing gradient problem made us choose this loss for our problem over other losses such as maximizing the coordinate of the center of mass . THe first target shape we tried was a single disk. However after seeing the robust creature obtained with this disk as target  seemed to have a "core" and a shallow envelopp, we informally chose to move to two superposed disk, a large shallow one with a thick smaller one on top. The target shape has the formula:   $$0.1*(R<1)+0.8*(R<0.5)$$. We chose on purpose to have the sum to be smaller than 1 because as we clip to 1 the pixel after each update it/s  better to have pixel below 1 than pixel saturated if you want to have gradients.
+    Target image with MSE error seems effective to learn CA rule leading to certain pattern <dt-cite key="mordvintsev2020growing"></dt-cite>. ANd the fact that it's a very informative loss, thus helping with vanishing gradient problem made us choose this loss for our problem over other losses such as maximizing the coordinate of the center of mass . THe first target shape we tried was a single disk. However after seeing the robust creature obtained with this disk as target  seemed to have a "core" and a shallow envelopp, we informally chose to move to two superposed disk, a large shallow one with a thick smaller one on top. The target shape has the formula:   \(0.1*(R<1)+0.8*(R<0.5)\). We chose on purpose to have the sum to be smaller than 1 because as we clip to 1 the pixel after each update it/s  better to have pixel below 1 than pixel saturated if you want to have gradients.
  </p>
 
  <p>
@@ -319,6 +319,9 @@
 
   <h3> Breeding and mutation </h3>
   <h3> Food </h3>
+  <video id="model-editing-level-1-video-1" controls="" muted="">
+                <source src="demoFoodc.mp4" type="video/mp4">
+              </video>
 </dt-appendix>
 
 <script type="text/bibliography">
