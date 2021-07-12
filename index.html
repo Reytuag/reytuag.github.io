@@ -296,10 +296,21 @@
  <p>
    The creature obtained shows strong individuality preservation. In fact, creatures goes in non destructive interactions most of the times without merging. As said before, we can tune the weight of the kernels (especially the limiting growth one to make the merge of two creature harder. By increasing those limiting growth kernels, the repeal of two entities get stronger and they will simply change direction.
  </p>
+ <video id="robust" width="95%"  autoplay controls="" loop muted="" class="l-body videoShow">
+               <source src="stick.mp4" type="video/mp4">
+             </video>
+
+ <video id="robust" width="95%"  autoplay  loop muted="" class="l-gutter videoShow">
+               <source src="stickFar.mp4" type="video/mp4">
+             </video>
+   <p class="l-gutter" style="font-size: 13px;color:#A0A0A0;  ">
+     If they are too far from each other no attraction.
+   </p>
 
  <p>
-   One other type of interaction between two creature of the same species(governed by the same update rule/physic) is creature getting stuck together. The two creatures when they collide are stuck together going in the same direction. However even when they're stuck together, from a human point of view seeing this system, we ce can still see 2 distinct creatures.This type of behavior is  studied in the game of life in <dt-cite key="PMID:24494612"></dt-cite>  with the notion of consensual domain.
+   One other type of interaction between two creature of the same species(governed by the same update rule/physic) is creature getting stuck together. The two creatures seem to attract each other a little bit when they are close enough leading to the two creature stuck together going in the same direction. When they encounter an obstacle and separate briefly, their attraction reassemble them together. However even when they're stuck together, from a human point of view seeing this system, we ce can still see 2 distinct creatures.This type of behavior is  studied in the game of life in <dt-cite key="PMID:24494612"></dt-cite>  with the notion of consensual domain.
  </p>
+
 
 <video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-body videoShow">
               <source src="repro.mp4" type="video/mp4">
@@ -325,8 +336,16 @@
    We still tried to have roundish shape different from a single disk. For example we put as our target 2 disk target(defined \ref{}) close, overlapping a little bit. And the creature it produced was a creature seemingly composed of two roundish creature stuck together. But the force of their attraction is quite big as even when one of the creature collide an obstacle, they keep being stuck. And even when they seem to separate from a collision with an obstacle, they each independently follow the obstacle until they merge again.(However we can see at the end of the clip that they start to explode at the end) This type of behavior might be hard to get from random exploration as small mutation on the CA rule easily break this attraction leading to 2 separate creature going their own way from initialization or even worse lead to repealing creature.
  </p>
 
+<h3>Still failure cases</h3>
 
+<p>
+  One is very robust but with different configuration it's possible to kill or explode others creature. However they were only trained for 50 timesteps (2seconds in the clips above) and witth always the same 8 type of obstacle (even if their position induced diversity). Further training of the parameters for more robustness should be achievable.
 
+</p>
+<p>
+
+  Video Of failure
+</p>
 
 
 
@@ -357,6 +376,12 @@
 <dt-appendix>
   <video id="kernels" controls="" muted="" class="videoShow" >
                 <source src="kernels.mp4" type="video/mp4">
+              </video>
+  <video id="kernels" controls="" muted="" class="videoShow" >
+                <source src="slalom.mp4" type="video/mp4">
+              </video>
+  <video id="kernels" controls="" muted="" class="videoShow" >
+                <source src="harderEnv.mp4" type="video/mp4">
               </video>
   <h3> Breeding and mutation </h3>
   <h3> Food </h3>
