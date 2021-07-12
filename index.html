@@ -105,7 +105,7 @@
 
   <h4> Walls </h4>
   <p>
-  To implement walls in Lenia we simply added a walls channels with a kernel from the wall channel to the creature channel. This kernel have a huge negative growth where there are walls and no impact on other pixels where there are no walls. This way we prevent any growth in the pixels where there are walls. This is  similar to  <dt-cite key="PhysRevE.101.012407"></dt-cite> where they put antibiotic zone as obstacle where the bacteria can't live. The creature can only sense the wall through the changes/deformations it implies on the creature, so the creature has to "touch" the wall to sense it. (But because of the cellular automaton nature of the creature the information  has to be transmitted to other cells.)
+  To implement walls in Lenia we simply added a walls channels with a kernel from the wall channel to the creature channel. This kernel have a huge negative growth where there are walls and no impact on other pixels where there are no walls. This way we prevent any growth in the pixels where there are walls. This is  similar to  <dt-cite key="PhysRevE.101.012407"></dt-cite> where they put antibiotic zone as obstacle where the bacteria can't live. The creature can only sense the wall through the changes/deformations it implies on the creature, so the creature has to "touch" the wall to sense it. (And because of the cellular automaton nature of the creature the information  has to be transmitted to other cells.)
   </p>
 
   <p>
@@ -136,7 +136,7 @@
       To learn these parameters we chose to use gradient descent method. Thus we tried to make Lenia as Differentiable friendly as possible. To do so, the main shift is to use "free kernels", using kernels in the form of a sum of n overlapping gaussian bumps: $$x \rightarrow \sum_i^{n} b_i exp(-\frac{(x-rk_i)^2}{w_i}) $$. The parameters are then 3  n dimensional vectors: b for height of the bump, w for the size of the bump and rk for the center of the bump.
   </p>
 
-  <img src="freeK.png" alt="schemeK" width="100%" class='l-body' >
+  <img src="freeK.png" alt="schemeK" class='l-body' >
   <p>
     We did this shift because in the vanilla version of Lenia, the shape of the kernel was only given by a vector b of arbitrary size (but often max size 4). The number of bumps was given by the number of coefficient in b>0. However, the fact that the number of bumps depends on the number of coefficient > 0 prevents proper differentiation.
 (if a coefficient is at 0 then it won't change with gradient descent as it doesn't play a role, and if a coefficient is >0 a gradient step can put it <0 which will make a strong unexpected change). We could have left the number of bumps to an arbitrary value like 3, and only optimizing the height such as they stay >0  but this would have been a strong limitation on the shape. The "free kernels", in addition to differentiation, allow more flexibility than the vanilla bumps but at the cost of more parameters.
@@ -152,7 +152,7 @@
 
 
   <h2 id="movingCrea">Learning Moving Creature in Lenia</h2>
-
+  <img src="OptimStep.svg" alt="optimScheme" class='l-middle-outset' >
   <p>
     Before trying to find sensorimotor capabilities in our system a first step would be to find moving creatures like glider in the game of life. Note that moving creature in cellular automaton differ from other type of movement like muscle contraction or soft robot (article) by the fact that moving is growing at the front and dying at the back.
    In this paper, we learn to develop morphology and motricity at the same time. The CA rule will both be applied to grow the creature from an initial state and be the "physics" that makes it move.
@@ -313,6 +313,7 @@
    food?
    discussion difficulty coming from other agents becoming stronger competition in evolution/\cite{baker2020emergent}). Future work might use these creature as basis for species mutate them and make them compete for food.
  </p>
+
 
 
 
