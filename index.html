@@ -309,7 +309,8 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
               <source src="harderEnv.mp4" type="video/mp4">
             </video>
 
-  <p> Bullet like</p>
+  <p>
+  A much harder </p>
 
 
   <h4> Are the creature robust to Asynchronous update with noise ? </h4>
@@ -321,13 +322,18 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
      </p>
 
 <h4> Are the creature robust to change of scale ? </h4>
+<!---
 <video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
               <source src="small.mp4" type="video/mp4">
             </video>
-<p> We can change the scale of the creature by changing the radius of the kernels as well as </p>
-
-
-
+--->
+<video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
+              <source src="smallerDie.mp4" type="video/mp4">
+            </video>
+      <p class="l-gutter"  style="font-size: 12px;color:#A0A0A0;">
+        The grid is the same size as above to give you an idea of the scale change( kernel radius *0.4)
+      </p>
+<p> We can change the scale of the creature by changing the radius of the kernels as well as the size of the initialization square. This way we can make much smaller creature that therefore have less pixels to do the computation. This scale reduction has a limit but we can get pretty small creature. The creature stil seem to be quite robust and be able to sense and react to their environment while having less space to compute. The creature are even able to reproduce, however they seem to be less robust than the bigger one as we can see some dying from collision. We can also do it the other way and have much bigger creature that therefore have more space to compute. </p>
 
 
   <h3> Side effects</h3>
