@@ -198,47 +198,75 @@
    The general idea of IMGEP is to iteratively set new goals to achieve  and for each of these goals try to learn a policy that would suit this goal. THis way an IMGEP needs an interesting way to sample new goal for example based on intrinsic reward. It also needs a way to track the progress on this goal, and a way to optimize toward this goal. It also might use the knowledge acquired on other goals to learn new goals or attain them more quickly.
 
  </p>
- <dt-code block="" language="python" class="l-gutter">
-    <p>def update(perception_vector):</p>
-    <p># The following pseudocode operates on</p>
-    <p># a single cell’s perception vector.</p>
-    <p># Our reference implementation uses 1D</p>
-    <p># convolutions for performance reasons.</p>
-    <p>x = dense(perception_vector, output_len=128)</p>
-    <p>x = relu(x)</p>
-    <p>ds = dense(x, output_len=16, weights_init=0.0)</p>
-    <p>return ds</p>
-  </dt-code>
+
  <p>
    In our case, the goal space will simply be a 2 dimensional vector representing the position of the center of mass of the creature at last timestep. The way we sample the goals depends on the task but to have a moving creature that goes far in the grid, we will randomly sample position in the grid biasing the sampling toward one edge of the grid. we use MSE error between the last state and our target shape centered at the target goal to try to achieve this goal. The way we reuse knowledge acquired is by intializing the parameters by the one that achieved the closest goal.
  </p>
+
+ <p>
+   The overall method can be summarized as such:
+ </p>
+
+
+ <dt-code block="" language="python" class="l-body">
+    <p>Initialize randomly the history (sampling random parameters)</p>
+    <p>loop (number of Imgep step) </p>
+    <p>   sample target position/goal</p>
+    <p>   Select the policy that achieved the closest position/goal</p>
+    <p>   loop (number of optimisation steps)</p>
+    <p>       Run lenia
+    <p>       Gradient descent toward the disk at target position</p>
+    <p>   See what is the position(ie goal) achieved</p>
+  </dt-code>
 
 
 
 
  <h2 id="robustCrea"> Can we learn robust creatures with sensorimotor capabilities ?</h2>
  <img src="Merge.svg" alt="schemeLearn" width="100%" class="l-middle-outset" >
- <p  style="font-size: 13px;color:#A0A0A0;">
-  Initialization is the yellow square; Left: reached goal library in green, target goal in read. THe policy selected is the one reaching the position in purple circle; Right:  Blue is the obstacle, red the target shape and green the creature before optimisation at last timestep. Green dashed line is at the same position in both.
- </p>
+
+     <p  style="font-size: 13px;color:#A0A0A0;">
+      Initialization is the yellow square  Green dashed line is at the same position in both.; <br>
+
+     Left: reached goal/position library in green, target goal in red. THe policy selected is the one reaching the position in purple circle <br>
+
+      Right:  Blue is the obstacle, red the target shape and green the creature before optimisation at last timestep. Green dashed line is at the same position in both.
+     </p>
+
+
+
+
 
  <p>
   Now that we have an algorithm that is capable of learning moving creature in Lenia. the next step is to find a way to learn a creature that would resist and avoid obstacles in its environment, using the deformations the environment induces on it to sense. In this section, we'll try from scratch to learn a single CA rule and initialization that lead to building, moving and regenerating creature. So we will learn a single global rule for multiple functions contrary to  <dt-cite key="horibe2021regenerating"></dt-cite> which separates regenerating and building into two different CA.
  </p>
 
  <p>
-  What we want to obtain is a creature that is able to generalize to different obstacles. To do so we will train the creatures on randomly generated obstacles. This way our gradient descent will be stochastic gradient descent with the stochasticity coming from the sampling of the obstacles. The learning process will thus encounter a lot of different configurations and may find general behavior. In practice, we will only put obstacles in half the lattice grid. This way, there will be half of the grid free from obstacle where we will first learn a creature that is able to move without any perturbation as in previous section and then as we push the target further and further the creature will start to encounter obstacles. And the deeper the target position is, the more it will encounter obstacles  and so the more it should be robust. In fact at the beginning you will just be a little perturbed by one obstacle and the target circle will optimize the creature to get past the obstacle and recover. (scheme) Then if you want the creature to go further it will have to encounter more obstacles and still be able to resist the second one even if the first one perturbed it. See appendix for more details on the obstacles.
+  What we want to obtain is a creature that is able to generalize to different obstacles. To do so we will train the creatures using the method from previous section  but adding randomly generated obstacles. This way our gradient descent will be stochastic gradient descent with the stochasticity coming from the sampling of the obstacles. The learning process will thus encounter a lot of different configurations and may find general behavior. In practice, we will only put obstacles in half the lattice grid. This way, there will be half of the grid free from obstacle where we will first learn a creature that is able to move without any perturbation as in previous section and then as we push the target further and further the creature will start to encounter obstacles. And the deeper the target position is, the more it will encounter obstacles  and so the more it should be robust. In fact at the beginning you will just be a little perturbed by one obstacle and the target circle will optimize the creature to get past the obstacle and recover. (scheme) Then if you want the creature to go further it will have to encounter more obstacles and still be able to resist the second one even if the first one perturbed it. See appendix for more details on the obstacles.
  </p>
  <p>
   In the IMGEP, to take into account the fact that the position attained depends on the obstacle configuration, the reached goal will be an average of the position attained on different configurations of obstacles.
  </p>
 <h3>Overcoming "bad initialization" problem </h3>
+
+<img src="dependencies.svg" alt="schemeLearn" width="100%" class="l-body" >
+<p  style="font-size: 13px;color:#A0A0A0;">
+ The arrows show the dependencies between the creatures, the back of the arrow is the creature which initializes the optimization and the head of the arrow is the creature obtained after optimization. The arrows are only to show how much initialization and first optimisation steps mattter but dependencies is not used.
+</p>
+
+<p>
+  <!---
+  Note that the random initialization of the history using random paramaters can have a huge impact on the following steps. Because it will be the basis on which optimization will be made. We will select one randomly, and do the first optimization steps on top of it. And as it will lead to a creature that goes a little bit further, when we'll sample new goal we will most of the time select this creature as the basis for the new optimization. Which will lead to a creature going further which in consequence will also be sampled after. And so in most of the run, most of the creature will be based more or less closely on the initialization selected and also the first steps. However, if the initialization is "bad" or the first IMGEP steps, on which the nexts will be based, go in the "wrong" optimisation direction, optimization problems can arise.
+  --->
+  Note that the random initialization of the history using random paramaters and the first steps have a huge impact on the performance of the method. Because it will be the basis on which most of the next optimization will be made.In fact, we will select one random initialization, and do the first optimization step on top of it. And as it will lead to a creature that goes a little bit further, when we'll sample new goal we will most of the time select this creature as the basis for the new optimization. Which will lead to a creature going further which in consequence will also be sampled after. And so in most of the runs, most of the creatures will be based more or less closely on the random initialization selected and also the first steps. However, if the initialization is "bad" or the first IMGEP steps, on which the nexts will be based, go in the "wrong" optimisation direction, optimization problems can arise.
+</p>
+
  <p>
-  While training with this algorithm sometimes the optimisation could not get creature getting passed the obstacles because of the initialization and creature that were obtained from the initialization were not "good" enough. This can be mitigated by adding random mutations before optimizing. It may unstuck the situation however the creature after mutation are often not that good and most of the time far from the target goal (because mutation often make "suboptimal" creature that may be slower than the one before mutation) which prevent learning. So mutation can help unstuck situation but also slows the training. This is why we apply less optimization steps for the mutated one, see appendix for more details.
+  While training with this algorithm sometimes the optimisation could not get creature getting passed the obstacles, and would diverge to exploding or dying creature. This can be mitigated by adding random mutations before optimizing that could lead to better optimization spots by luck. It may unstuck the situation however the creature after mutation are often not that good and most of the time far from the previously achieved goal (because mutation often make "suboptimal" creature that may be slower than the one before mutation) which prevent learning. So mutation can help unstuck situation but also slows the training. This is why we apply less optimization steps for the mutated one, see appendix for more details.
  </p>
 
  <p>
-   This does not solve the problem 100\% of the time and that's why we also apply initialization selection. We run deterministic first steps (fixed target position), until we find an initialization which gives a good loss for the 3 first  deterministic target.
+   This does not solve the problem 100% of the time and that's why we also apply initialization selection. We run the first steps of the methode (random initialization and optimization), until we find an initialization which gives a good loss for the 3 first  deterministic target (placed before the obstacles). Because, the first steps will be the basis of most of the creatures and so if it struggle to make a moving creature, it will be hard for it to learn the senorimotor capabilities on top .This way we only keep the initializations and first steps that learned quickly and seemed to have room for improvement.
  </p>
 
 
@@ -263,20 +291,20 @@
   <p> Speed of video: <span id="valueSpeed"></span></p>
 </div>
 <p>
-(each IMGEP step is only 100 gradient steps and the rollout is only 50 timesteps and obstacles are only simple circles.)
+(each IMGEP step is only 100 gradient steps and the lenia rollout is only 50 timesteps and obstacles are only simple circles.)
 </p>
 <h3> How well do the creatures obtained generalize ? </h3>
 
-<h4> Is it long term stable ?</h4>
+<h4> are the creature long term stable ?</h4>
 <p>
 Even if we can not know if the creature is indefinitively stable, we can test for reasonable number of timesteps. The result is that the creature obtained with IMGEP with obstacles seems stable for 2000 timesteps while it has only been trained to be stable for 50 timesteps. This might be because as it learned to be robust to deformation it has learned a strong preservation of the structure to prevent any explosion or dying when perturbed a little bit. And so when there is no perturbation this layer of "security" strongly preserves the structure. ( Training a creature only for movement sometimes led to non long term stable creatures)
 </p>
-<h4> Is it robust to new obstacles ?</h4>
+<h4> Are the creatures robust to new obstacles ?</h4>
 <p>
   The resulting creatures are very robust to walls perturbations and able to navigate in difficult environment. The resulting creature seems able to recover from perturbation induced by various shape of wall including vertical walls.(see interactive demo) One very surprising emerging behavior is that the creature is sometimes able to come out of dead end showing how well this technique generalizes. There are still some failure cases, with creature obtained that can get unstable after some perturbation, but the creatures are most of the time robust to a lot of different obstacles. The generalization is due to the large diversity of obstacles encountered by the creature during the learning because 8 circle randomly placed can lead to a very diverse set of obstacles. Moreover as it learns to go further, the creature have to learn to collide with several obstacles one after the other and so be able to recover fast but also still be able to resist/sense a second obstacle while not having fully recover.
 </p>
 
-<h4> Is it robust to Moving obstacles ?</h4>
+<h4> Are the creatures robust to Moving obstacles ?</h4>
 <video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
               <source src="harderEnv.mp4" type="video/mp4">
             </video>
@@ -284,7 +312,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
   <p> Bullet like</p>
 
 
-  <h4> Is it robust to Asynchronous update with noise ? </h4>
+  <h4> Are the creature robust to Asynchronous update with noise ? </h4>
   <video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
                 <source src="asynchro.mp4" type="video/mp4">
               </video>
@@ -292,7 +320,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
       As done in <dt-cite key="mordvintsev2020growing"></dt-cite>, we can relax the assumption of synchronous update (which assumes a global clock) by adding stochastic update. By applying a mutation mask on each cell which is on in average 50% of the time we get partial asynhcronous updates. The creature we obtained with the previous training with synchronous updates seem to behave "normally" with stochastic updates. The creature is slowed a little bit but this is what we can expect as each cell is updated in average 50% of the time.
      </p>
 
-<h4> Is it robust to change of scale ? </h4>
+<h4> Are the creature robust to change of scale ? </h4>
 <video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
               <source src="small.mp4" type="video/mp4">
             </video>
