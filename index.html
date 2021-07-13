@@ -159,7 +159,7 @@
 
 
 
-  <h2 id="movingCrea">Learning Moving Creature in Lenia</h2>
+  <h2 id="movingCrea">Can we learn Moving Creature in Lenia ? </h2>
   <img src="OptimStep.svg" alt="optimScheme" class='l-middle-outset' >
   <p>
     Before trying to find sensorimotor capabilities in our system a first step would be to find moving creatures like glider in the game of life. Note that moving creature in cellular automaton differ from other type of movement like muscle contraction or soft robot (article) by the fact that moving is growing at the front and dying at the back.
@@ -167,7 +167,7 @@
  </p>
 
  <p>
-    Target image with MSE error seems effective to learn CA rule leading to certain pattern <dt-cite key="mordvintsev2020growing"></dt-cite>. ANd the fact that it's a very informative loss, thus helping with vanishing gradient problem made us choose this loss for our problem over other losses such as maximizing the coordinate of the center of mass . THe first target shape we tried was a single disk. However after seeing  that robust creature obtained seemed to have a "core" and a shallow envelopp, we informally chose to move to two superposed disk, a large shallow one with a thick smaller one on top. The target shape has the formula:   \(0.1*(R<1)+0.8*(R<0.5)\). We chose on purpose to have the sum to be smaller than 1 because as we clip to 1 the pixel after each update it/s  better to have pixel below 1 than pixel saturated if you want to have gradients.
+    Target image with MSE error seems effective to learn CA rule leading to certain pattern <dt-cite key="mordvintsev2020growing"></dt-cite>. And the fact that it's a very informative loss, thus helping with vanishing gradient problem made us choose this loss for our problem over other losses such as maximizing the coordinate of the center of mass . The first target shape we tried was a single disk. However after seeing  that robust creature obtained seemed to have a "core" and a shallow envelopp, we informally chose to move to two superposed disk, a large shallow one with a thick smaller one on top. The target shape has the formula:   \(0.1*(R<1)+0.8*(R<0.5)\). We chose on purpose to have the sum to be smaller than 1 because as we clip to 1 the pixels after each update it/s  better to have pixel below 1 than pixel saturated if you want to have gradients.
  </p>
 
  <p>
@@ -178,7 +178,7 @@
 
 
 
- <h4>IMGEP and Utility of curriculum</h4>
+ <h3>IMGEP and Utility of curriculum</h3>
 
  <p>
    In fact, once we obtain a creature able to go a little further than the initialisation, we can push the target a little bit and learn to attain it. This time the new target needs to overlap where the creature is able to go  after the first optimisation. Then we just need to iterate this process.
@@ -216,8 +216,8 @@
 
 
 
- <h2 id="robustCrea"> Learning robust creatures with sensorimotor capabilities </h2>
- <img src="merge.png" alt="schemeLearn" width="100%" class="l-middle-outset" >
+ <h2 id="robustCrea"> Can we learn robust creatures with sensorimotor capabilities ?</h2>
+ <img src="merge.svg" alt="schemeLearn" width="100%" class="l-middle-outset" >
  <p  style="font-size: 13px;color:#A0A0A0;">
   Initialization is the yellow square; Left: reached goal library in green, target goal in read. THe policy selected is the one reaching the position in purple circle; Right:  Blue is the obstacle, red the target shape and green the creature before optimisation at last timestep. Green dashed line is at the same position in both.
  </p>
@@ -245,6 +245,7 @@
 
 
 <h2 id="results"> Results </h2>
+
 <div class="row l-body">
 <div class="column">
   <video id="robust" width="95%" controls="" loop muted="" class="videoShow">
@@ -261,14 +262,85 @@
   <input type="range" min="0.1" max="3"  step="0.1" value="1" class="slider" id="rangeSpeed" >
   <p> Speed of video: <span id="valueSpeed"></span></p>
 </div>
+<p>
+(each IMGEP step is only 100 gradient steps and the rollout is only 50 timesteps and obstacles are only simple circles.)
+</p>
+<h3> How well do the creatures obtained generalize ? </h3>
+
+<h4> Is it long term stable ?</h4>
+<p>
+Even if we can not know if the creature is indefinitively stable, we can test for reasonable number of timesteps. The result is that the creature obtained with IMGEP with obstacles seems stable for 2000 timesteps while it has only been trained to be stable for 50 timesteps. This might be because as it learned to be robust to deformation it has learned a strong preservation of the structure to prevent any explosion or dying when perturbed a little bit. And so when there is no perturbation this layer of "security" strongly preserves the structure. ( Training a creature only for movement sometimes led to non long term stable creatures)
+</p>
+<h4> Is it robust to new obstacles ?</h4>
+<p>
+  The resulting creatures are very robust to walls perturbations and able to navigate in difficult environment. The resulting creature seems able to recover from perturbation induced by various shape of wall including vertical walls.(see interactive demo) One very surprising emerging behavior is that the creature is sometimes able to come out of dead end showing how well this technique generalizes. There are still some failure cases, with creature obtained that can get unstable after some perturbation, but the creatures are most of the time robust to a lot of different obstacles. The generalization is due to the large diversity of obstacles encountered by the creature during the learning because 8 circle randomly placed can lead to a very diverse set of obstacles. Moreover as it learns to go further, the creature have to learn to collide with several obstacles one after the other and so be able to recover fast but also still be able to resist/sense a second obstacle while not having fully recover.
+</p>
+
+<h4> Is it robust to Moving obstacles ?</h4>
+<video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
+              <source src="harderEnv.mp4" type="video/mp4">
+            </video>
+
+  <p> Bullet like</p>
 
 
- <p>
-   The resulting creature are very robust to walls perturbations and able to navigate in difficult environment. In fact, even if the creature were only trained for 50 timesteps in the system and few circle obstacles, the resulting creature seem to be long term stable and able to recover from perturbation induced by various shape of wall including vertical walls. One very surprising emerging behavior is that the creature is sometimes able to come out of dead end showing how well this technique generalizes. There are still some failure cases, with creature obtained that can get unstable after some perturbation, but the creature are most of the time robust to a lot of different obstacles.
- </p>
+  <h4> Is it robust to Asynchronous update with noise ? </h4>
+  <video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
+                <source src="asynchro.mp4" type="video/mp4">
+              </video>
+    <p>
+      As done in <dt-cite key="mordvintsev2020growing"></dt-cite>, we can relax the assumption of synchronous update (which assumes a global clock) by adding stochastic update. By applying a mutation mask on each cell which is on in average 50% of the time we get partial asynhcronous updates. The creature we obtained with the previous training with synchronous updates seem to behave "normally" with stochastic updates. The creature is slowed a little bit but this is what we can expect as each cell is updated in average 50% of the time.
+     </p>
+
+<h4> Is it robust to change of scale ? </h4>
+<video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
+              <source src="small.mp4" type="video/mp4">
+            </video>
+<p> We can change the scale of the creature by changing the radius of the kernels as well as </p>
 
 
- <h3> Study of the creatures </h3>
+
+
+
+  <h3> Side effects</h3>
+
+  <h4>Multi creature setting</h4>
+   <p>
+    By adding more initialization square in the grid, we can add several creature with the same update rule. As pointed out in <dt-cite key="PMID:24494612"></dt-cite>, other entity are also part of the environment for the creature and can give rise to nice interactions. Maturana and Varela even refer to this kind of interaction as communication.
+   </p>
+
+  <h4>Individuality</h4>
+   <video id="robust" width="95%"  autoplay controls="" loop muted="" class="l-body videoShow">
+                 <source src="demo.mp4" type="video/mp4">
+               </video>
+   <p>
+     The creature obtained shows strong individuality preservation. In fact, creatures goes in non destructive interactions most of the times without merging. As said before, we can tune the weight of the kernels (especially the limiting growth one) to make the merge of two creature harder. By increasing those limiting growth kernels, the repeal of two entities get stronger and they will simply change direction.
+   </p>
+   <h4>Attraction</h4>
+   <video id="robust" width="95%"  autoplay controls="" loop muted="" class="l-body videoShow">
+                 <source src="stick.mp4" type="video/mp4">
+               </video>
+
+   <video id="robust" width="95%"  autoplay  loop muted="" class="l-gutter videoShow">
+                 <source src="stickFar.mp4" type="video/mp4">
+               </video>
+     <p class="l-gutter" style="font-size: 13px;color:#A0A0A0;  ">
+       If they are too far from each other no attraction.
+     </p>
+
+   <p>
+     One other type of interaction between two creature of the same species(governed by the same update rule/physic) is creature getting stuck together. The two creatures seem to attract each other a little bit when they are close enough leading to the two creature stuck together going in the same direction. When they encounter an obstacle and separate briefly, their attraction reassemble them together. Even when they're stuck together, from a human point of view seeing this system, we ce can still see 2 distinct creatures. This type of behavior is  studied in the game of life in <dt-cite key="PMID:24494612"></dt-cite>  with the notion of consensual domain.
+   </p>
+
+  <h4>Reproduction</h4>
+  <video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-body videoShow">
+                <source src="repro.mp4" type="video/mp4">
+              </video>
+   <p>
+     Another interesting interaction we observed during colision was "reproduction". In fact for some collision, we could observe the birth of a 3rd entity. This kind of interaction seemed to happen when one of the two entity colliding was in a certain "mode" like when it just hit a wall. Our intuition is that when it hits a wall, it has to have a growth response in order to recover. And during this growth response if we add some perturbation of another entity it might separate this growth from the entity and then this separated mass from strong self-organization grows into a complete individual.
+   </p>
+
+<h3> Study of the creature </h3>
  <p>
    What's interesting in such system is that the computation of decision is done at the macro (group) level, showing how a group of simple identical entities through local interactions can make "decision", sense at the macro scale. Seeing these creature it's even hard to believe that they are in fact made of tiny part all behaving under the same rules.
  </p>
@@ -283,41 +355,6 @@
    Surprisingly some creature looked a lot like (in term of morphology) creature from <dt-cite key="chan2019lenia"></dt-cite> which were obtained by evolutionary algorithm or by hand made mutations but seem to be far more robust.
  </p>
 
-
-<h3>Multi creature setting</h3>
- <p>
-  By adding more initialization square in the grid, we can add several creature with the same update rule. As pointed out in <dt-cite key="PMID:24494612"></dt-cite>, other entity are also part of the environment for the creature and can give rise to nice interactions. Maturana and Varela even refer to this kind of interaction as communication.
- </p>
-
-
- <video id="robust" width="95%"  autoplay controls="" loop muted="" class="l-body videoShow">
-               <source src="demo.mp4" type="video/mp4">
-             </video>
- <p>
-   The creature obtained shows strong individuality preservation. In fact, creatures goes in non destructive interactions most of the times without merging. As said before, we can tune the weight of the kernels (especially the limiting growth one) to make the merge of two creature harder. By increasing those limiting growth kernels, the repeal of two entities get stronger and they will simply change direction.
- </p>
- <video id="robust" width="95%"  autoplay controls="" loop muted="" class="l-body videoShow">
-               <source src="stick.mp4" type="video/mp4">
-             </video>
-
- <video id="robust" width="95%"  autoplay  loop muted="" class="l-gutter videoShow">
-               <source src="stickFar.mp4" type="video/mp4">
-             </video>
-   <p class="l-gutter" style="font-size: 13px;color:#A0A0A0;  ">
-     If they are too far from each other no attraction.
-   </p>
-
- <p>
-   One other type of interaction between two creature of the same species(governed by the same update rule/physic) is creature getting stuck together. The two creatures seem to attract each other a little bit when they are close enough leading to the two creature stuck together going in the same direction. When they encounter an obstacle and separate briefly, their attraction reassemble them together. Even when they're stuck together, from a human point of view seeing this system, we ce can still see 2 distinct creatures. This type of behavior is  studied in the game of life in <dt-cite key="PMID:24494612"></dt-cite>  with the notion of consensual domain.
- </p>
-
-
-<video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-body videoShow">
-              <source src="repro.mp4" type="video/mp4">
-            </video>
- <p>
-   Another interesting interaction we observed during colision was "reproduction". In fact for some collision, we could observe the birth of a 3rd entity. This kind of interaction seemed to happen when one of the two entity colliding was in a certain "mode" like when it just hit a wall. Our intuition is that when it hits a wall, it has to have a growth response in order to recover. And during this growth response if we add some perturbation of another entity it might separate this growth from the entity and then this separated mass from strong self-organization grows into a complete individual.
- </p>
 
 
 <h3>Different target shape</h3>
@@ -356,7 +393,7 @@
  </p>
 
  <p>
-   radius is quite big while \cite{mordvintsev2020growing} Moore neighbourhood size 3. (but no hidden channel)
+   radius is quite big while <dt-cite key="mordvintsev2020growing"></dt-cite> Moore neighbourhood size 3. (but no hidden channel)
    Even if this, this work still provides interesting idea on how to learn parameters in complex systems that can be very sensitive, especially how to deal with certain problems such that vanishing gradient, bad initialization.
 
  </p>
@@ -388,6 +425,7 @@
   <video id="model-editing-level-1-video-1" controls="" muted="" class="videoShow">
                 <source src="demoFoodc.mp4" type="video/mp4">
               </video>
+  <h3> Mutation by hand </h3>
 </dt-appendix>
 
 <script type="text/bibliography">
