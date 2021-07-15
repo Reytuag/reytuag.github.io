@@ -39,6 +39,11 @@
   <!--shadertoy at mac 840x472, at win 640x360-->
   <div id="showText" onclick="this.style.display='none';">initializing...</div>
 
+  <div style="l-body">
+    <input type="range" min="6" max="20"  step="0.1" value="1" class="slider" id="rangeRadius" >
+    <p> Radius: <span id="valueRadius"></span></p>
+  </div>
+
   <script type="text/javascript" src="utils.js"></script>
   <script type="text/javascript">
   "use strict";
@@ -85,7 +90,7 @@
 
   function setSpecies(species) {
   	//gl.uniform1f(params.R, 12.);  // space resolution = kernel radius
-  	gl.uniform1f(params.T, 100.);  // time resolution = number of divisions per unit time
+  	gl.uniform1f(params.T, 2.);  // time resolution = number of divisions per unit time
   	switch (species) {
   		case 0:
   		speciesName = "VT049W fission";  // Tessellatium (sometimes reproductive)
@@ -289,7 +294,7 @@
   	};
   	if (initSpecies != null) {
   		params = {
-  			//R:                  gl.getUniformLocation(simProgram, "R"),
+  			R:                  gl.getUniformLocation(simProgram, "R"),
   			T:                  gl.getUniformLocation(simProgram, "T"),
   			baseNoise:          gl.getUniformLocation(simProgram, "baseNoise"),
   			betaLen:            gl.getUniformLocation(simProgram, "betaLen"),
@@ -492,6 +497,18 @@
   	randomSpecies = Math.floor(new Date().getSeconds() / 60 * 10); //Math.floor(Math.random() * 9);
   	initSpecies = getParam("species", "int", randomSpecies, randomSpecies);
   	setSpecies(initSpecies);
+  }
+
+  var sliderRadius = document.getElementById("rangeRadius");
+  var outputradius = document.getElementById("valueRadius");
+  var videos=document.getElementsByClassName("videoShow");
+  outputSpeed.innerHTML = sliderSpeed.value; // Display the default slider value
+
+  // Update the current slider value (each time you drag the slider handle)
+  sliderRadius.oninput = function() {
+  outputRadius.innerHTML = this.value;
+  rpos=gl.getUniformLocation(simProgram, "R")
+  gl.uniform1f(rpos,this.value)
   }
 
   </script>
