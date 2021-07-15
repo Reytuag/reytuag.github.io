@@ -202,7 +202,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         valSrc = getVal(fragCoord + vec2(0, -x)*samplingDist); sum += mult(valSrc, weight); total += weight;
     }
     // diagonal
-    uniform int diagR = int(ceil(float(intR) / sqrt(2.)));
+    const int diagR = int(ceil(float(intR) / sqrt(2.)));
     for (int x=1; x<=diagR; x++)
     {
         r = sqrt(2.) * float(x) / R;
