@@ -242,11 +242,12 @@ function initWebGL(shaderSources) {
         iChannel2:          gl.getUniformLocation(simProgram, "iChannel2"),
         iChannel3:          gl.getUniformLocation(simProgram, "iChannel3"),
         iDate:              gl.getUniformLocation(simProgram, "iDate"),
-        iFrameRate:         gl.getUniformLocation(simProgram, "iFrameRate")
+        iFrameRate:         gl.getUniformLocation(simProgram, "iFrameRate"),
+        R:                  gl.getUniformLocation(simProgram, "R")
   };
   if (initSpecies != null) {
     params = {
-      R:                  gl.getUniformLocation(simProgram, "R"),
+
       T:                  gl.getUniformLocation(simProgram, "T"),
       baseNoise:          gl.getUniformLocation(simProgram, "baseNoise"),
       betaLen:            gl.getUniformLocation(simProgram, "betaLen"),
@@ -336,6 +337,7 @@ function initUniforms() {
     gl.uniform1i(uniforms.iChannel3, 3);
     gl.uniform1f(uniforms.iSampleRate, 44100.0);
     gl.uniform4f(uniforms.iMouse, 0.0, 0.0, 0.0, 0.0);
+    gl.uniform1f(uniforms.R, 6.0);
 }
 
 function setUniforms() {

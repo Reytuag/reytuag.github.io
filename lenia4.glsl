@@ -24,7 +24,7 @@ const mat4 m0 = mat4(v0, v0, v0, v0);
 const mat4 m1 = mat4(v1, v1, v1, v1);
 
 const float baseNoise = 0.1;
-uniform float R = 6.;  // space resolution = kernel radius
+uniform float R;  // space resolution = kernel radius
 const float T = 7.;  // time resolution = number of divisions per unit time
 const mat4      b0 = mat4( 0.995, 0.675, 0.675, 0.130, 0.090, 0.565, 0.795, 0.725, 0.635, 0.909, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );  // kernel ring heights
 const mat4      b1 = mat4( 0.330,0.195, 0.250, 0.405, 0.525, 0.495, 0.745, 0.025, 0.525, 0.300, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );
@@ -45,7 +45,7 @@ const mat4        dst = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 ,
 const mat4 relRinv=1.0/relR;
 
 // precalculate
-uniform int intR = int(ceil(R));
+const int intR = int(ceil(R));
 const float dt = 1./T;       // time step
 
 const vec4 kmv = vec4(0.5);    // kernel ring center
