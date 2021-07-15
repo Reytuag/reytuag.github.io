@@ -184,7 +184,10 @@ vec3 drawInit(in vec2 uv)
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
+		vec3 rgb=vec3(0.);
     vec2 uv = fragCoord / iResolution.xy;
+		if(iMouse.z <= 0. && iFrame !=0)
+		{
 		int intR = int(ceil(R));
 
     // loop through the neighborhood, optimized: same weights for all quadrants/octants
@@ -239,11 +242,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 growthDst = vec3( getDst(growth, iv0), getDst(growth, iv1), getDst(growth, iv2) );
     vec3 val = texture(iChannel0, uv).rgb;
 		growthDst[0]=growthDst[0]-2.*val[2];
-    vec3 rgb = clamp(dt * growthDst + val, 0., 1.);
+    rgb = clamp(dt * growthDst + val, 0., 1.);
 
     // debug: uncomment to show list of kernels
     //rgb = drawKernel(fragCoord / iResolution.y);
-
+		}
     // randomize at start, or add patch on mouse click
     if (iFrame == 0 )
     {
@@ -257,6 +260,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     }
 		if(iMouse.z > 0.)
 		{
+		rgb = texture(iChannel0, uv).rgb;
 		vec2 st = fragCoord.xy/iResolution.xy;
     float m_x = iMouse.x / iResolution.x;
     float m_y = iMouse.y / iResolution.y;
@@ -265,16 +269,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     dist.x *= iResolution.x/iResolution.y;
     float mouse_pct = length(dist);
     mouse_pct = step(radius/10., mouse_pct);
-		if(color[0]+color[1]+color[2]>0.5){
+		if(color[0]+color[1]+color[2]>0.5)
+		{
 			m_color = (1.0-mouse_pct)*color;
 			rgb = rgb+m_color;
 		}else{
 			rgb=rgb*mouse_pct;
 		}
-
-
 		}
-
-
     fragColor = vec4(rgb, 1.);
 }

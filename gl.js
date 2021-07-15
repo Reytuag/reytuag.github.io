@@ -438,7 +438,7 @@ function onKeyPress(e) {
         case "p": pause = ! pause; break;
     }
     switch (e.keyCode) {
-        case 13: gen = 0; break;
+        case 13: pause = false;gen = 0; break;
     }
 }
 
