@@ -456,8 +456,9 @@ var outputRadius = document.getElementById("valueRadius");
 outputRadius.innerHTML = sliderRadius.value; // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)
-gl.useProgram(simProgram);
+
 sliderRadius.oninput = function() {
 outputRadius.innerHTML = this.value;
+gl.useProgram(simProgram);
 gl.uniform1f(gl.getUniformLocation(simProgram,"R"),this.value)
 }
