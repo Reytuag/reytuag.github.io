@@ -444,8 +444,8 @@ var isMouseDown = false;
 function set_iMouse(e, sx, sy) {
     var x = e.clientX / pixelSize;
     var y = height - e.clientY / pixelSize;
-    //gl.useProgram(simProgram);
-    //gl.uniform4f(uniforms.iMouse, x, y, sx*x, sy*y);
+    gl.useProgram(simProgram);
+    gl.uniform4f(uniforms.iMouse, x, y, sx*x, sy*y);
 }
 function onMouseDown(e) { isMouseDown = true;  set_iMouse(e, +1, +1); }
 function onMouseMove(e) { if (isMouseDown)     set_iMouse(e, +1, -1); }
