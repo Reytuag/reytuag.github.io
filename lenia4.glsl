@@ -45,7 +45,7 @@ const mat4        dst = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 ,
 const mat4 relRinv=1.0/relR;
 
 // precalculate
-const int intR = int(ceil(R));
+uniform int intR = int(ceil(R));
 const float dt = 1./T;       // time step
 
 const vec4 kmv = vec4(0.5);    // kernel ring center
@@ -202,7 +202,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         valSrc = getVal(fragCoord + vec2(0, -x)*samplingDist); sum += mult(valSrc, weight); total += weight;
     }
     // diagonal
-    const int diagR = int(ceil(float(intR) / sqrt(2.)));
+    uniform int diagR = int(ceil(float(intR) / sqrt(2.)));
     for (int x=1; x<=diagR; x++)
     {
         r = sqrt(2.) * float(x) / R;
