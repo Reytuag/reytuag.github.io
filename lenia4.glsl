@@ -11,6 +11,7 @@ const float samplingDist = 1.;
 // 1.9,2.1,2.9,3.1,3.9(near int):partial phantom, >=3.2:minor glitch, increase as larger
 // linear filter: smoother, nearest filter: more glitch/phantom
 
+uniform vec3 color;
 // choose a species (0 to 9)
 #define species7
 
@@ -244,15 +245,31 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     //rgb = drawKernel(fragCoord / iResolution.y);
 
     // randomize at start, or add patch on mouse click
-    if (iFrame == 0 || iMouse.z > 0.)
+    if (iFrame == 0 |)
     {
         vec3 base = drawInit(fragCoord / iResolution.y);
         vec3 noiseRGB = vec3(
             noise(fragCoord/R/samplingDist + mod(iDate.w,1.)*100.),
             noise(fragCoord/R/samplingDist + sin(iDate.w)*100.),
             noise(fragCoord/R/samplingDist + cos(iDate.w)*100.) );
-        rgb = base+ 0.5*noiseRGB;
+        //rgb = base+ 0.5*noiseRGB;
+				rgb=vec3(0.)
     }
+		if(iMouse.z > 0.)
+		{
+		vec2 st = fragCoord.xy/iResolution.xy;
+    float m_x = iMouse.x / iResolution.x;
+    float m_y = iMouse.y / iResolution.y;
+    vec3 m_color = vec3(1.0);
+    vec2 dist = vec2(m_x, m_y) - st.xy;
+    dist.x *= iResolution.x/iResolution.y;
+    float mouse_pct = length(dist);
+    mouse_pct = step(0.1, mouse_pct);
+    m_color = 1.0-mouse_pct*color;
+    rgb = rgb+m_color;
+
+		}
+
 
     fragColor = vec4(rgb, 1.);
 }

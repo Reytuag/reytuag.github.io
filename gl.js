@@ -243,7 +243,8 @@ function initWebGL(shaderSources) {
         iChannel3:          gl.getUniformLocation(simProgram, "iChannel3"),
         iDate:              gl.getUniformLocation(simProgram, "iDate"),
         iFrameRate:         gl.getUniformLocation(simProgram, "iFrameRate"),
-        R:                  gl.getUniformLocation(simProgram, "R")
+        R:                  gl.getUniformLocation(simProgram, "R"),
+        color:              gl.getUniformLocation(simProgram, "color"),
   };
   if (initSpecies != null) {
     params = {
@@ -338,6 +339,7 @@ function initUniforms() {
     gl.uniform1f(uniforms.iSampleRate, 44100.0);
     gl.uniform4f(uniforms.iMouse, 0.0, 0.0, 0.0, 0.0);
     gl.uniform1f(uniforms.R, 6.0);
+    gl.uniform3f(uniforms.color, 1.0,0.0,0.0);
 }
 
 function setUniforms() {
@@ -447,11 +449,15 @@ function set_iMouse(e, sx, sy) {
 }
 function onMouseDown(e) { isMouseDown = true;  set_iMouse(e, +1, +1); }
 function onMouseMove(e) { if (isMouseDown)     set_iMouse(e, +1, -1); }
+
+/*
 function onMouseUp  (e) { isMouseDown = false; set_iMouse(e, -1, -1);
   randomSpecies = Math.floor(new Date().getSeconds() / 60 * 10); //Math.floor(Math.random() * 9);
   initSpecies = getParam("species", "int", randomSpecies, randomSpecies);
   setSpecies(initSpecies);
 }
+*/
+
 
 var sliderRadius = document.getElementById("rangeRadius");
 var outputRadius = document.getElementById("valueRadius");
