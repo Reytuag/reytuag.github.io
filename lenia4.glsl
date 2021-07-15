@@ -24,7 +24,7 @@ const mat4 m0 = mat4(v0, v0, v0, v0);
 const mat4 m1 = mat4(v1, v1, v1, v1);
 
 const float baseNoise = 0.1;
-const float R = 6.;  // space resolution = kernel radius
+uniform float R = 6.;  // space resolution = kernel radius
 const float T = 7.;  // time resolution = number of divisions per unit time
 const mat4      b0 = mat4( 0.995, 0.675, 0.675, 0.130, 0.090, 0.565, 0.795, 0.725, 0.635, 0.909, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );  // kernel ring heights
 const mat4      b1 = mat4( 0.330,0.195, 0.250, 0.405, 0.525, 0.495, 0.745, 0.025, 0.525, 0.300, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );
@@ -165,7 +165,7 @@ vec3 drawKernel(in vec2 uv)
 
 vec3 getInit(in float r, in float x)
 {
-    if(r>0.2) return  vec3(0);
+    if(r>0.2*R/6.) return  vec3(0);
     return vec3(2.0*x+0.5,0,0);
 }
 
