@@ -253,7 +253,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
             noise(fragCoord/R/samplingDist + sin(iDate.w)*100.),
             noise(fragCoord/R/samplingDist + cos(iDate.w)*100.) );
         //rgb = base+ 0.5*noiseRGB;
-				rgb=vec3(0.)
+				rgb=vec3(0.);
     }
 		if(iMouse.z > 0.)
 		{
