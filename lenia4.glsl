@@ -245,7 +245,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     //rgb = drawKernel(fragCoord / iResolution.y);
 
     // randomize at start, or add patch on mouse click
-    if (iFrame == 0 |)
+    if (iFrame == 0 )
     {
         vec3 base = drawInit(fragCoord / iResolution.y);
         vec3 noiseRGB = vec3(
@@ -265,7 +265,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     dist.x *= iResolution.x/iResolution.y;
     float mouse_pct = length(dist);
     mouse_pct = step(0.1, mouse_pct);
-    m_color = 1.0-mouse_pct*color;
+    m_color = (1.0-mouse_pct)*color;
     rgb = rgb+m_color;
 
 		}
