@@ -439,11 +439,11 @@ function onKeyPress(e) {
         case 13: gen = 0; break;
     }
 }
-
+var rect = canvas.getBoundingClientRect();
 var isMouseDown = false;
 function set_iMouse(e, sx, sy) {
-    var x = e.clientX / pixelSize;
-    var y = height - e.clientY / pixelSize;
+    var x = (e.clientX - rect.left)/ pixelSize;
+    var y = height - (e.clientY - rect.top) / pixelSize;
     gl.useProgram(simProgram);
     gl.uniform4f(uniforms.iMouse, x, y, sx*x, sy*y);
 }

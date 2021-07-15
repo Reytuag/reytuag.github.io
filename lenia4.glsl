@@ -258,8 +258,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 		if(iMouse.z > 0.)
 		{
 		vec2 st = fragCoord.xy/iResolution.xy;
-    float m_x = iMouse.x ;
-    float m_y = iMouse.y ;
+    float m_x = iMouse.x / iResolution.x;
+    float m_y = iMouse.y / iResolution.y;
     vec3 m_color = vec3(1.0);
     vec2 dist = vec2(m_x, m_y) - st.xy;
     dist.x *= iResolution.x/iResolution.y;
