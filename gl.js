@@ -455,7 +455,7 @@ function onMouseMove(e) { if (isMouseDown)     set_iMouse(e, +1, -1); }
 function onMouseUp  (e) { isMouseDown = false; set_iMouse(e, -1, -1); }
 
 
-
+/*
 var sliderRadius = document.getElementById("rangeRadius");
 var outputRadius = document.getElementById("valueRadius");
 outputRadius.innerHTML = sliderRadius.value; // Display the default slider value
@@ -466,7 +466,7 @@ sliderRadius.oninput = function() {
 outputRadius.innerHTML = this.value;
 gl.useProgram(simProgram);
 gl.uniform1f(gl.getUniformLocation(simProgram, "R"),this.value)
-}
+}*/
 
 
 var sliderRadiusWall = document.getElementById("rangeRadiusWall");
