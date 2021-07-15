@@ -12,6 +12,7 @@ const float samplingDist = 1.;
 // linear filter: smoother, nearest filter: more glitch/phantom
 
 uniform vec3 color;
+uniform float radius;
 // choose a species (0 to 9)
 #define species7
 
@@ -263,7 +264,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 dist = vec2(m_x, m_y) - st.xy;
     dist.x *= iResolution.x/iResolution.y;
     float mouse_pct = length(dist);
-    mouse_pct = step(0.05, mouse_pct);
+    mouse_pct = step(radius/10., mouse_pct);
 		if(color[0]+color[1]+color[2]>0.5){
 			m_color = (1.0-mouse_pct)*color;
 			rgb = rgb+m_color;

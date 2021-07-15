@@ -38,10 +38,12 @@
   <canvas id="glCanvas" width="640" height="360" class='l-body'></canvas>
   <!--shadertoy at mac 840x472, at win 640x360-->
   <div id="showText" onclick="this.style.display='none';">initializing...</div>
-
+  <p> press p to pause and enter to clear </p>
   <div>
+    <input type="range" min="0.1" max="1"  step="0.1" value="0.5" class="slider" id="rangeRadiusWall" >
+    <p> Radius: <span id="valueRadiusWall"></span></p>
     <input type="range" min="6" max="20"  step="0.1" value="8.5" class="slider" id="rangeRadius" >
-    <p> Radius of kernels: <span id="valueRadius"></span></p>
+    <p> Radius of kernels (size of creature): <span id="valueRadius"></span></p>
   </div>
   <div class="radio-toolbar" id="optionDiv">
     <input type="radio" id="radioErase"  name='option'  value="erase">

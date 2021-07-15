@@ -245,6 +245,7 @@ function initWebGL(shaderSources) {
         iFrameRate:         gl.getUniformLocation(simProgram, "iFrameRate"),
         R:                  gl.getUniformLocation(simProgram, "R"),
         color:              gl.getUniformLocation(simProgram, "color"),
+        radius:              gl.getUniformLocation(simProgram, "radius"),
   };
   if (initSpecies != null) {
     params = {
@@ -340,6 +341,7 @@ function initUniforms() {
     gl.uniform4f(uniforms.iMouse, 0.0, 0.0, 0.0, 0.0);
     gl.uniform1f(uniforms.R, 8.5);
     gl.uniform3f(uniforms.color, 1.0,0.0,0.0);
+    gl.uniform1f(uniforms.radius, 0.5);
 }
 
 function setUniforms() {
@@ -466,10 +468,24 @@ gl.useProgram(simProgram);
 gl.uniform1f(gl.getUniformLocation(simProgram, "R"),this.value)
 }
 
+
+var sliderRadiusWall = document.getElementById("rangeRadiusWall");
+var outputRadiusWall = document.getElementById("valueRadiusWall");
+outputRadiusWall.innerHTML = sliderRadiusWall.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+
+sliderRadiusWall.oninput = function() {
+outputRadiusWall.innerHTML = this.value;
+gl.useProgram(simProgram);
+gl.uniform1f(gl.getUniformLocation(simProgram, "radius"), this.value);
+}
+
 var buttonCrea = document.getElementById("radioCreature");
 buttonCrea.onclick= ()=>{
   gl.useProgram(simProgram);
   gl.uniform3f(gl.getUniformLocation(simProgram, "color"),1.0,0.0,0.0)
+  //gl.uniform1f(gl.getUniformLocation(simProgram, "radius"), 0.5);
 }
 var buttonCircle = document.getElementById("radioCircle");
 buttonCircle.onclick= ()=>{
@@ -481,4 +497,5 @@ var buttonErase = document.getElementById("radioErase");
 buttonErase.onclick= ()=>{
   gl.useProgram(simProgram);
   gl.uniform3f(gl.getUniformLocation(simProgram, "color"),0.0,0.0,0.0)
+
 }
