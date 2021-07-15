@@ -449,14 +449,8 @@ function set_iMouse(e, sx, sy) {
 }
 function onMouseDown(e) { isMouseDown = true;  set_iMouse(e, +1, +1); }
 function onMouseMove(e) { if (isMouseDown)     set_iMouse(e, +1, -1); }
+function onMouseUp  (e) { isMouseDown = false; set_iMouse(e, -1, -1);}
 
-/*
-function onMouseUp  (e) { isMouseDown = false; set_iMouse(e, -1, -1);
-  randomSpecies = Math.floor(new Date().getSeconds() / 60 * 10); //Math.floor(Math.random() * 9);
-  initSpecies = getParam("species", "int", randomSpecies, randomSpecies);
-  setSpecies(initSpecies);
-}
-*/
 
 
 var sliderRadius = document.getElementById("rangeRadius");
