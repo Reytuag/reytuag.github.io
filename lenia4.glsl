@@ -43,7 +43,7 @@ const mat4         mu = mat4( 0.222, 0.149, 0.373, 0.356, 0.188, 0.155, 0.284, 0
 const mat4      sigma = mat4( 0.0990, 0.0955, 0.0855, 0.0960, 0.0145, 0.0080, 0.0985, 0.0955, 0.0985, 0.0970,1., 1., 1., 1., 1., 1. );  // growth width
 const mat4        eta = mat4( 0.222, 0.286, 0.098, 0.150, 0.38, 0.597, 0.391, 0.225, 0.319, 0.157,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );   // growth strength
 const mat4       relR = mat4( 0.887, 0.516, 0.751, 0.893, 0.870, 0.995, 0.818, 0.326, 0.986, 0.716,1., 1., 1., 1., 1., 1. );  // relative kernel radius
-const mat4        src = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );   // source channels
+const mat4        src = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 0.0, 2 );   // source channels
 const mat4        dst = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );   // destination channels
 /*
 //glider
@@ -61,7 +61,7 @@ const mat4         mu = mat4( 0.15, 0.149, 0.373, 0.356, 0.188, 0.155, 0.284, 0.
 const mat4      sigma = mat4( 0.015, 0.0955, 0.0855, 0.0960, 0.0145, 0.0080, 0.0985, 0.0955, 0.0985, 0.0970,1., 1., 1., 1., 1., 1. );  // growth width
 const mat4        eta = mat4( 1., 0.0, 0.0, 0.0, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0 ,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );   // growth strength
 const mat4       relR = mat4( 1., 0.516, 0.751, 0.893, 0.870, 0.995, 0.818, 0.326, 0.986, 0.716,1., 1., 1., 1., 1., 1. );  // relative kernel radius
-const mat4        src = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );   // source channels
+const mat4        src = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 0.0, 2.0 );   // source channels
 const mat4        dst = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );   // destination channels
 */
 const mat4 relRinv=1.0/relR;
@@ -263,6 +263,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 val = texture(iChannel0, uv).rgb;
 		growthDst[0]=growthDst[0]-2.*val[2];
     rgb = clamp(dt * growthDst + val, 0., 1.);
+		//rgb[2]=getVal(fragCoord + vec2(+1, 0)*samplingDist)[3][3];
 
     // debug: uncomment to show list of kernels
     //rgb = drawKernel(fragCoord / iResolution.y);
