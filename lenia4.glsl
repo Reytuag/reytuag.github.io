@@ -45,7 +45,7 @@ const mat4        dst = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 ,
 const mat4 relRinv=1.0/relR;
 
 // precalculate
-const int intR = int(ceil(R));
+
 const float dt = 1./T;       // time step
 
 const vec4 kmv = vec4(0.5);    // kernel ring center
@@ -183,6 +183,7 @@ vec3 drawInit(in vec2 uv)
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     vec2 uv = fragCoord / iResolution.xy;
+		int intR = int(ceil(R));
 
     // loop through the neighborhood, optimized: same weights for all quadrants/octants
     // calculate the weighted average of neighborhood from source channel
