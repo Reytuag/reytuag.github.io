@@ -237,8 +237,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     mat4 growth = mult(eta, bell(avg, mu, sigma) * 2. - 1.);
     vec3 growthDst = vec3( getDst(growth, iv0), getDst(growth, iv1), getDst(growth, iv2) );
     vec3 val = texture(iChannel0, uv).rgb;
-    val[1]=0.0;
-    val[2]=0.0;
+		growthDst[0]=growthDst[0]-2.*val[2];
     vec3 rgb = clamp(dt * growthDst + val, 0., 1.);
 
     // debug: uncomment to show list of kernels
@@ -264,9 +263,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 dist = vec2(m_x, m_y) - st.xy;
     dist.x *= iResolution.x/iResolution.y;
     float mouse_pct = length(dist);
-    mouse_pct = step(0.1, mouse_pct);
-    m_color = (1.0-mouse_pct)*color;
-    rgb = rgb+m_color;
+    mouse_pct = step(0.05, mouse_pct);
+		if(color[0]+color[1]+color[2]>0.5){
+			m_color = (1.0-mouse_pct)*color;
+			rgb = rgb+m_color;
+		}else{
+			rgb=rgb*mouse_pct;
+		}
+
 
 		}
 

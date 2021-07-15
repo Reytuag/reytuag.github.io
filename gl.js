@@ -338,7 +338,7 @@ function initUniforms() {
     gl.uniform1i(uniforms.iChannel3, 3);
     gl.uniform1f(uniforms.iSampleRate, 44100.0);
     gl.uniform4f(uniforms.iMouse, 0.0, 0.0, 0.0, 0.0);
-    gl.uniform1f(uniforms.R, 6.0);
+    gl.uniform1f(uniforms.R, 9.0);
     gl.uniform3f(uniforms.color, 1.0,0.0,0.0);
 }
 
@@ -433,17 +433,18 @@ function onResize(e) {
 
 function onKeyPress(e) {
     switch (e.key) {
-        case " ": pause = ! pause; break;
+        case "p": pause = ! pause; break;
     }
     switch (e.keyCode) {
         case 13: gen = 0; break;
     }
 }
-var rect = canvas.getBoundingClientRect();
+
 var isMouseDown = false;
 function set_iMouse(e, sx, sy) {
-    var x = (e.clientX )/ pixelSize;
-    var y = height - (e.clientY ) / pixelSize;
+    var rect = canvas.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / (rect.right - rect.left) * canvas.width;
+    var y =  canvas.height-(e.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height;
     gl.useProgram(simProgram);
     gl.uniform4f(uniforms.iMouse, x, y, sx*x, sy*y);
 }
@@ -462,5 +463,22 @@ outputRadius.innerHTML = sliderRadius.value; // Display the default slider value
 sliderRadius.oninput = function() {
 outputRadius.innerHTML = this.value;
 gl.useProgram(simProgram);
-gl.uniform1f(uniforms.R,this.value)
+gl.uniform1f(gl.getUniformLocation(simProgram, "R"),this.value)
+}
+
+var buttonCrea = document.getElementById("radioCreature");
+buttonCrea.onclick= ()=>{
+  gl.useProgram(simProgram);
+  gl.uniform3f(gl.getUniformLocation(simProgram, "color"),1.0,0.0,0.0)
+}
+var buttonCircle = document.getElementById("radioCircle");
+buttonCircle.onclick= ()=>{
+  gl.useProgram(simProgram);
+  gl.uniform3f(gl.getUniformLocation(simProgram, "color"),0.0,0.0,1.0)
+}
+
+var buttonErase = document.getElementById("radioErase");
+buttonErase.onclick= ()=>{
+  gl.useProgram(simProgram);
+  gl.uniform3f(gl.getUniformLocation(simProgram, "color"),0.0,0.0,0.0)
 }
