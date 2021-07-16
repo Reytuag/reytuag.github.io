@@ -188,7 +188,7 @@
   <h2 id="movingCrea">Can we learn Moving Creature in Lenia ? </h2>
   <img src="OptimStep.svg" alt="optimScheme" class='l-middle-outset' >
   <p>
-    Before trying to find sensorimotor capabilities in our system a first step would be to find moving creatures like glider in the game of life. Note that moving creature in cellular automaton differ from other type of movement like muscle contraction or soft robot (article) by the fact that moving is growing at the front and dying at the back. This shoumd imply that creatures that move are more fragile because thy  are in a fragile equilibrium between growth (to move forward) and dying (because otherwise we would have infinite growth).
+    Before trying to find sensorimotor capabilities in our system a first step would be to find moving creatures like glider in the game of life. Note that moving creature in cellular automaton differ from other type of movement like muscle contraction or soft robot (article) by the fact that moving is growing at the front and dying at the back. This shoumd imply that creatures that move are more fragile because they  are in a fragile equilibrium between growth (to move forward) and dying (because otherwise we would have infinite growth).
    In this paper, we learn to develop morphology and motricity at the same time. The CA rule will both be applied to grow the creature from an initial state and be the "physic" that makes it move.
  </p>
 
@@ -211,7 +211,7 @@
  </p>
 
  <p>
-   The effectiveness of curriculum with complex task has already been shown in <dt-cite key="DBLP:journals/corr/abs-1901-01753"></dt-cite>. And in complex self organizing systems in <dt-cite key="variengien2021selforganized"></dt-cite>
+   The effectiveness of curriculum with complex task has already been shown in <dt-cite key="DBLP:journals/corr/abs-1901-01753"></dt-cite> where they . And in complex self organizing systems in <dt-cite key="variengien2021selforganized"></dt-cite>
 
  </p>
 
@@ -296,10 +296,8 @@
  </p>
 
  <p>
-   This does not solve the problem 100% of the time and that's why we also apply initialization selection. We run the first steps of the methode (random initialization and optimization), until we find an initialization which gives a good loss for the 3 first  deterministic target (placed before the obstacles). Because, the first steps will be the basis of most of the creatures and so if it struggle to make a moving creature, it will be hard for it to learn the senorimotor capabilities on top .This way we only keep the initializations and first steps that learned quickly and seemed to have room for improvement.
+   This does not solve the problem 100% of the time and that's why we also apply initialization selection. We run the first steps of the methode (random initialization and optimization), until we find an initialization which gives a good loss for the 3 first  deterministic target (placed before the obstacles). Because the first steps will be the basis of most of the creatures and so if it struggle to make a moving creature, it will be hard for it to learn the senorimotor capabilities on top .This way we only keep the initializations and first steps that learned quickly and seemed to have room for improvement.
  </p>
-
-
 
 
 <h2 id="results"> Results </h2>
@@ -335,17 +333,17 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 </p>
 
 <h4> Are the creatures robust to Moving obstacles ?</h4>
-<video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
+<video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-middle side">
               <source src="harderEnv.mp4" type="video/mp4">
             </video>
 
   <p>
-  We can make an harder out of distribution environment by adding movement to the obstacles. For example we can do bullet like environment where the tiny wall disks are shifted of few pixels at every step. The creature seems quite resilient to this kind of perturbation even if we can see that a well place perturbation can kill the creature. However, this kind of environment differ a lot of what the creature has been trained on and therefore shows how much the creature learned to quickly recover from perturbations, even unseen one.
+  We can make an harder out of distribution environment by adding movement to the obstacles. For example we can do bullet like environment where the tiny wall disks are shifted of few pixels at every step. The creature seems quite resilient to this kind of perturbation even if we can see that a well placed perturbation can kill the creature. However, this kind of environment differs a lot of what the creature has been trained on and therefore shows how much the creature learned to quickly recover from perturbations, even unseen ones.
  </p>
 
 
   <h4> Are the creature robust to Asynchronous update with noise ? </h4>
-  <video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
+  <video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-middle side">
                 <source src="asynchro.mp4" type="video/mp4">
               </video>
     <p>
@@ -358,7 +356,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
               <source src="small.mp4" type="video/mp4">
             </video>
 --->
-<video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-gutter">
+<video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-middle side">
               <source src="smallerDie.mp4" type="video/mp4">
             </video>
       <p class="l-gutter"  style="font-size: 12px;color:#A0A0A0;">
