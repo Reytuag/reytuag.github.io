@@ -43,8 +43,8 @@
   <div class='l-body'>
     <input type="range" min="0.1" max="1"  step="0.1" value="0.5" class="slider" id="rangeRadiusWall" >
     <p> Radius: <span id="valueRadiusWall"></span></p>
-    <input type="range" min="6" max="20"  step="0.1" value="8.5" class="slider" id="rangeRadius" >
-    <p> Radius of kernels (size of creature): <span id="valueRadius"></span></p>
+    <input type="range" min="6" max="20"  step="0.1" value="8.5" class="slider" id="rangeRadius" style="display:none">
+    <p style="display:none"> Radius of kernels (size of creature): <span id="valueRadius"></span></p>
   </div>
   <div class="radio-toolbar" id="optionDiv">
     <input type="radio" id="radioErase"  name='option'  value="erase">
@@ -82,6 +82,9 @@
   -->
 
   <h2 id="introduction">Introduction</h2>
+
+  <p> More general things </p>
+
   <p>
      In Maturana and Varela work <dt-cite key="VarelaThompsonEmbo"></dt-cite>, cognition is centered around how an agent "reacts" to the perturbation induced by it's environment . More precisely, they introduce the notion of cognitive domain of a self-organizing system which are all the perturbations induced by the environment which do  not result in the destruction of the self-organizing system. Their notion of cognition is thus deeply linked with how a self-organizing creature will try to preserve its integrity in its environment.
   </p>
@@ -126,7 +129,7 @@
      The cellular automaton we will study in this work is Lenia <dt-cite key="chan2020lenia"></dt-cite><dt-cite key="chan2019lenia"></dt-cite>. Lenia is a system of continous cellular automata where a wide variety of complex behavior has already been osberved, including what looks like sensorimotor-capabilities. In this work i will use the multi channel, multi kernel version of Lenia <dt-cite key="chan2020lenia"></dt-cite> but for simplicity we will only use 1 channel for the creature and other ones for the environment.
   </p>
   <p>
-     A Lenia system like all CA starts from an initial pattern and iteratively update every pixel based on its neihgbours. The CA rule is given by the kernels and associated growth map.
+     A Lenia system like all CA starts from an initial pattern and iteratively update every pixel based on its neihgbours. The CA rule is given by the kernels and associated growth map which are both parametrized. So to find creatures we need to find both interesting CA rules and initialization. This is different from the game of life where the CA rule is fixed and initialization pattern are searched. Finding interesting rules from random exploration can be hard, especially in higher dimensions or when the number of kernels is big. This motivates our choice for gradient based method.
   </p>
 
 
@@ -175,7 +178,7 @@
 (if a coefficient is at 0 then it won't change with gradient descent as it doesn't play a role, and if a coefficient is >0 a gradient step can put it <0 which will make a strong unexpected change). We could have left the number of bumps to an arbitrary value like 3, and only optimizing the height such as they stay >0  but this would have been a strong limitation on the shape. The "free kernels", in addition to differentiation, allow more flexibility than the vanilla bumps but at the cost of more parameters.
   </p>
   <p>
-  However even doing so, differentiating through Lenia can be difficult because we often have quite a big number of iterations and each iteration has it's result clipped between 0 and 1.
+  However even doing so, differentiating through Lenia can be difficult because we often have a big number of iterations and each iteration has it's result clipped between 0 and 1. We should thus limit ourselves to few iterations when training.
   </p>
 
 
@@ -187,8 +190,8 @@
   <h2 id="movingCrea">Can we learn Moving Creature in Lenia ? </h2>
   <img src="OptimStep.svg" alt="optimScheme" class='l-middle-outset' >
   <p>
-    Before trying to find sensorimotor capabilities in our system a first step would be to find moving creatures like glider in the game of life. Note that moving creature in cellular automaton differ from other type of movement like muscle contraction or soft robot (article) by the fact that moving is growing at the front and dying at the back.
-   In this paper, we learn to develop morphology and motricity at the same time. The CA rule will both be applied to grow the creature from an initial state and be the "physics" that makes it move.
+    Before trying to find sensorimotor capabilities in our system a first step would be to find moving creatures like glider in the game of life. Note that moving creature in cellular automaton differ from other type of movement like muscle contraction or soft robot (article) by the fact that moving is growing at the front and dying at the back. This shoumd imply that creatures that move are more fragile because thy  are in a fragile equilibrium between growth (to move forward) and dying (because otherwise we would have infinite growth).
+   In this paper, we learn to develop morphology and motricity at the same time. The CA rule will both be applied to grow the creature from an initial state and be the "physic" that makes it move.
  </p>
 
  <p>
@@ -217,16 +220,20 @@
  <p>
    One modular way we introduced it was using IMGEP <dt-cite key="Forestier2017IntrinsicallyMG"></dt-cite>  which has already been used as an explorative tool in Lenia to explore the morphological space <dt-cite key="etcheverry2020hierarchically"></dt-cite> <dt-cite key="reinke2020intrinsically"></dt-cite>.
  </p>
- <img src="IMGEP.svg" alt="IMGEPscheme" width="100%" class="l-middle-outset">
-
  <p>
    The general idea of IMGEP is to iteratively set new goals to achieve  and for each of these goals try to learn a policy that would suit this goal. THis way an IMGEP needs an interesting way to sample new goal for example based on intrinsic reward. It also needs a way to track the progress on this goal, and a way to optimize toward this goal. It also might use the knowledge acquired on other goals to learn new goals or attain them more quickly.
 
  </p>
-
  <p>
    In our case, the goal space will simply be a 2 dimensional vector representing the position of the center of mass of the creature at last timestep. The way we sample the goals depends on the task but to have a moving creature that goes far in the grid, we will randomly sample position in the grid biasing the sampling toward one edge of the grid. we use MSE error between the last state and our target shape centered at the target goal to try to achieve this goal. The way we reuse knowledge acquired is by intializing the parameters by the one that achieved the closest goal.
  </p>
+
+ <img src="IMGEP.svg" alt="IMGEPscheme" width="100%" class="l-middle-outset">
+ <p  style="font-size: 14px;color:#A0A0A0;text-align:center;" class="l-middle-outset">
+  Lenia Step
+ </p>
+
+
 
  <p>
    The overall method can be summarized as such:
@@ -255,7 +262,7 @@
 
      Left: reached goal/position library in green, target goal in red. THe policy selected is the one reaching the position in purple circle <br>
 
-      Right:  Blue is the obstacle, red the target shape and green the creature before optimisation at last timestep. Green dashed line is at the same position in both.
+      Right:  Blue disks are the obstacles, red the target shape and green the creature at last timestep before optimisation .
      </p>
 
 
@@ -322,7 +329,7 @@
 
 <h4> are the creature long term stable ?</h4>
 <p>
-Even if we can not know if the creature is indefinitively stable, we can test for reasonable number of timesteps. The result is that the creature obtained with IMGEP with obstacles seems stable for 2000 timesteps while it has only been trained to be stable for 50 timesteps. This might be because as it learned to be robust to deformation it has learned a strong preservation of the structure to prevent any explosion or dying when perturbed a little bit. And so when there is no perturbation this layer of "security" strongly preserves the structure. ( Training a creature only for movement sometimes led to non long term stable creatures)
+Even if we can not know if the creature is indefinitively stable, we can test for reasonable number of timesteps. The result is that the creature obtained with IMGEP with obstacles seems stable for 2000 timesteps while it has only been trained to be stable for 50 timesteps. This might be because as it learned to be robust to deformation it has learned a strong preservation of the structure to prevent any explosion or dying when perturbed a little bit. And so when there is no perturbation this layer of "security" strongly preserves the structure. However, Training a creature only for movement(without obstacles  so no perturbation during training) sometimes led to non long term stable creatures. This is similar to what has been observed in <dt-cite key="mordvintsev2020growing"></dt-cite> where training to grow a creature from the same initialization (a pixel) led to pattern that were not long term stable. But adding incomplete/perturbed patterns as initialization to learn to recover from them led to long term stability. (by making the target shape a stronger attractor)
 </p>
 <h4> Are the creatures robust to new obstacles ?</h4>
 <p>
@@ -403,8 +410,11 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
  <p>
    What's interesting in such system is that the computation of decision is done at the macro (group) level, showing how a group of simple identical entities through local interactions can make "decision", sense at the macro scale. Seeing these creature it's even hard to believe that they are in fact made of tiny part all behaving under the same rules.
  </p>
+ <video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-body videoShow">
+               <source src="damageHand.mp4" type="video/mp4">
+             </video>
  <p>
-   In fact in order to navigate, first it need to sense the wall through a deformation of itself. Then after this deformation it has to make a collective "decision" on where to grow next and then move and regrow it's shape.
+   In fact in order to navigate, first it need to sense the wall through a deformation of itself. Then after this deformation it has to make a collective "decision" on where to grow next and then move and regrow it's shape. We can even do the deformation ourselves by suppressing a part of the creature.
  </p>
  <p>
    After visualizing the kernels and doing informal ablation studies it seems that the creature we obtain have "limiting growth" kernel that tries to prevent the creature from growing too much beyond its boundaries and also growth kernel. Those two type of kernel are in equilibrium but We can play with the weight of each kernel  a little bit without destroying this equilibrium. For example the main utility we found of this is that "limiting growth" kernels can be given more importance to enforce the individuality of the creature and prevent several creature colliding from merging (see next section) because it gives stronger boundaries. However putting too much weight on those limiting kernels can lead to creature dying from too much damage as you inhibit growth.
@@ -444,7 +454,12 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
   Video Of failure
 </p>
 
+<h2> Related works </h2>
 
+<h4>Classic CA cognition </h4>
+<h4>Neural CA</h4>
+<h4>Soft robots</h4>
+<h4>Exploration</h4>
 
  <h2 id="discussion"> Discussion </h2>
 
@@ -481,9 +496,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
   <video id="kernels" controls="" muted="" class="videoShow" >
                 <source src="slalom.mp4" type="video/mp4">
               </video>
-  <video id="kernels" controls="" muted="" class="videoShow" >
-                <source src="harderEnv.mp4" type="video/mp4">
-              </video>
+              
   <h3> Breeding and mutation </h3>
   <h3> Food </h3>
   <video id="model-editing-level-1-video-1" controls="" muted="" class="videoShow">
