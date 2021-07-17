@@ -226,7 +226,7 @@
    In our case, the goal space will simply be a 2 dimensional vector representing the position of the center of mass of the creature at last timestep. The way we sample the goals depends on the task but to have a moving creature that goes far in the grid, we will randomly sample position in the grid biasing the sampling toward one edge of the grid. we use MSE error between the last state and our target shape centered at the target goal to try to achieve this goal. The way we reuse knowledge acquired is by intializing the parameters by the one that achieved the closest goal.
  </p>
 
- <img src="IMGEP.svg" alt="IMGEPscheme" width="100%" class="l-middle-outset">
+ <img id="schemeIMGEP" src="IMGEP.svg" alt="IMGEPscheme" width="100%" class="l-middle-outset">
  <p  style="font-size: 14px;color:#A0A0A0;text-align:center;" class="l-middle-outset">
   Lenia Step
  </p>
@@ -237,17 +237,23 @@
    The overall method can be summarized as such:
  </p>
 
+<div style="display:block;background:rgba(0, 0, 0, 0.04);font-size:14px;line-height: 0.5;color:rgba(0, 0, 0, 0.6);border-left:-1px solid rgba(0, 0, 0, 0.05);padding: 0 0 0 24px">
 
- <dt-code block="" language="python" class="l-body">
     <p>Initialize randomly the history (sampling random parameters)</p>
     <p>loop (number of Imgep step) </p>
-    <p>   sample target position/goal</p>
-    <p>   Select the policy that achieved the closest position/goal</p>
+    <div style="padding: 0 0 0 24px;display:block">
+    <p onmouseover="changeImgIMGEP('IMGEP1.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')">   sample target position/goal</p>
+    <p onmouseover="changeImgIMGEP('IMGEP2.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')">   Select the policy that achieved the closest position/goal</p>
+    <div onmouseover="changeImgIMGEP('IMGEP3.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')">
     <p>   loop (number of optimisation steps)</p>
+    <div style="padding: 0 0 0 24px;display:block" onmouseover="changeImgIMGEP('IMGEP3.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')">
     <p>       Run lenia
     <p>       Gradient descent toward the disk at target position</p>
-    <p>   See what is the position(ie goal) achieved</p>
-  </dt-code>
+    </div>
+  </div>
+    <p onmouseover="changeImgIMGEP('IMGEP4.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')">   See what is the position(ie goal) achieved</p>
+    </div >
+  </div>
 
 
 
@@ -698,6 +704,12 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
   for (var i = 0; i < videos.length; i++) {
   	videos[i].playbackRate = this.value;
   }}
+  function changeImgIMGEP(img)
+        {
+            var schemeIMGEP=document.getElementById("schemeIMGEP");
+            schemeIMGEP.src=img;
+        }
+
 
 </script>
 <style>
