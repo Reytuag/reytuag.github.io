@@ -225,13 +225,17 @@
  <p>
    In our case, the goal space will simply be a 2 dimensional vector representing the position of the center of mass of the creature at last timestep. The way we sample the goals depends on the task but to have a moving creature that goes far in the grid, we will randomly sample position in the grid biasing the sampling toward one edge of the grid. we use MSE error between the last state and our target shape centered at the target goal to try to achieve this goal. The way we reuse knowledge acquired is by intializing the parameters by the one that achieved the closest goal.
  </p>
-<div class="l-middle-outset">
+<div class="l-middle-outset" style="position:relative">
  <img id="schemeIMGEP" src="IMGEP.svg" alt="IMGEPscheme" width="100%" usemap="#workmap">
+ <div style="position:absolute; left:80%; top:79%; width:17%; height:9%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP1.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
+ <div style="position:absolute; left:39%; top:85%; width:17%; height:11%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP2.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
+ <div style="position:absolute; left:25%; top:11%; width:16%; height:13%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP3.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
+ <!---
  <map name="workmap" style:"">
   <area shape="rect" coords="752,368,883,408" onmouseover="changeImgIMGEP('IMGEP1.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')" >
   <area shape="rect" coords="372,400,507,443" onmouseover="changeImgIMGEP('IMGEP2.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')" >
   <area shape="rect" coords="238,50,374,110"  onmouseover="changeImgIMGEP('IMGEP3.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')" >
-</map>
+</map>--->
 </div>
 
 
