@@ -43,6 +43,8 @@
     <p> Radius: <span id="valueRadiusWall"></span></p>
     <input type="range" min="6" max="20"  step="0.1" value="8.5" class="slider" id="rangeRadius" style="display:none">
     <p style="display:none"> Radius of kernels (size of creature): <span id="valueRadius"></span></p>
+    <input type="range" min="2" max="8"  step="1" value="2" class="slider" id="rangeZoom" >
+    <p> Zoom : <span id="valueZoom"></span></p>
   </div>
   <div class="radio-toolbar" id="optionDiv">
     <input type="radio" id="radioErase"  name='option'  value="erase">
@@ -53,7 +55,12 @@
 
     <input type="radio" id="radioCreature" name='option'  value="creature" checked>
     <label for="radioCreature">Place Creature</label>
+
+    <input type="radio" id="radioZoom" name='option'  value="zoom" >
+    <label for="radioZoom">Zoom</label>
 </div>
+
+
 
   <script type="text/javascript" src="utils.js"></script>
   <script type="text/javascript" src="gl.js"></script>
@@ -467,7 +474,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 </p>
 <p>
   One is very robust but with different configuration it's possible to kill or explode others creature. However they were only trained for 50 timesteps (2seconds in the clips above) and witth always the same 8 type of obstacle (even if their position induced diversity). Further training of the parameters for more robustness should be achievable.
-
+  Multi creature we can have death and explosion but it has not been trained for that.
 </p>
 <p>
 

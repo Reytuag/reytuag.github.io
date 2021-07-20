@@ -13,6 +13,7 @@ const float samplingDist = 1.;
 
 uniform vec3 color;
 uniform float radius;
+uniform vec2 translation;
 // choose a species (0 to 9)
 #define species7
 
@@ -205,7 +206,9 @@ vec3 drawInit(in vec2 uv)
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
 		vec3 rgb=vec3(0.);
-    vec2 uv = fragCoord / iResolution.xy;
+    fragCoord=fragCoord;
+    vec2 uv = (fragCoord) / iResolution.xy;
+
 		if(iMouse.z <= 0. && iFrame !=0)
 		{
 		int intR = int(ceil(R));

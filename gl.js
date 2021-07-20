@@ -28,6 +28,7 @@ const canvasWrap = gl.REPEAT;  // gl.REPEAT or gl.CLAMP_TO_EDGE
 var width, height;
 var simProgram, drawProgram;
 var uniforms, params;
+var imouseDrawLoca,zoomLoca,iResolutionLoca;
 var framebufferA, framebufferB, textureA, textureB;
 var frameFlip = false;
 
@@ -245,7 +246,7 @@ function initWebGL(shaderSources) {
         iFrameRate:         gl.getUniformLocation(simProgram, "iFrameRate"),
         R:                  gl.getUniformLocation(simProgram, "R"),
         color:              gl.getUniformLocation(simProgram, "color"),
-        radius:              gl.getUniformLocation(simProgram, "radius"),
+        radius:              gl.getUniformLocation(simProgram, "radius")
   };
   if (initSpecies != null) {
     params = {
@@ -280,13 +281,20 @@ function initWebGL(shaderSources) {
     resetTime();
     initUniforms();
     setUniforms();
-  setSpecies(initSpecies);
+    setSpecies(initSpecies);
 
-    onResize();
+
 
     textbox.innerHTML = "initializing drawing shader program...";
     drawProgram = createProgramFromSources(gl, vertexSource, drawFragmentSource);
+    iResolutionLoca=gl.getUniformLocation(drawProgram,"iResolution");
+    onResize();
     gl.useProgram(drawProgram);
+    imouseDrawLoca=gl.getUniformLocation(drawProgram,"iMouse");
+    gl.uniform4f(imouseDrawLoca,0,0,-1,0)
+    zoomLoca=gl.getUniformLocation(drawProgram,"zoom");
+    gl.uniform1f(zoomLoca, 0.5);
+
 
     var draw_iChannel0 = gl.getUniformLocation(drawProgram, "iChannel0");
     gl.uniform1i(draw_iChannel0, 0);
@@ -342,6 +350,7 @@ function initUniforms() {
     gl.uniform1f(uniforms.R, 8.5);
     gl.uniform3f(uniforms.color, 1.0,0.0,0.0);
     gl.uniform1f(uniforms.radius, 0.5);
+
 }
 
 function setUniforms() {
@@ -429,7 +438,8 @@ function onResize(e) {
     gl.useProgram(simProgram);
     gl.uniform2f(uniforms.iResolution, width, height);
     gl.uniform3fv(uniforms.iChannelResolution, [width,height,ratio, width,height,ratio, width,height,ratio, width,height,ratio]);
-
+    gl.useProgram(drawProgram);
+    gl.uniform2f(iResolutionLoca, width, height);
     resetTime();
 }
 
@@ -450,9 +460,19 @@ function set_iMouse(e, sx, sy) {
     gl.useProgram(simProgram);
     gl.uniform4f(uniforms.iMouse, x, y, sx*x, sy*y);
 }
-function onMouseDown(e) { isMouseDown = true;  set_iMouse(e, +1, +1); }
-function onMouseMove(e) { if (isMouseDown)     set_iMouse(e, +1, -1); }
-function onMouseUp  (e) { isMouseDown = false; set_iMouse(e, -1, -1); }
+function set_iMouseDraw(e, sx, sy) {
+    var rect = canvas.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / (rect.right - rect.left) * canvas.width;
+    var y =  canvas.height-(e.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height;
+    gl.useProgram(drawProgram);
+
+    gl.uniform4f(imouseDrawLoca, x, y, sx*x, sy*y);
+}
+
+var buttonzoom = document.getElementById("radioZoom");
+function onMouseDown(e) { isMouseDown = true;  if(buttonzoom.checked){set_iMouseDraw(e, +1, +1)}else{set_iMouse(e,+1,+1)}; }
+function onMouseMove(e) { if (isMouseDown)    if(buttonzoom.checked){set_iMouseDraw(e, +1, -1)}else{set_iMouse(e,+1,-1)}; }
+function onMouseUp  (e) { isMouseDown = false; if(buttonzoom.checked){set_iMouseDraw(e, -1, -1)}else{set_iMouse(e,-1,-1)}; }
 
 
 
@@ -479,6 +499,16 @@ sliderRadiusWall.oninput = function() {
 outputRadiusWall.innerHTML = this.value;
 gl.useProgram(simProgram);
 gl.uniform1f(gl.getUniformLocation(simProgram, "radius"), this.value);
+}
+
+
+var sliderRadiusWall = document.getElementById("rangeZoom");
+var outputRadiusWall = document.getElementById("valueZoom");
+outputRadiusWall.innerHTML = sliderRadiusWall.value;
+sliderRadiusWall.oninput = function() {
+outputRadiusWall.innerHTML = this.value;
+gl.useProgram(drawProgram);
+gl.uniform1f(zoomLoca, 1/this.value);
 }
 
 var buttonCrea = document.getElementById("radioCreature");
