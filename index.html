@@ -82,7 +82,9 @@
   <h2 id="introduction">Introduction</h2>
 
   <p> More general things </p>
-
+  <!---
+  <p> (From plant or animal growth to swarm of individual, self-organization, from messages between entities is able to make a bigger entity)</p>
+  --->
   <p>
      In Maturana and Varela work <dt-cite key="VarelaThompsonEmbo"></dt-cite>, cognition is centered around how an agent "reacts" to the perturbation induced by its environment . More precisely, they introduce the notion of cognitive domain of a self-organizing system which are all the perturbations induced by the environment which do  not result in the destruction of the self-organizing system. Their notion of cognition is thus deeply linked with how a self-organizing creature will try to preserve its integrity in its environment.
   </p>
@@ -380,6 +382,9 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 
 
   <h3> Side effects</h3>
+  <p>
+    Testing the creatures obtained in other untrained situation showed very interesting behaviors:
+  </p>
 
   <h4>Multi creature setting</h4>
    <p>
@@ -387,14 +392,14 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
    </p>
 
   <h4>Individuality</h4>
-   <video id="robust" width="95%"  autoplay controls="" loop muted="" class="l-body videoShow">
+   <video id="robust" width="95%"  autoplay controls="" loop muted="" class="l-middle side videoShow">
                  <source src="demo.mp4" type="video/mp4">
                </video>
    <p>
-     The creature obtained shows strong individuality preservation. In fact, creatures goes in non destructive interactions most of the times without merging. As said before, we can tune the weight of the kernels (especially the limiting growth one) to make the merge of two creature harder. By increasing those limiting growth kernels, the repeal of two entities get stronger and they will simply change direction.
+     The creature obtained shows strong individuality preservation. In fact, creatures goes in non destructive interactions most of the times without merging. As said before, we can tune the weight of the kernels (especially the limiting growth one) to make the merge of two creature harder. By increasing those limiting growth kernels, the repeal of two entities get stronger and they will simply change direction. (Individuality has also been observed in the "orbium" creature in Lneia for exemple but much more fragile, a lot of collision led to destruction or explosion)
    </p>
    <h4>Attraction</h4>
-   <video id="robust" width="95%"  autoplay controls="" loop muted="" class="l-body videoShow">
+   <video id="robust" width="95%"  autoplay controls="" loop muted="" class="l-middle side videoShow">
                  <source src="stick.mp4" type="video/mp4">
                </video>
 
@@ -410,7 +415,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
    </p>
 
   <h4>Reproduction</h4>
-  <video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-body videoShow">
+  <video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-middle side videoShow">
                 <source src="repro.mp4" type="video/mp4">
               </video>
    <p>
@@ -450,12 +455,16 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 <video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-body videoShow">
               <source src="2circlewall.mp4" type="video/mp4">
             </video>
+
+  <img src="doubleT.png" alt="optimScheme" class='l-gutter' >
  <p>
    We still tried to have roundish shape different from a single disk. For example we put as our target 2 disk target(defined \ref{}) close, overlapping a little bit. And the creature it produced was a creature seemingly composed of two roundish creature stuck together. But the force of their attraction is quite big as even when one of the creature collide an obstacle, they keep being stuck. And even when they seem to separate from a collision with an obstacle, they each independently follow the obstacle until they merge again.(However we can see at the end of the clip that they start to explode at the end) This type of behavior might be hard to get from random exploration as small mutation on the CA rule easily break this attraction leading to 2 separate creature going their own way from initialization or even worse lead to repealing creature.
  </p>
 
 <h3>Still failure cases</h3>
-
+<p>
+  Even with the initialization selection sometimes the algorithm doesn't seem able to learn to go past obstacles and the we can't reach goal position beyond a certain limit. This may be migitated by adding diversity, see disccussion section.
+</p>
 <p>
   One is very robust but with different configuration it's possible to kill or explode others creature. However they were only trained for 50 timesteps (2seconds in the clips above) and witth always the same 8 type of obstacle (even if their position induced diversity). Further training of the parameters for more robustness should be achievable.
 
@@ -473,19 +482,23 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 <h4>Exploration</h4>
 
  <h2 id="discussion"> Discussion </h2>
-
  <p>
-    Surprising to see that the creature is able to do all the computation required for changing direction in itself.
+    Focus on the sensorimotor capabilities, sense the world through deformation of itself (the cells have to detect this deformation of the neighboors) and then make collective decision, however some cells don't even see the  so some message from the one that see. it's not clear looking at the kernels activity which ones are responsible for these decision if not all and also how the decision is made. Maybe it's modular and we can plug them on others creatures etc. Some may be responsible for growth, some for detection of deformation, some for decision ?
+ </p>
+ <p>
+    Surprising to see that the creature is able to do all the computation required for changing direction in itself at the macro scale. Moreover the creatures presented here are all 1 channels creature, there is no hidden channel.
+
  </p>
 
  <p>
-   radius is quite big while <dt-cite key="mordvintsev2020growing"></dt-cite> Moore neighbourhood size 3. (but no hidden channel)
-   Even if this, this work still provides interesting idea on how to learn parameters in complex systems that can be very sensitive, especially how to deal with certain problems such that vanishing gradient, bad initialization.
-
+   radius is quite big while <dt-cite key="mordvintsev2020growing"></dt-cite> Moore neighbourhood size 3. (but no hidden channel). Maybe using message passing like model we can get something equivalent with moore neighbourhood of small size. One interesting experiment would be to try to fit a Neural CA on the creature obtained here and see if it can make approximatively the same creature with moore neighbourhood of size 1 (but with hidden channel to help). One other difference from <dt-cite key="mordvintsev2020growing"></dt-cite> is that our kernels are totally symetrical while theirs have the notion of up and down, right and left.
  </p>
+ <p>
+   Even if this, this work still provides interesting idea on how to learn parameters in complex systems that can be very sensitive. Especially, using curriculum learning seem to help a lot.
+</p>
 
  <p>
-   Improve the diversity and so the diversity in selection could help with the bad initialization problem.
+   Improve the diversity and so the diversity in selection could help with the bad initialization problem. For example adding extra dimension to the target space, like an embedding of the creature morphology. However this could interfere with the optimization toward the target circle. Also as the target shape is always the same, we may still have not much diversity. Lastly maybe the shape of the kernels may limit the shape of moving 1 Channel creature as the star target shape did not succeed in getting other shapes.
  </p>
 
  <p>
