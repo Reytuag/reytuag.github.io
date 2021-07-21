@@ -68,7 +68,7 @@
 
 
 
-  <p>Spatially localized patterns in cellular automata have shown a lot of interesting behavior that led to new understanding of self-organizing system. While the notion of environment is a keypoint in Maturana and Varela biology of cognition, studies on cellular automata rarely introduced a well defined environment in their system. In this paper, we propose to add walls in a cellular automata to study how we can learn a self-organizing creature capable of reacting to the perturbations induced by the environment, ie robust creatures with sensorimotor capabilities. We provide a method based on curriculum learning able to learn the CA rule leading to such creature. The creature obtained,using only local update rules, are able to regenerate and preserve their individuality and structure while dealing with the obstacles in their way..</p>
+  <p>Spatially localized patterns in cellular automata have shown a lot of interesting behavior that led to new understanding of self-organizing system. While the notion of environment is a keypoint in Maturana and Varela biology of cognition, studies on cellular automata rarely introduced a well defined environment in their system. In this paper, we propose to add walls in a cellular automata to study how we can learn a self-organizing creature capable of reacting to the perturbations induced by the environment, ie robust creatures with sensorimotor capabilities. We provide a method based on curriculum learning able to learn the CA rule leading to such creature. The creature obtained,using only local update rules, are able to regenerate and preserve their individuality and structure while dealing with the obstacles in their way.</p>
 
 
 
@@ -89,6 +89,7 @@
   <h2 id="introduction">Introduction</h2>
 
   <p> More general things </p>
+  <p> morpholicial computation</p>
   <!---
   <p> (From plant or animal growth to swarm of individual, self-organization, from messages between entities is able to make a bigger entity)</p>
   --->
@@ -101,7 +102,7 @@
   </p>
 
   <p>
-    In biology, We also find sensorimotor capabilities at the macro scale for example in swarm of  bacteria <dt-cite key="PhysRevE.101.012407"></dt-cite>  where a group of bacteria seem to avoid a wall of antibiotics. group decision making for obstacle avoidance
+    In biology, We also find sensorimotor capabilities at the macro scale for example in swarm of  bacteria <dt-cite key="PhysRevE.101.012407"></dt-cite>  where a group of bacteria seem to avoid a wall of antibiotics making group decision for obstacle avoidance. Slimemolds, while being totally aneural, also seem to use mechanical cues of its environment to choose in which direction to expand <dt-cite key="https://doi.org/10.1002/adma.202008161"></dt-cite> using their body both for sensing and computing the decision. Moreover as the computation of decision is made at the body level, we can directly observe it.
   </p>
 
   <p>
@@ -114,7 +115,13 @@
   <p>
     In cellular automata, what's interesting is that we have the same local update rule  applied to every cell (no cell has a special role ), yet it allows to have very complex self organizing structure. In this work, we'll show how to learn the Ca update rule leading to robustness and sensorimotor capabilities with walls. The creature we obtain, from the deformation induced by the walls on some part of it make new deicision at the macro level on where to go/how to react. What's even more interesting is that the computation made for the decision are all made in the creature itself, at the morphology level. (Each cell then from its neighboors know what it should do.)
   </p>
+  <p>
+    Define sensorimotor capabilites with tests
+  </p>
 
+  <p>
+    classic evolution of body and controleur separate entities
+  </p>
   <p>
     In this work, we
     no well define environment and creature obtained by luck and not very robust.
@@ -139,22 +146,55 @@
      A Lenia system like all CA starts from an initial pattern and iteratively update every pixel based on its neihgbours. The CA rule is given by the kernels and associated growth map which are both parametrized. So to find creatures we need to find both interesting CA rules and initialization. This is different from the game of life where the CA rule is fixed and initialization pattern are searched. Finding interesting rules from random exploration can be hard, especially in higher dimensions or when the number of kernels is big. This motivates our choice for gradient based method.
   </p>
 
-
+  <p>
+    A wide variety of patterns has been found in Lenia, using hand made exploration/mutation and evolutionary algorithm  <dt-cite key="chan2020lenia"></dt-cite><dt-cite key="chan2019lenia"></dt-cite> or exploratory algorithm <dt-cite key="etcheverry2020hierarchically"></dt-cite> <dt-cite key="reinke2020intrinsically"></dt-cite>. However, as exploration algorithm studies focused on exploration of the morpholgy space and as moving creature are hard to find, these studies didn't found much of moving creatures. The other studies focused a lot on spatially localized pattern and especially moving one. You can find a library of creatures (especially moving one) found  in the first version of Lenia (<dt-cite key="chan2019lenia"></dt-cite>) at this <a href="https://chakazul.github.io/Lenia/JavaScript/Lenia.html">link</a>.
+  </p>
+  <p>
+    The moving creature found are long term stable and can have interesting interactions with each other but some as the orbium (which for their defense only have 1 kernel) displayed on the 2 left  videos are not very robust for example here with collision between each other, or with walls (see next section). Other more complex creatures with multiple kernels seem to resist better to collision and seem to be able to sense the other creatures. However, these other creatures that form the environment of the creature are in the same channel as the creature itself. Therefore they can be sensed through the kernel at higher distance. (explaining the large gap in the 3rd video)
+  </p>
+  <div class="row l-body">
+    <div class="column">
+      <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+                    <source src="orbiumCollision.mp4" type="video/mp4">
+                  </video>
+    </div>
+    <div class="column">
+      <video id="robust" width="100%"  autoplay loop muted="" class="videoShow">
+                    <source src="orbiumCollision2.mp4" type="video/mp4">
+                  </video>
+    </div>
+    <div class="column">
+      <video id="robust" width="100%"  autoplay loop muted="" class="videoShow">
+                    <source src="LeniaSpecie.mp4" type="video/mp4">
+                  </video>
+    </div>
+    <div class="column">
+      <video id="robust" width="100%"  autoplay loop muted="" class="videoShow">
+                    <source src="courLenia.mp4" type="video/mp4">
+                  </video>
+    </div>
+  </div>
 
 
   <h4> Walls </h4>
+
   <p>
-  To implement walls in Lenia we added a walls channels with a kernel from the wall channel to the creature channel. This kernel have a huge negative growth where there are walls and no impact on other pixels where there are no walls (very localized kernel). This way we prevent any growth in the pixels where there are walls. This is  similar to  <dt-cite key="PhysRevE.101.012407"></dt-cite> where they put antibiotic zone as obstacle where the bacteria can't live. The creature can only sense the wall through the changes/deformations it implies on the creature, so the creature has to "touch" the wall to sense it. (And because of the cellular automaton nature of the creature the information  has to be transmitted to other cells.)
+    Our work, contrary to previous work on Lenia and most cellular automata, clearly separates what belongs to the environment and what does not.
+
   </p>
 
   <p>
-  Note that we used kernel for the walls so that the system stays under the Lenia paradigm using local kernels only  for the updates.
+  To implement walls in Lenia we added a separate walls channels with a kernel from the wall channel to the creature channel. This kernel have a huge negative growth where there are walls and no impact on other pixels where there are no walls (very localized kernel). This way we prevent any growth in the pixels where there are walls. This is  similar to  <dt-cite key="PhysRevE.101.012407"></dt-cite> where they put antibiotic zone as obstacle where the bacteria can't live. The creature can only sense the wall through the changes/deformations it implies on the creature.In fact, the only kernel that goes from the wall channel to the creature is the fixed kernel that we impose. And as this kernel is localized, the creature has to "touch" the wall to sense it. To be precise the creature can only know that there is a wall because it won't be able to grow in these area which will perturb the creature shape locally.(And because of the cellular automaton nature of the creature the information  has to be transmitted to other cells.)
+  </p>
+
+  <p>
+  Note that we used a kernel for the walls so that the system stays under the Lenia paradigm using local kernels only  for the updates.
   </p>
   <p>
     In this study, the creature can't have any impact on the walls. This differs from other studies such as <dt-cite key="PMID:24494612"></dt-cite> in the game of life where the creature also perturb it's environment.
   </p>
   <p>
-      Glider type of creature has been found in 1 channel lenia. However, they're not very robust to walls as shown here:
+      As said before, glider type of creature has been found in 1 channel lenia. However, they're not very robust to walls as shown here:
   </p>
   <div class="row l-body">
     <div class="column">
@@ -214,6 +254,7 @@
 
 
  <h3>IMGEP and Utility of curriculum</h3>
+
 
  <p>
    In fact, once we obtain a creature able to go a little further than the initialisation, we can push the target a little bit and learn to attain it. This time the new target needs to overlap where the creature is able to go  after the first optimisation. Then we just need to iterate this process.
@@ -341,7 +382,12 @@
   <input type="range" min="0.1" max="3"  step="0.1" value="1" class="slider" id="rangeSpeed" >
   <p> Speed of video: <span id="valueSpeed"></span></p>
 </div>
+
+
+
+
 <p>
+  In this section, we will test the creature to explore its sensorimotor capabilities and robustness. We will also test the creatures obtained in situation that it has not encounterd during training.
 (each IMGEP step is only 100 gradient steps and the lenia rollout is only 50 timesteps and obstacles are only simple circles.)
 </p>
 <h3> How well do the creatures obtained generalize ? </h3>
@@ -354,6 +400,8 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 <p>
   The resulting creatures are very robust to walls perturbations and able to navigate in difficult environment. The resulting creature seems able to recover from perturbation induced by various shape of wall including vertical walls.(see interactive demo) One very surprising emerging behavior is that the creature is sometimes able to come out of dead end showing how well this technique generalizes. There are still some failure cases, with creature obtained that can get unstable after some perturbation, but the creatures are most of the time robust to a lot of different obstacles. The generalization is due to the large diversity of obstacles encountered by the creature during the learning because 8 circle randomly placed can lead to a very diverse set of obstacles. Moreover as it learns to go further, the creature have to learn to collide with several obstacles one after the other and so be able to recover fast but also still be able to resist/sense a second obstacle while not having fully recover.
 </p>
+
+
 
 <h4> Are the creatures robust to Moving obstacles ?</h4>
 <video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-middle side">
@@ -388,14 +436,16 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 <p> We can change the scale of the creature by changing the radius of the kernels as well as the size of the initialization square. This way we can make much smaller creature that therefore have less pixels to do the computation. This scale reduction has a limit but we can get pretty small creature. The creature stil seem to be quite robust and be able to sense and react to their environment while having less space to compute. The creature are even able to reproduce, however they seem to be less robust than the bigger one as we can see some dying from collision. We can also do it the other way and have much bigger creature that therefore have more space to compute. </p>
 
 
-  <h3> Side effects</h3>
-  <p>
-    Testing the creatures obtained in other untrained situation showed very interesting behaviors:
-  </p>
+<h4> Are the creatures robust to change of initialization ?</h4>
+<p>
+  While we didn't put any attention to initialization robustness and the creature initialization has been learned with a lot of degree of liberty, we can look if the same creature can emerge from other (maybe simpler) initialization. This would show how prone the CA rule learned is to grow the shape and maintain it. As the creature learned to recover from perturbed morphology, we can expect the shape to be a strong attractor thus letting more liberty on the initialization. In fact, what we find in practice is that the creature can emerge from other initialization, especially as shown here circle with a gradient. Bigger initializations also lead to multiple creature forming and seprating from each other (see next session for more about individuality). However the robustness to initialization is far from being perfect as other initializations easily lead to death, like for example here a circle of inapropriate size.
+</p>
 
-  <h4>Multi creature setting</h4>
+
+
+  <h3>Multi creature setting</h3>
    <p>
-    By adding more initialization square in the grid, we can add several creature with the same update rule. As pointed out in <dt-cite key="PMID:24494612"></dt-cite>, other entity are also part of the environment for the creature and can give rise to nice interactions. Maturana and Varela even refer to this kind of interaction as communication.
+    By adding more initialization square in the grid, we can add several creature with the same update rule letting us observe multicreature . As pointed out in <dt-cite key="PMID:24494612"></dt-cite>, other entity are also part of the environment for the creature and can give rise to nice interactions. Maturana and Varela even refer to this kind of interaction as communication. Note that the creature never encountered any other creature during its training and was always alone.
    </p>
 
   <h4>Individuality</h4>
@@ -420,7 +470,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
    <p>
      One other type of interaction between two creature of the same species(governed by the same update rule/physic) is creature getting stuck together. The two creatures seem to attract each other a little bit when they are close enough leading to the two creature stuck together going in the same direction. When they encounter an obstacle and separate briefly, their attraction reassemble them together. Even when they're stuck together, from a human point of view seeing this system, we ce can still see 2 distinct creatures. This type of behavior is  studied in the game of life in <dt-cite key="PMID:24494612"></dt-cite>  with the notion of consensual domain.
    </p>
-
+   <br>
   <h4>Reproduction</h4>
   <video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-middle side videoShow">
                 <source src="repro.mp4" type="video/mp4">
@@ -428,24 +478,15 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
    <p>
      Another interesting interaction we observed during colision was "reproduction". In fact for some collision, we could observe the birth of a 3rd entity. This kind of interaction seemed to happen when one of the two entity colliding was in a certain "mode" like when it just hit a wall. Our intuition is that when it hits a wall, it has to have a growth response in order to recover. And during this growth response if we add some perturbation of another entity it might separate this growth from the entity and then this separated mass from strong self-organization grows into a complete individual.
    </p>
-
+<!---
 <h3> Study of the creature </h3>
- <p>
-   What's interesting in such system is that the computation of decision is done at the macro (group) level, showing how a group of simple identical entities through local interactions can make "decision", sense at the macro scale. Seeing these creature it's even hard to believe that they are in fact made of tiny part all behaving under the same rules.
- </p>
- <video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-body videoShow">
-               <source src="damageHand.mp4" type="video/mp4">
-             </video>
- <p>
-   In fact in order to navigate, first it need to sense the wall through a deformation of itself. Then after this deformation it has to make a collective "decision" on where to grow next and then move and regrow it's shape. We can even do the deformation ourselves by suppressing a part of the creature.
- </p>
+
  <p>
    After visualizing the kernels and doing informal ablation studies it seems that the creature we obtain have "limiting growth" kernel that tries to prevent the creature from growing too much beyond its boundaries and also growth kernel. Those two type of kernel are in equilibrium but We can play with the weight of each kernel  a little bit without destroying this equilibrium. For example the main utility we found of this is that "limiting growth" kernels can be given more importance to enforce the individuality of the creature and prevent several creature colliding from merging (see next section) because it gives stronger boundaries. However putting too much weight on those limiting kernels can lead to creature dying from too much damage as you inhibit growth.
  </p>
 
- <p>
-   Surprisingly some creature looked a lot like (in term of morphology) creature from <dt-cite key="chan2019lenia"></dt-cite> which were obtained by evolutionary algorithm or by hand made mutations but ours seem to be far more robust.
- </p>
+
+ --->
 
 
 
@@ -493,6 +534,15 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 
  <h2 id="discussion"> Discussion </h2>
  <p>
+   What's interesting in such system is that the computation of decision is done at the macro (group) level, showing how a group of simple identical entities through local interactions can make "decision", sense at the macro scale. Seeing these creature it's even hard to believe that they are in fact made of tiny part all behaving under the same rules.
+ </p>
+ <video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-middle side videoShow">
+               <source src="damageHand.mp4" type="video/mp4">
+             </video>
+ <p>
+   In fact in order to navigate, first it need to sense the wall through a deformation of itself. Then after this deformation it has to make a collective "decision" on where to grow next and then move and regrow it's shape. We can even do the deformation ourselves by suppressing a part of the creature.
+ </p>
+ <p>
     Focus on the sensorimotor capabilities, sense the world through deformation of itself (the cells have to detect this deformation of the neighboors) and then make collective decision, however some cells don't even see the  so some message from the one that see. it's not clear looking at the kernels activity which ones are responsible for these decision if not all and also how the decision is made. Maybe it's modular and we can plug them on others creatures etc. Some may be responsible for growth, some for detection of deformation, some for decision ?
  </p>
  <p>
@@ -514,6 +564,11 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
  <p>
    food?
    discussion difficulty coming from other agents becoming stronger competition in evolution/\cite{baker2020emergent}). Future work might use these creature as basis for species mutate them and make them compete for food.
+   Here wall is strong perturbation maye see if we can make sense very small perturbations
+ </p>
+
+ <p>
+   Surprisingly some creature looked a lot like (in term of morphology) creature from <dt-cite key="chan2019lenia"></dt-cite> which were obtained by evolutionary algorithm or by hand made mutations but ours seem to be far more robust.
  </p>
 
 
@@ -537,6 +592,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
                 <source src="demoFoodc.mp4" type="video/mp4">
               </video>
   <h3> Mutation by hand </h3>
+
 </dt-appendix>
 
 <script type="text/bibliography">
@@ -720,6 +776,22 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
       eprint={2106.15240},
       archivePrefix={arXiv},
       primaryClass={cs.NE}
+  }
+  @article{https://doi.org/10.1002/adma.202008161,
+    author = {Murugan, Nirosha J. and Kaltman, Daniel H. and Jin, Paul H. and Chien, Melanie and Martinez, Ramses and Nguyen, Cuong Q. and Kane, Anna and Novak, Richard and Ingber, Donald E. and Levin, Michael},
+    title = {Mechanosensation Mediates Long-Range Spatial Decision-Making in an Aneural Organism},
+    journal = {Advanced Materials},
+    volume = {n/a},
+    number = {n/a},
+    pages = {2008161},
+    keywords = {basal cognition, decision-making, information processing, mechanosensing, Physarum polycephalum, stiffness, TRP channel},
+    doi = {https://doi.org/10.1002/adma.202008161},
+    url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/adma.202008161},
+    eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/adma.202008161},
+    abstract = {Abstract The unicellular protist Physarum polycephalum is an important emerging model for understanding how aneural organisms process information toward adaptive behavior. Here, it is revealed that Physarum can use mechanosensation to reliably make decisions about distant objects in its environment, preferentially growing in the direction of heavier, substrate-deforming, but chemically inert masses. This long-range sensing is abolished by gentle rhythmic mechanical disruption, changing substrate stiffness, or the addition of an inhibitor of mechanosensitive transient receptor potential channels. Additionally, it is demonstrated that Physarum does not respond to the absolute magnitude of strain. Computational modeling reveales that Physarum may perform this calculation by sensing the fraction of its perimeter that is distorted above a threshold substrate strain—a fundamentally novel method of mechanosensation. Using its body as both a distributed sensor array and computational substrate, this aneural organism leverages its unique morphology to make long-range decisions. Together, these data identify a surprising behavioral preference relying on biomechanical features and quantitatively characterize how the Physarum exploits physics to adaptively regulate its growth and shape.}
+    }
+
+
 }
 </script>
 <script type="text/javascript">
