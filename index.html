@@ -26,7 +26,7 @@
 
 <dt-article  >
   <h1>Learning Sensorimotor Capabilities in Cellular Automata</h1>
-  <h2> Learning robust self-organizing creatures  </h2>
+  <h2> Learning robust self-organizing creatures with gradient descent  </h2>
 
   <video id="robust" width="95%"  autoplay loop muted="" class="l-middle-outset videoShow">
                 <source src="demo.mp4" type="video/mp4">
@@ -88,32 +88,29 @@
 
   <h2 id="introduction">Introduction</h2>
 
-  <p> More general things </p>
-  <p> morpholicial computation</p>
+  <p> Behavior in living creature is often seen as output in response to sensory input. The computation making the link betwen the sensory input and the output can of course be neural computation but other type of computation of decision exist</p>
+
   <!---
   <p> (From plant or animal growth to swarm of individual, self-organization, from messages between entities is able to make a bigger entity)</p>
+  Current AI focus on neural architecture
   --->
   <p>
-     In Maturana and Varela work <dt-cite key="VarelaThompsonEmbo"></dt-cite>, cognition is centered around how an agent "reacts" to the perturbation induced by its environment . More precisely, they introduce the notion of cognitive domain of a self-organizing system which are all the perturbations induced by the environment which do  not result in the destruction of the self-organizing system. Their notion of cognition is thus deeply linked with how a self-organizing creature will try to preserve its integrity in its environment.
+     In Maturana and Varela work <dt-cite key="VarelaThompsonEmbo"></dt-cite>, cognition is centered around how an agent "reacts" to the perturbation induced by its environment, ie sensory stimulus. More precisely, they introduce the notion of cognitive domain of a self-organizing system which are all the perturbations induced by the environment which do  not result in the destruction of the self-organizing system. Their notion of cognition is thus deeply linked with how a self-organizing creature will try to preserve its integrity in its environment.
   </p>
 
   <p>
-      From their theories, studies has been made to apply those notion to examples of self-organizing systems. For example, the game of life and especially the glider has been studied under their paradigm <dt-cite key="PMID:24494612"></dt-cite> showing again the richness and complexity of such system. However, even if the glider in the game of life has shown to be a good toy model to explicit those theories with interesting interaction, they're also quite simple entity that are not very robust, with a lot of perturbation leading to destruction. (Also in those work, the environment wasn't well defined like walls food etc, but rather other structure.)
+      From their theories, studies have been made to apply those notion to examples of self-organizing systems. One of the main test bed is cellular automata, which consists of a grid of states where only local update are allowed, and yet very complex self organizing pattern can emerge. One famous cellular automata is the game of life. The game of life and especially a moving pattern :the glider, has been studied under their paradigm <dt-cite key="PMID:24494612"></dt-cite> showing again the richness and complexity of such system. However, even if the glider in the game of life has shown to be a good toy model to explicit those theories with interesting interaction, they're also quite simple entity that are not very robust, with a lot of perturbation leading to destruction. Also in those work, the environment wasn't well defined like walls food, but rather other structures/creatures.
   </p>
 
   <p>
-    In biology, We also find sensorimotor capabilities at the macro scale for example in swarm of  bacteria <dt-cite key="PhysRevE.101.012407"></dt-cite>  where a group of bacteria seem to avoid a wall of antibiotics making group decision for obstacle avoidance. Slimemolds, while being totally aneural, also seem to use mechanical cues of its environment to choose in which direction to expand <dt-cite key="https://doi.org/10.1002/adma.202008161"></dt-cite> using their body both for sensing and computing the decision. Moreover as the computation of decision is made at the body level, we can directly observe it.
+    In biology, We also find sensorimotor capabilities at the macro scale for example in swarm of  bacterias <dt-cite key="PhysRevE.101.012407"></dt-cite>  where a group of bacteria seem to avoid a wall of antibiotics making group decision for obstacle avoidance. Slimemolds, while being totally aneural, also seem to use mechanical cues of its environment to choose in which direction to expand <dt-cite key="https://doi.org/10.1002/adma.202008161"></dt-cite> using their body both for sensing and computing the decision. Moreover as the computation of decision is made at the body level, we can directly observe it.
   </p>
 
   <p>
-    Other studies, taking inspiration from biological regrowth in some animals, focused on the recovery from Deformation/ damage  <dt-cite key="horibe2021regenerating"></dt-cite> <dt-cite key="mordvintsev2020growing"></dt-cite>, applying Cellular automata to build and regenerate damaged parts.
+    Other studies, taking inspiration from biological regrowth in some animals and morphogenesis, focused on the recovery from Deformation/ damage  <dt-cite key="horibe2021regenerating"></dt-cite> <dt-cite key="mordvintsev2020growing"></dt-cite>, applying Cellular automata to build and regenerate damaged parts.
   </p>
   <p>
-    IN Lenia <dt-cite key="chan2020lenia"></dt-cite> <dt-cite key="chan2019lenia"></dt-cite> , we can see some sort of sensorimotor capabilities. However, even if there are interaction between some entity, there is no well define environment. The search for new creature in Lenia was first done manually testing parameters and mutating it or with simple evolutionary algorithm for moving creature for example. Other studies <dt-cite key="etcheverry2020hierarchically"></dt-cite>  <dt-cite key="reinke2020intrinsically"></dt-cite> focused on exploring as much as possible the space of creature in Lenia using intrinsically motivated explorer  . However this last techniques had a hard time finding moving creature.
-  </p>
-
-  <p>
-    In cellular automata, what's interesting is that we have the same local update rule  applied to every cell (no cell has a special role ), yet it allows to have very complex self organizing structure. In this work, we'll show how to learn the Ca update rule leading to robustness and sensorimotor capabilities with walls. The creature we obtain, from the deformation induced by the walls on some part of it make new deicision at the macro level on where to go/how to react. What's even more interesting is that the computation made for the decision are all made in the creature itself, at the morphology level. (Each cell then from its neighboors know what it should do.)
+    In Lenia <dt-cite key="chan2020lenia"></dt-cite> <dt-cite key="chan2019lenia"></dt-cite>  which is a continous cellular automata, we can already observe sensorimotor capabilities(see section Lenia). However, even if there are interaction between some entity, there is no well defined environment. Moreover the search for new creature in Lenia was first done manually testing parameters and mutating it or with simple evolutionary algorithm, which might take time and luck to find the type of creature we really expect. Other studies <dt-cite key="etcheverry2020hierarchically"></dt-cite>  <dt-cite key="reinke2020intrinsically"></dt-cite> focused on exploring as much as possible the space of morphology in Lenia using intrinsically motivated explorer  . However this last techniques didn't focused much on finding moving creature.
   </p>
   <p>
     Define sensorimotor capabilites with tests
@@ -122,11 +119,12 @@
   <p>
     classic evolution of body and controleur separate entities
   </p>
+
   <p>
-    In this work, we
-    no well define environment and creature obtained by luck and not very robust.
-    swarm robotics ?
+     In this work, we'll propose an efficient method based on gradient descent to learn the CA update rule from scratch leading to robustness and sensorimotor capabilities with walls. The creature we obtain, from the deformation induced by the walls on some part of it make new deicision at the macro level on where to go/how to react. What's even more interesting is that the computation made for the decision are all made in the creature itself, at the morphology level. (Each cell then from its neighboors know what it should do.)
   </p>
+
+  
 
 
 
@@ -150,36 +148,43 @@
     A wide variety of patterns has been found in Lenia, using hand made exploration/mutation and evolutionary algorithm  <dt-cite key="chan2020lenia"></dt-cite><dt-cite key="chan2019lenia"></dt-cite> or exploratory algorithm <dt-cite key="etcheverry2020hierarchically"></dt-cite> <dt-cite key="reinke2020intrinsically"></dt-cite>. However, as exploration algorithm studies focused on exploration of the morpholgy space and as moving creature are hard to find, these studies didn't found much of moving creatures. The other studies focused a lot on spatially localized pattern and especially moving one. You can find a library of creatures (especially moving one) found  in the first version of Lenia (<dt-cite key="chan2019lenia"></dt-cite>) at this <a href="https://chakazul.github.io/Lenia/JavaScript/Lenia.html">link</a>.
   </p>
   <p>
-    The moving creature found are long term stable and can have interesting interactions with each other but some as the orbium (which for their defense only have 1 kernel) displayed on the 2 left  videos are not very robust for example here with collision between each other, or with walls (see next section). Other more complex creatures with multiple kernels seem to resist better to collision and seem to be able to sense the other creatures. However, these other creatures that form the environment of the creature are in the same channel as the creature itself. Therefore they can be sensed through the kernel at higher distance. (explaining the large gap in the 3rd video)
+    The moving creature found are long term stable and can have interesting interactions with each other but some as the orbium (which you can find below) are not very robust for example here with collision between each other, or with walls (see next section). TO be fair, they're quite simple with only 1 kernel for the update rule.
   </p>
   <div class="row l-body">
     <div class="column">
-      <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+      <video id="robust" width="80%" autoplay loop muted="" class="videoShow">
                     <source src="orbiumCollision.mp4" type="video/mp4">
                   </video>
     </div>
     <div class="column">
-      <video id="robust" width="100%"  autoplay loop muted="" class="videoShow">
+      <video id="robust" width="80%"  autoplay loop muted="" class="videoShow">
                     <source src="orbiumCollision2.mp4" type="video/mp4">
                   </video>
     </div>
-    <div class="column">
-      <video id="robust" width="100%"  autoplay loop muted="" class="videoShow">
-                    <source src="LeniaSpecie.mp4" type="video/mp4">
-                  </video>
-    </div>
-    <div class="column">
-      <video id="robust" width="100%"  autoplay loop muted="" class="videoShow">
-                    <source src="courLenia.mp4" type="video/mp4">
-                  </video>
-    </div>
   </div>
-
+  <p>
+  Other more complex creatures with multiple kernels seem to resist better to collision and seem to be able to sense the other creatures. These creatures show senorimotor capabilities as they change direction in response to interaction to other creatures. However, these other creatures that form the environment of the creature are in the same channel as the creature itself. Therefore they can be sensed through the kernel at higher distance. (explaining the large gap in the left video)
+</p>
+<p class="l-gutter" style="font-size: 12px;color:#A0A0A0;">
+  Videos from Bert Chan's twitter: <a href="https://twitter.com/BertChakovsky/status/1219332395456815104">https://twitter.com/BertChakovsky/status/1219332395456815104</a>   <a href="https://twitter.com/BertChakovsky/status/1265861527829004288">https://twitter.com/BertChakovsky/status/1265861527829004288</a>
+</p>
+<div class="row l-body" >
+<div class="column">
+  <video id="robust" width="80%"  autoplay loop muted="" class="videoShow">
+                <source src="LeniaSpecie.mp4" type="video/mp4">
+              </video>
+</div>
+<div class="column">
+  <video id="robust" width="80%"  autoplay loop muted="" class="videoShow">
+                <source src="courLenia.mp4" type="video/mp4">
+              </video>
+</div>
+</div>
 
   <h4> Walls </h4>
 
   <p>
-    Our work, contrary to previous work on Lenia and most cellular automata, clearly separates what belongs to the environment and what does not.
+    Our work, contrary to previous work on Lenia and most cellular automata, clearly separates what belongs to the environment and what does not. We also hand craft and fix the environment rule to define properly the environment we want. In this work we'll focus on walls in the environment as navigating between obstacle requires sensorimotor capabilites.
 
   </p>
 
@@ -194,7 +199,8 @@
     In this study, the creature can't have any impact on the walls. This differs from other studies such as <dt-cite key="PMID:24494612"></dt-cite> in the game of life where the creature also perturb it's environment.
   </p>
   <p>
-      As said before, glider type of creature has been found in 1 channel lenia. However, they're not very robust to walls as shown here:
+      As said before, glider type of creature has been found in 1 channel lenia. However, they're not very robust to walls as shown bellow.
+      The multi channel creature(bottom left) dies from special collision with the wall. The multi kernel one is able to sense the wall and resist to perturbation but only if we slow time so that it can make more small updates. Also its movements are a kind of erratic.
   </p>
   <div class="row l-body">
     <div class="column">
@@ -209,6 +215,18 @@
     </div>
   </div>
 
+  <div class="row l-body">
+    <div class="column">
+      <video id="robust" width="95%" autoplay loop muted="" class="videoShow">
+                    <source src="aquariumWall2.mp4" type="video/mp4">
+                  </video>
+    </div>
+    <div class="column">
+      <video id="robust" width="95%"  autoplay loop muted="" class="videoShow">
+                    <source src="multiK4.mp4" type="video/mp4">
+                  </video>
+    </div>
+  </div>
 
   <h4> Differentiable Lenia </h4>
   <p>
@@ -388,7 +406,6 @@
 
 <p>
   In this section, we will test the creature to explore its sensorimotor capabilities and robustness. We will also test the creatures obtained in situation that it has not encounterd during training.
-(each IMGEP step is only 100 gradient steps and the lenia rollout is only 50 timesteps and obstacles are only simple circles.)
 </p>
 <h3> How well do the creatures obtained generalize ? </h3>
 
@@ -440,7 +457,9 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 <p>
   While we didn't put any attention to initialization robustness and the creature initialization has been learned with a lot of degree of liberty, we can look if the same creature can emerge from other (maybe simpler) initialization. This would show how prone the CA rule learned is to grow the shape and maintain it. As the creature learned to recover from perturbed morphology, we can expect the shape to be a strong attractor thus letting more liberty on the initialization. In fact, what we find in practice is that the creature can emerge from other initialization, especially as shown here circle with a gradient. Bigger initializations also lead to multiple creature forming and seprating from each other (see next session for more about individuality). However the robustness to initialization is far from being perfect as other initializations easily lead to death, like for example here a circle of inapropriate size.
 </p>
-
+<p>
+  video
+</p>
 
 
   <h3>Multi creature setting</h3>
@@ -534,21 +553,19 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 
  <h2 id="discussion"> Discussion </h2>
  <p>
-   What's interesting in such system is that the computation of decision is done at the macro (group) level, showing how a group of simple identical entities through local interactions can make "decision", sense at the macro scale. Seeing these creature it's even hard to believe that they are in fact made of tiny part all behaving under the same rules.
+   What's interesting in such system is that the computation of decision is done at the macro (group) level, showing how a group of simple identical entities through local interactions can make "decision", sense at the macro scale. Seeing these creature it's even hard to believe that they are in fact made of tiny part all behaving under the same rules. Moreover the creatures presented here are all 1 channels creature, there is no hidden channel where some value could be stored.
  </p>
  <video id="robust" width="95%"  autoplay  controls="" loop muted="" class="l-middle side videoShow">
                <source src="damageHand.mp4" type="video/mp4">
              </video>
  <p>
-   In fact in order to navigate, first it need to sense the wall through a deformation of itself. Then after this deformation it has to make a collective "decision" on where to grow next and then move and regrow it's shape. We can even do the deformation ourselves by suppressing a part of the creature.
+   In fact in order to navigate, first it need to sense the wall through a deformation of macro creature. Then after this deformation it has to make a collective "decision" on where to grow next and then move and regrow it's shape. We can even do the deformation ourselves by suppressing a part of the creature. It's not clear looking at the kernels activity which ones are responsible for these decision if not all and also how the decision is made remains a mystery. Moreover some cells don't even see the deformation because they're too far  so some message from the one that see has to be transmitted. ?</p>
  </p>
- <p>
-    Focus on the sensorimotor capabilities, sense the world through deformation of itself (the cells have to detect this deformation of the neighboors) and then make collective decision, however some cells don't even see the  so some message from the one that see. it's not clear looking at the kernels activity which ones are responsible for these decision if not all and also how the decision is made. Maybe it's modular and we can plug them on others creatures etc. Some may be responsible for growth, some for detection of deformation, some for decision ?
- </p>
- <p>
-    Surprising to see that the creature is able to do all the computation required for changing direction in itself at the macro scale. Moreover the creatures presented here are all 1 channels creature, there is no hidden channel.
 
- </p>
+ <p>
+   Maybe each kernel has its own purpose, some may be responsible for growth, some for detection of deformation, some for decision. If it's the case, we could even see those creature as modular adding new functionalities by adding new kernels. However as there is a quite strict equilibrium between kernel impact, i doubt that we could simply plug new kernels without disturbing this equilibrium.
+</p>
+
 
  <p>
    radius is quite big while <dt-cite key="mordvintsev2020growing"></dt-cite> Moore neighbourhood size 3. (but no hidden channel). Maybe using message passing like model we can get something equivalent with moore neighbourhood of small size. One interesting experiment would be to try to fit a Neural CA on the creature obtained here and see if it can make approximatively the same creature with moore neighbourhood of size 1 (but with hidden channel to help). One other difference from <dt-cite key="mordvintsev2020growing"></dt-cite> is that our kernels are totally symetrical while theirs have the notion of up and down, right and left.
@@ -570,8 +587,9 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
  <p>
    Surprisingly some creature looked a lot like (in term of morphology) creature from <dt-cite key="chan2019lenia"></dt-cite> which were obtained by evolutionary algorithm or by hand made mutations but ours seem to be far more robust.
  </p>
-
-
+<p>
+  We focused on the action. But studying how the creature spot a deformation might be interesting to understand how our body knows when something is missing and should continue growing.
+</p>
 
 
 
