@@ -125,7 +125,7 @@
 
 
   <p>
-     In this work, we propose a method based on gradient descent to learn the CA update rule leading to robustness and sensorimotor capabilities with walls. The creature we obtain, from the deformation induced by the walls on some part of it make new deicision at the macro level on where to go/how to react. What's even more interesting is that the computation made for the decision are all made in the creature itself, at the morphology level.In this study, to characterize creatures as creature with sensorimotor capabilities, we look if this creature can pass some basic test of robustness to a diversity of obstacles.
+     In this work, we chose to add walls in Lenia to study the sensorimotor behavior of a self organizing agent. We propose a method based on gradient descent to learn the CA update rule leading to robustness and sensorimotor capabilities with walls. The creature we obtain, from the deformation induced by the walls on some part of it make new deicision at the macro level on where to go/how to react. What's even more interesting is that the computation made for the decision are all made in the creature itself, at the morphology level. In this study, to characterize creatures as creature with sensorimotor capabilities, we look if this creature can pass some basic test of robustness to a diversity of obstacles.
   </p>
 
 
@@ -421,6 +421,9 @@
 Even if we can not know if the creature is indefinitively stable, we can test for reasonable number of timesteps. The result is that the creature obtained with IMGEP with obstacles seems stable for 2000 timesteps while it has only been trained to be stable for 50 timesteps. This might be because as it learned to be robust to deformation it has learned a strong preservation of the structure to prevent any explosion or dying when perturbed a little bit. And so when there is no perturbation this layer of "security" strongly preserves the structure. However, Training a creature only for movement(without obstacles  so no perturbation during training) sometimes led to non long term stable creatures. This is similar to what has been observed in <dt-cite key="mordvintsev2020growing"></dt-cite> where training to grow a creature from the same initialization (a pixel) led to pattern that were not long term stable. But adding incomplete/perturbed patterns as initialization to learn to recover from them led to long term stability. (by making the target shape a stronger attractor)
 </p>
 <h4> Are the creatures robust to new obstacles ?</h4>
+<video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-middle side">
+              <source src="demoObstacle.mp4" type="video/mp4">
+            </video>
 <p>
   The resulting creatures are very robust to walls perturbations and able to navigate in difficult environment. The resulting creature seems able to recover from perturbation induced by various shape of wall including vertical walls.(see interactive demo) One very surprising emerging behavior is that the creature is sometimes able to come out of dead end showing how well this technique generalizes. There are still some failure cases, with creature obtained that can get unstable after some perturbation, but the creatures are most of the time robust to a lot of different obstacles. The generalization is due to the large diversity of obstacles encountered by the creature during the learning because 8 circle randomly placed can lead to a very diverse set of obstacles. Moreover as it learns to go further, the creature have to learn to collide with several obstacles one after the other and so be able to recover fast but also still be able to resist/sense a second obstacle while not having fully recover.
 </p>
@@ -461,11 +464,17 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 
 
 <h4> Are the creatures robust to change of initialization ?</h4>
+<video id="model-editing-level-1-video-1"   controls="" muted="" class="videoShow l-middle side">
+              <source src="initCircleGrad.mp4" type="video/mp4">
+            </video>
+<video id="model-editing-level-1-video-1"   controls="" muted="" class="videoShow l-middle side">
+              <source src="initCircle.mp4" type="video/mp4">
+            </video>
+  <video id="model-editing-level-1-video-1"   controls="" muted="" class="videoShow l-middle side">
+                <source src="initDie.mp4" type="video/mp4">
+              </video>
 <p>
-  While we didn't put any attention to initialization robustness and the creature initialization has been learned with a lot of degree of liberty, we can look if the same creature can emerge from other (maybe simpler) initialization. This would show how prone the CA rule learned is to grow the shape and maintain it. As the creature learned to recover from perturbed morphology, we can expect the shape to be a strong attractor thus letting more liberty on the initialization. In fact, what we find in practice is that the creature can emerge from other initialization, especially as shown here circle with a gradient. Bigger initializations also lead to multiple creature forming and seprating from each other (see next session for more about individuality). However the robustness to initialization is far from being perfect as other initializations easily lead to death, like for example here a circle of inapropriate size.
-</p>
-<p>
-  video
+  While we didn't put any attention to initialization robustness and the creature initialization has been learned with a lot of degree of liberty, we can look if the same creature can emerge from other (maybe simpler) initialization. This would show how prone the CA rule learned is to grow the shape and maintain it. As the creature learned to recover from perturbed morphology, we can expect the shape to be a strong attractor thus letting more liberty on the initialization. In fact, what we find in practice is that the creature can emerge from other initialization, especially as shown here circle with a gradient. Bigger initializations also lead to multiple creature forming and seprating from each other (see next section for more about individuality). However the robustness to initialization is far from being perfect as other initializations easily lead to death, like for example here a circle of inapropriate size.
 </p>
 
 
@@ -537,21 +546,91 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 
 <h3>Still failure cases</h3>
 <p>
-  Even with the initialization selection sometimes the algorithm doesn't seem able to learn to go past obstacles and the we can't reach goal position beyond a certain limit. This may be migitated by adding diversity, see disccussion section.
+  Even with the initialization selection and small mutations, sometimes the algorithm doesn't seem able to learn to go past obstacles and the we can't reach goal position beyond a certain limit. This may be migitated by adding diversity, see following section.
 </p>
+<video id="robust" width="100%" autoplay loop muted="" class="videoShow l-body side">
+              <source src="unstable.mp4" type="video/mp4">
+            </video>
 <p>
-  One is very robust but with different configuration it's possible to kill or explode others creature. However they were only trained for 50 timesteps (2seconds in the clips above) and witth always the same 8 type of obstacle (even if their position induced diversity). Further training of the parameters for more robustness should be achievable.
-  Multi creature we can have death and explosion but it has not been trained for that.
+  The main creature used in most of the demo/test above is very robust but with different configuration it's possible to kill or explode others creature. However they were only trained for 50 timesteps (2seconds in the clips above) and witth always the same 8 type of obstacle (even if their position induced diversity). Further training of the parameters for more robustness should be achievable.
+  In the Multi creature case, we can have death and explosion but it has not been trained for that.
 </p>
-<p>
 
-  Video Of failure
-</p>
 
 
 <h3>Mutation and breeding for diversity</h3>
+<p>
+   Each time we run the method as we start from parameters randomly chosen, we seem to get different creatures in term of morphology and also in term of how they deal with the obstacles. However, as they are all optimized with the same loss and objective (even if the sampling of goal is random), we most of the time still get quite similar creature. In fact optimizing toward an objective often doesn't  give  much diversity. But diversity is very important as it allows to see what are the common thing that a creature with sensorimotor capabilities should have, if there are any. Diversity can also give us unexpected solution or behavior, and even those that don't perform well can be interesting.This even more the case,  when as here, the loss that we optimize is handmade with a particular idea on the solution that might hide solution that we didn't think of. Also, adding diversity in our method could help to solve the fact that the method sometimes get stuck with some initialization, because some lineage might get stuck but some might also succeed and give us the solution that we expect.
+ </p>
 
 
+ <div class="row l-page">
+ <div class="column">
+   <video id="kernels" width="100%" autoplay loop muted="" class="videoShow" >
+                 <source src="slalom.mp4" type="video/mp4">
+               </video>
+ </div>
+ <div class="column">
+   <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+                 <source src="newOne.mp4" type="video/mp4">
+               </video>
+ </div>
+ <div class="column">
+   <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+                 <source src="315.mp4" type="video/mp4">
+               </video>
+ </div>
+ <div class="column">
+   <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+                 <source src="strange210.mp4" type="video/mp4">
+               </video>
+
+ </div>
+
+
+</div>
+
+ <p>
+   Taking inspiration from morphological search with IMGEP in Lenia <dt-cite key="reinke2020intrinsically"></dt-cite> <dt-cite key="etcheverry2020hierarchically"></dt-cite>, we could add extra dimension to the target space, like an embedding of the creature morphology. However in practice, if we  also use gradient descent to optimize toward the morphological target, this interfered too much  with the optimization toward the target position. (because changing the morphology easily break the pattern leading to movement).
+</p>
+
+<p>
+  One potential solution to add diversity is to mutate the creature obtained at the end of the method or even breed them. To breed them we can  some kernels from a creatures witht the ones of another creature. However, the kernels are often in an equilibrium between each other and some kernels in one creature may be inadapted in another creature. To counter this in practice, when replacing kernel of a creature we keep some parameter of the replaced kernel and only change the other. For example keeping h and s or even m and only changing the shape of the kernel. In fact h the weight of the kernel might be inadapted with the other weights of the creature (adding to much growth compared to inhibition and vice versa) and s and m  often are the parameters that tell if the kernel limit growth or boost growth. (and we don't want to replace a limiting growth kernel by a boosting growth one and vice versa). The obtained creatures show  different shapes, but much different behavior like jumping, keep itself on walls etc.
+</p>
+
+<div class="row l-page">
+<div class="column">
+  <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+                <source src="snaim.mp4" type="video/mp4">
+              </video>
+</div>
+<div class="column">
+  <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+                <source src="gyran.mp4" type="video/mp4">
+              </video>
+</div>
+<div class="column">
+  <video id="robust" width="100%" autoplay  loop muted="" class="videoShow">
+                <source src="jump.mp4" type="video/mp4">
+              </video>
+</div>
+
+
+<div class="column">
+  <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+                <source src="fish.mp4" type="video/mp4">
+              </video>
+</div>
+
+<div class="column">
+  <video id="robust" width="100%" autoplay  loop muted="" class="videoShow">
+                <source src="turn.mp4" type="video/mp4">
+              </video>
+</div>
+</div>
+<p>
+  What would be even more interesting would be to add this kind of high mutation and breeding into the method , for exemple by seeing the method as a learning phase in an evolutionary algorithm. TO do so we would start several run of the method described above (in parallel if possible), and after a certain number of iterations we would breed and mutate the creatures obtained in these several runs. Then we would use the results of these breeding/mutation to initialize other several runs that would begin a new cycle.
+</p>
 
 <h2> Related works </h2>
 
@@ -580,28 +659,25 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 
 
  <p>
-   radius is quite big while <dt-cite key="mordvintsev2020growing"></dt-cite> Moore neighbourhood size 3. (but no hidden channel). Maybe using message passing like model we can get something equivalent with moore neighbourhood of small size. One interesting experiment would be to try to fit a Neural CA on the creature obtained here and see if it can make approximatively the same creature with moore neighbourhood of size 1 (but with hidden channel to help). One other difference from <dt-cite key="mordvintsev2020growing"></dt-cite> is that our kernels are totally symetrical while theirs have the notion of up and down, right and left.
- </p>
- <p>
-   Even if this, this work still provides interesting idea on how to learn parameters in complex systems that can be very sensitive. Especially, using curriculum learning seem to help a lot.
-</p>
-
- <p>
-   Improve the diversity and so the diversity in selection could help with the bad initialization problem. For example adding extra dimension to the target space, like an embedding of the creature morphology. However this could interfere with the optimization toward the target circle. Also as the target shape is always the same, we may still have not much diversity. Lastly maybe the shape of the kernels may limit the shape of moving 1 Channel creature as the star target shape did not succeed in getting other shapes.
- </p>
-
- <p>
-   food?
-   discussion difficulty coming from other agents becoming stronger competition in evolution/\cite{baker2020emergent}). Future work might use these creature as basis for species mutate them and make them compete for food.
-   Here wall is strong perturbation maye see if we can make sense very small perturbations
+   One major difference between the neural CA model used in <dt-cite key="mordvintsev2020growing"></dt-cite> and Lenia is that the radius of the neighbourhood of each cell that we used is quite big. In fact, in <dt-cite key="mordvintsev2020growing"></dt-cite> Moore neighbourhood size 3 (direct neighbours and diagonal) while we use kernel of large size :radius 28 or so during training but that's an arbitrary choice and we can downscale our creature to have a radius of  approximatively 6.
+ Maybe using message passing like model we can get something equivalent with moore neighbourhood of size. One interesting experiment would be to try to fit a Neural CA on the creature obtained here and see if it can make approximatively the same creature with moore neighbourhood of size 1. We also think that hidden channel could help in this case maybe by storing some value. One other difference from <dt-cite key="mordvintsev2020growing"></dt-cite> is that our kernels are totally symetrical while theirs have the notion of up and down, right and left  which might be helpful if we want the creature to have a prefered direction and know in which direction it is pointing.
  </p>
 
  <p>
    Surprisingly some creature looked a lot like (in term of morphology) creature from <dt-cite key="chan2019lenia"></dt-cite> which were obtained by evolutionary algorithm or by hand made mutations but ours seem to be far more robust.
  </p>
-<p>
-  We focused on the action. But studying how the creature spot a deformation might be interesting to understand how our body knows when something is missing and should continue growing.
+ <p>
+   Even if some basic creature with more or less good level of sensori motor capabilities have been found by random search and basic evolutionary algorithm in Lenia. This work still provides a method able to learn the update rule, from scratch in high dimensional parameters space, that leads to different robust creature with sensorimotor capabilities. We also think that the ideas presented here can be useful  to learn parameters in other complex systems that can be very sensitive. Especially, using curriculum learning which seems to help a lot.
 </p>
+
+
+ <p>
+   We focused a lot on the responsive action in this paper and the robustness. But studying how the creature spot a deformation might be interesting to understand how our body knows when something is missing and should continue growing. Studying how the computation of "decision" is made at a higher level (and scale) than just the CA rule (for exemple when encountering a wall) is a very interesting next step.
+ </p>
+
+ <p>
+   One other interesting direction is to add even more constraints in the environment  like food for example. We tried a little bit to add food in Lenia but we're not satisfied with the result. We think that adding food to the environment might be a great leap toward the search of more advanced behavior in Lenia. For example adding competition between individual/species for food. From this competition, interesting strategies could emerge as in <dt-cite key="baker2020emergent"></dt-cite>
+ </p>
 
 
 
@@ -612,16 +688,13 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
   <video id="kernels" width=85% controls="" muted="" class="videoShow" >
                 <source src="kernels.mp4" type="video/mp4">
               </video>
-  <video id="kernels" controls="" muted="" class="videoShow" >
-                <source src="slalom.mp4" type="video/mp4">
+
+  <video id="kernels" width=85% controls="" muted="" class="videoShow" >
+                <source src="optimInit40kVid.mp4" type="video/mp4">
               </video>
 
-  <h3> Breeding and mutation </h3>
-  <h3> Food </h3>
-  <video id="model-editing-level-1-video-1" controls="" muted="" class="videoShow">
-                <source src="demoFoodc.mp4" type="video/mp4">
-              </video>
-  <h3> Mutation by hand </h3>
+
+
 
 </dt-appendix>
 
