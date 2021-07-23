@@ -502,11 +502,11 @@ gl.uniform1f(gl.getUniformLocation(simProgram, "radius"), this.value);
 }
 
 
-var sliderRadiusWall = document.getElementById("rangeZoom");
-var outputRadiusWall = document.getElementById("valueZoom");
-outputRadiusWall.innerHTML = sliderRadiusWall.value;
-sliderRadiusWall.oninput = function() {
-outputRadiusWall.innerHTML = this.value;
+var sliderZoom = document.getElementById("rangeZoom");
+var outputZoom = document.getElementById("valueZoom");
+outputZoom.innerHTML = sliderZoom.value;
+sliderZoom.oninput = function() {
+outputZoom.innerHTML = this.value;
 gl.useProgram(drawProgram);
 gl.uniform1f(zoomLoca, 1/this.value);
 }
