@@ -68,7 +68,7 @@
 
 
 
-  <p>Spatially localized patterns in cellular automata have shown a lot of interesting behavior that led to new understanding of self-organizing system. While the notion of environment is a keypoint in Maturana and Varela biology of cognition, studies on cellular automata rarely introduced a well defined environment in their system. In this paper, we propose to add walls in a cellular automata to study how we can learn a self-organizing creature capable of reacting to the perturbations induced by the environment, ie robust creatures with sensorimotor capabilities. We provide a method based on curriculum learning able to learn the CA rule leading to such creature. The creature obtained,using only local update rules, are able to regenerate and preserve their individuality and structure while dealing with the obstacles in their way.</p>
+  <p>Spatially localized patterns in cellular automata have shown a lot of interesting behavior that led to new understanding of self-organizing system. While the notion of environment is a keypoint in Maturana and Varela biology of cognition, studies on cellular automata rarely introduced a well defined environment in their system. In this paper, we propose to add walls in a cellular automata to study how we can learn a self-organizing creature capable of reacting to the perturbations induced by the environment, ie robust creatures with sensorimotor capabilities. We provide a method based on curriculum learning able to learn the CA rule leading to such creature. The creature obtained, using only local update rules, are able to regenerate and preserve their integrity and structure while dealing with the obstacles in their way.</p>
 
 
 
@@ -123,7 +123,9 @@
     Finding moving creatures in Cellular automata differ from most classic RL experiment which evolve a body and train a separate controler as in cellular automata the body and its update rule are the controler.
   </p>
 
-
+  <p>
+     Define things
+  </p>
   <p>
      In this work, we chose to add walls in Lenia to study the sensorimotor behavior of a self organizing agent. We propose a method based on gradient descent to learn the CA update rule leading to robustness and sensorimotor capabilities with walls. The creature we obtain, from the deformation induced by the walls on some part of it make new deicision at the macro level on where to go/how to react. What's even more interesting is that the computation made for the decision are all made in the creature itself, at the morphology level. In this study, to characterize creatures as creature with sensorimotor capabilities, we look if this creature can pass some basic test of robustness to a diversity of obstacles.
   </p>
@@ -140,7 +142,15 @@
 
   <dt-byline></dt-byline>
   <h2 id="system"> The system </h2>
-  <img src="LeniaWall.svg" alt="scheme" class="l-screen-inset">
+  <div class="l-screen-inset" style="position:relative">
+  <img src="LeniaWall.svg" alt="scheme">
+
+  <!--
+  <div style="position:absolute; left:50%; top:5%;width=20%;border-radius:5px; background-color: rgba(0, 0, 0, 0);z-index:5;" onmouseover="" onmouseout=""> $$ A^{t+1}= \left[A^t +dt  \left(G_{wall}(K_{wall}*A^t_1) +\sum_k h_k G_k(K_k * A^t_0) \right) \right]^1_0 $$ </div>
+  <div style="position:absolute; left:65%; top:10%;border-radius:5px; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="" onmouseout=""> Formulas </div>
+  <div id="forumlas Lenia" style="position:absolute; left:0; top:0;width:100%; height:100%;border-radius:5px; background-color:white;z-index:4;display:none" onmouseover="" onmouseout=""> A+b </div>
+-->
+  </div>
 
 
   <h4> Lenia </h4>
@@ -251,7 +261,7 @@
       To learn these parameters we chose to use gradient descent method. Thus we tried to make Lenia as Differentiable friendly as possible. To do so, the main shift is to use "free kernels", using kernels in the form of a sum of n overlapping gaussian bumps: $$x \rightarrow \sum_i^{n} b_i exp(-\frac{(x-rk_i)^2}{w_i}) $$ The parameters are then 3  n dimensional vectors: b for height of the bump, w for the size of the bump and rk for the center of the bump.
   </p>
 
-  <img src="freeK.png" alt="schemeK" class='l-body' >
+  <img src="freeK.png" alt="schemeK" class='l-body'>
   <p>
     We did this shift because in the vanilla version of Lenia, the shape of the kernel was only given by a vector b of arbitrary size (but often max size 4). The number of bumps was given by the number of coefficient in b>0. However, the fact that the number of bumps depends on the number of coefficient > 0 prevents proper differentiation.
 (if a coefficient is at 0 then it won't change with gradient descent as it doesn't play a role, and if a coefficient is >0 a gradient step can put it <0 which will make a strong unexpected change). We could have left the number of bumps to an arbitrary value like 3, and only optimizing the height such as they stay >0  but this would have been a strong limitation on the shape. The "free kernels", in addition to differentiation, allow more flexibility than the vanilla bumps but at the cost of more parameters.
@@ -308,7 +318,7 @@
    In our case, the goal space will simply be a 2 dimensional vector representing the position of the center of mass of the creature at last timestep. The way we sample the goals depends on the task but to have a moving creature that goes far in the grid, we will randomly sample position in the grid biasing the sampling toward one edge of the grid. we use MSE error between the last state and our target shape centered at the target goal to try to achieve this goal. The way we reuse knowledge acquired is by intializing the parameters by the one that achieved the closest goal.
  </p>
 <div class="l-middle-outset" style="position:relative">
- <img id="schemeIMGEP" src="IMGEP.svg" alt="IMGEPscheme" width="100%" usemap="#workmap">
+ <img id="schemeIMGEP" src="IMGEP.svg" alt="IMGEPscheme" width="100%" >
  <div style="position:absolute; left:80%; top:79%; width:17%; height:9%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP1.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
  <div style="position:absolute; left:39%; top:85%; width:17%; height:11%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP2.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
  <div style="position:absolute; left:25%; top:11%; width:16%; height:13%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP3.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
@@ -537,8 +547,13 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 <p>
   Even with the initialization selection and small mutations, sometimes the algorithm doesn't seem able to learn to go past obstacles and  we can't reach goal position beyond a certain limit near the beginning of walls.
 </p>
+
 <video id="robust" width="100%" autoplay loop muted="" class="videoShow l-middle side">
               <source src="unstable.mp4" type="video/mp4">
+            </video>
+
+<video id="robust" width="100%" autoplay loop muted="" class="videoShow l-middle side">
+              <source src="strange210.mp4" type="video/mp4">
             </video>
 <p>
   The main creature used in most of the demo/test above is very robust but with different configuration it's possible to kill or explode others creature. However they were only trained for 50 timesteps (2seconds in the clips above) and witth always 8 obstacle of the same type (even if their position induced diversity). Further training of the parameters for more robustness should be achievable.
@@ -658,9 +673,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
                      </video>
        </div>
        <div class="column">
-         <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
-                       <source src="strange210.mp4" type="video/mp4">
-                     </video>
+
 
        </div>
 
@@ -708,6 +721,20 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
       <p>
         What would be even more interesting would be to add this kind of high mutation and breeding into the method , for exemple by seeing the method as a learning phase in an evolutionary algorithm. TO do so we would start several run of the method described above (in parallel if possible), and after a certain number of iterations we would breed and mutate the creatures obtained in these several runs. Then we would use the results of these breeding/mutation to initialize other several runs that would begin a new cycle.
       </p>
+
+
+      <div class="row l-page">
+      <div class="column">
+        <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+                      <source src="pacman.mp4" type="video/mp4">
+                    </video>
+      </div>
+      <div class="column">
+        <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+                      <source src="pacman2.mp4" type="video/mp4">
+                    </video>
+      </div>
+    </div>
 
 
       <video id="kernels" width=85% controls="" muted="" class="videoShow" >
