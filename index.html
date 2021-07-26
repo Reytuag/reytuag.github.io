@@ -145,11 +145,80 @@
   <div class="l-screen-inset" style="position:relative">
   <img src="LeniaWall.svg" alt="scheme">
 
-  <!--
-  <div style="position:absolute; left:50%; top:5%;width=20%;border-radius:5px; background-color: rgba(0, 0, 0, 0);z-index:5;" onmouseover="" onmouseout=""> $$ A^{t+1}= \left[A^t +dt  \left(G_{wall}(K_{wall}*A^t_1) +\sum_k h_k G_k(K_k * A^t_0) \right) \right]^1_0 $$ </div>
-  <div style="position:absolute; left:65%; top:10%;border-radius:5px; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="" onmouseout=""> Formulas </div>
-  <div id="forumlas Lenia" style="position:absolute; left:0; top:0;width:100%; height:100%;border-radius:5px; background-color:white;z-index:4;display:none" onmouseover="" onmouseout=""> A+b </div>
--->
+  <div id="formulasDisplay" style="position:absolute;display:none;left:0%; top:0%;width:100%;height:100%;background-color: rgba(255,255, 255, 0.9);z-index:4;">
+
+  <div style="position:absolute; left:5%; top:0%;border-radius:5px;">
+    <p>
+    $$ A^{t+1}= \left[A^t +\frac{1}{T}  \left(G_{wall}(K_{wall}*A^t_1) +\sum_k h_k G_k(K_k * A^t_0) \right) \right]^1_0 $$
+  </p>
+
+  <div class="row">
+    <div class="column">
+      $$ K_k= x \rightarrow \left( \sum_i^{n} b_i^k exp(-\frac{(x-{rk}^k_{i})^2}{2(w^k_{i})^2}) \right) \mathbb{I}_{x\leq r^kR}  $$
+      <!---$$K_k=  x \rightarrow \left(\sum_i^{n} b_i\mathcal{N}(\frac{x}{r^kR},{rk}^k_{i},w^k_{i}) \right) \mathbb{I}_{x\leq r^kR}$$--->
+      <!---sigmoid(4(1-\frac{x}{r^kR}))--->
+    </div>
+    <div class="column">
+      $$ K_{wall}= x \rightarrow   exp(-\frac{(x)^2}{2}) \mathbb{I}_{x \leq2} $$
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="column">
+      $$ G_k= x \rightarrow 2*exp(-\frac{(x-m^k)^2}{2(s^k)^2})-1  $$
+
+      <!---exp(-\frac{(x-m^k)^2}{2(s^k)^2})\mathcal{N}(\frac{x}{r^kR},m^k,s^k)-->
+    </div>
+    <div class="column">
+      $$ G_{wall}= x \rightarrow -10 max(0,(x-0.001))  $$
+    </div>
+  </div>
+
+
+
+<p style="text-align: center">
+<b>Parameters:</b><br>
+R maximum radius of a kernel<br>
+T time scale <br>
+<span style="text-decoration:underline">For each kernel:<span>
+<div class="row">
+  <div class="column">
+    <ul>
+    <li>h  \( \in [0,1] \) weight of the kernel </li>
+    <li>r   \( \in [0,1] \) relative radius  </li>
+  </ul>
+  </div>
+  <div class="column">
+    <ul>
+    <li>m mean in growth function</li>
+    <li>s variance/size in growth function </li>
+  </ul>
+
+
+  </div>
+  <div class="column">
+    <ul>
+    <li>w  \( \in [0,1]^n \) width of the guassian bumps</li>
+    <li>b  \( \in [0,1]^n \) height of the guassian bumps </li>
+  </ul>
+
+  </div>
+  <div class="column">
+    <ul>
+    <li>rk \( \in [0,1]^n \) shift of gaussian bumps from center of kernel </li>
+  </ul>
+
+  </div>
+</div>
+
+</p>
+  </div>
+
+  </div>
+
+  <div style="position:absolute; left:65em; top:10%;border-radius:5px; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="document.getElementById('formulasDisplay').style.display='block';" onmouseout="document.getElementById('formulasDisplay').style.display='none';"> Formulas </div>
+
   </div>
 
 
@@ -193,7 +262,7 @@
   </div>
   </div>
   <p class="l-gutter" style="font-size: 12px;color:#A0A0A0;">
-    Videos from Bert Chan's twitter: <a href="https://twitter.com/BertChakovsky/status/1219332395456815104">https://twitter.com/BertChakovsky/status/1219332395456815104</a>   <a href="https://twitter.com/BertChakovsky/status/1265861527829004288">https://twitter.com/BertChakovsky/status/1265861527829004288</a>
+    Videos from Bert Chan's twitter : <a href="https://twitter.com/BertChakovsky/status/1219332395456815104">https://twitter.com/BertChakovsky/status/1219332395456815104</a>   <a href="https://twitter.com/BertChakovsky/status/1265861527829004288">https://twitter.com/BertChakovsky/status/1265861527829004288</a>
   </p>
   <p>
 
@@ -258,7 +327,7 @@
   </p>
 
   <p>
-      To learn these parameters we chose to use gradient descent method. Thus we tried to make Lenia as Differentiable friendly as possible. To do so, the main shift is to use "free kernels", using kernels in the form of a sum of n overlapping gaussian bumps: $$x \rightarrow \sum_i^{n} b_i exp(-\frac{(x-rk_i)^2}{w_i}) $$ The parameters are then 3  n dimensional vectors: b for height of the bump, w for the size of the bump and rk for the center of the bump.
+      To learn these parameters we chose to use gradient descent method. Thus we tried to make Lenia as Differentiable friendly as possible. To do so, the main shift is to use "free kernels", using kernels in the form of a sum of n overlapping gaussian bumps: $$x \rightarrow \sum_i^{n} b_i exp(-\frac{(x-rk_i)^2}{2w_i^2}) $$ The parameters are then 3  n dimensional vectors: b for height of the bump, w for the size of the bump and rk for the center of the bump.
   </p>
 
   <img src="freeK.png" alt="schemeK" class='l-body'>
@@ -288,7 +357,7 @@
  </p>
 
  <p>
-   However simply putting a target shape far from initialization and optimize towards it does not work most of the times. In fact,  it works only when the target is not too far from where the creature ended before optimization (so after the random initialization) . This comes from the fact that applying a lot of steps, each clipped, prevents gradient from flowing. The solution we propose to go further than this is curriculum learning.
+   However simply putting a target shape far from initialization and optimize towards it does not work most of the times. In fact,  it works only when the target is not too far (overlap a little bit) from where the creature ended before optimization (so after the random initialization) . This comes from the fact that applying a lot of steps, each clipped, prevents gradient from flowing. The solution we propose to go further than this is curriculum learning.
 
  </p>
 
@@ -310,32 +379,35 @@
  <p>
    One modular way we introduced it was using IMGEP <dt-cite key="Forestier2017IntrinsicallyMG"></dt-cite>  which has already been used as an explorative tool in Lenia to explore the morphological space <dt-cite key="etcheverry2020hierarchically"></dt-cite> <dt-cite key="reinke2020intrinsically"></dt-cite>.
  </p>
- <p>
-   The general idea of IMGEP is to iteratively set new goals to achieve  and for each of these goals try to learn a policy that would suit this goal. THis way an IMGEP needs an interesting way to sample new goal for example based on intrinsic reward. It also needs a way to track the progress on this goal, and a way to optimize toward this goal. It also might use the knowledge acquired on other goals to learn new goals or attain them more quickly.
 
+ <p>
+   The general idea of IMGEP is to iteratively set new goals to achieve  and for each of these goals try to learn a policy (here a policy is simply an initial state and the CA rule) that would suit this goal. THis way an IMGEP needs an interesting way to sample new goal for example based on intrinsic reward. It also needs a way to track the progress on this goal, and a way to optimize toward this goal. It also might use the knowledge acquired on other goals to learn new goals or attain them more quickly.
+
+ </p>
+ <div class="l-middle-outset" style="position:relative">
+  <img id="schemeIMGEP" src="IMGEP.svg" alt="IMGEPscheme" width="100%" >
+  <div style="position:absolute; left:80%; top:79%; width:17%; height:9%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP1.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
+  <div style="position:absolute; left:39%; top:85%; width:17%; height:11%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP2.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
+  <div style="position:absolute; left:25%; top:11%; width:16%; height:13%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP3.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
+  <div style="position:absolute; left:58%; top:36%; width:14%; height:13%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP4.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
+  <!---
+  <map name="workmap" style:"">
+   <area shape="rect" coords="752,368,883,408" onmouseover="changeImgIMGEP('IMGEP1.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')" >
+   <area shape="rect" coords="372,400,507,443" onmouseover="changeImgIMGEP('IMGEP2.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')" >
+   <area shape="rect" coords="238,50,374,110"  onmouseover="changeImgIMGEP('IMGEP3.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')" >
+ </map>--->
+ </div>
+ <p  style="font-size: 14px;color:#A0A0A0;text-align:center;" class="l-middle-outset">
+  Lenia Step (hover over gray area to show step by step)
  </p>
  <p>
    In our case, the goal space will simply be a 2 dimensional vector representing the position of the center of mass of the creature at last timestep. The way we sample the goals depends on the task but to have a moving creature that goes far in the grid, we will randomly sample position in the grid biasing the sampling toward one edge of the grid. we use MSE error between the last state and our target shape centered at the target goal to try to achieve this goal. The way we reuse knowledge acquired is by intializing the parameters by the one that achieved the closest goal.
  </p>
-<div class="l-middle-outset" style="position:relative">
- <img id="schemeIMGEP" src="IMGEP.svg" alt="IMGEPscheme" width="100%" >
- <div style="position:absolute; left:80%; top:79%; width:17%; height:9%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP1.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
- <div style="position:absolute; left:39%; top:85%; width:17%; height:11%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP2.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
- <div style="position:absolute; left:25%; top:11%; width:16%; height:13%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP3.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
- <div style="position:absolute; left:58%; top:36%; width:14%; height:13%; background-color: rgba(0, 0, 0, .25);z-index:5;" onmouseover="changeImgIMGEP('IMGEP4.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')"></div>
- <!---
- <map name="workmap" style:"">
-  <area shape="rect" coords="752,368,883,408" onmouseover="changeImgIMGEP('IMGEP1.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')" >
-  <area shape="rect" coords="372,400,507,443" onmouseover="changeImgIMGEP('IMGEP2.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')" >
-  <area shape="rect" coords="238,50,374,110"  onmouseover="changeImgIMGEP('IMGEP3.svg')" onmouseout="changeImgIMGEP('IMGEP.svg')" >
-</map>--->
-</div>
 
 
 
- <p  style="font-size: 14px;color:#A0A0A0;text-align:center;" class="l-middle-outset">
-  Lenia Step (hover over gray area to show step by step)
- </p>
+
+
 
 
 
@@ -343,18 +415,40 @@
    The overall method can be summarized as such:
  </p>
 
-<!---<div style="display:block;background:rgba(0, 0, 0, 0.04);font-size:14px;line-height: 1.5;color:rgba(0, 0, 0, 0.6);border-left:-1px solid rgba(0, 0, 0, 0.05);padding: 0 0 0 24px"> --->
-<dt-code block language="python" class='l-body'>
+<!---
+<div style="display:block;background:rgba(0, 0, 0, 0.04);font-size:14px;line-height: 1.5;color:rgba(0, 0, 0, 0.6);border-left:-1px solid rgba(0, 0, 0, 0.05);padding: 0 0 0 24px">
     <p>Initialize randomly the history (sampling random parameters)</p>
     <p>loop (number of Imgep step) </p>
+    <div style="margin:25px">
     <p >   sample target position/goal</p>
     <p >   Select the policy that achieved the closest position/goal</p>
     <p>   loop (number of optimisation steps)</p>
-    <p>       Run lenia
+    <div style="margin:25px">
+    <p>       Run lenia </p>
     <p>       Gradient descent toward the disk at target position</p>
+  </div>
     <p>   See what is the position(ie goal) achieved</p>
-</dt-code>
-
+  </div>
+</div>
+--->
+<div clas=l-body>
+<pre>
+<code  style="line-height:0.4">
+    <p>Initialize randomly the history (sampling random parameters)</p>
+    <p>loop (number of Imgep step) </p>
+    <div style="margin:25px">
+    <p >   sample target position/goal</p>
+    <p >   Select the policy that achieved the closest position/goal</p>
+    <p>   loop (number of optimisation steps)</p>
+    <div style="margin:25px">
+    <p>       Run lenia </p>
+    <p>       Gradient descent toward the disk at target position</p>
+  </div>
+    <p>   See what is the position(ie goal) achieved</p>
+  </div>
+</code>
+</pre>
+</div>
 
 
 
@@ -383,6 +477,27 @@
  <p>
   In the IMGEP, to take into account the fact that the position attained depends on the obstacle configuration, the reached goal will be an average of the position attained on different configurations of obstacles.
  </p>
+
+
+ <div clas=l-body>
+ <pre>
+ <code  style="line-height:0.4">
+     <p>Initialize randomly the history (sampling random parameters)</p>
+     <p>loop (number of Imgep step) </p>
+     <div style="margin:25px">
+     <p >   sample target position/goal</p>
+     <p >   Select the policy that achieved the closest position/goal</p>
+     <p>   loop (number of optimisation steps)</p>
+     <div style="margin:25px">
+     <p style="color:rgba(255,0,0,0.5)">       Sample random obstacles  </p>
+     <p>       Run lenia </p>
+     <p>       Gradient descent toward the disk at target position</p>
+   </div>
+     <p>   See what is the position(ie goal) achieved <span style="color:rgba(255,0,0,0.5)"> (mean over several random obstacles runs) <span></p>
+   </div>
+ </code>
+ </pre>
+ </div>
 <h3>Overcoming "bad initialization" problem </h3>
 
 <img src="dependencies.svg" alt="schemeLearn" width="100%" class="l-body" >
@@ -567,10 +682,13 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 <h2> Related works </h2>
 
 <h4>Classic CA cognition </h4>
+
 <p> <dt-cite key="autopoiesisBeer2004"></dt-cite><dt-cite key="PMID:24494612"></dt-cite></p>
 <h4>Neural CA</h4>
 <p> <dt-cite key="mordvintsev2020growing"></dt-cite><dt-cite key="variengien2021selforganized"></dt-cite></p>
 <h4>Soft robots</h4>
+<dt-cite key="horibe2021regenerating"></dt-cite>
+<h4> Swarm robotic <h4>
 <h4>Exploration</h4>
 <p> <dt-cite key="reinke2020intrinsically"></dt-cite><dt-cite key="etcheverry2020hierarchically"></dt-cite></p>
 
@@ -608,7 +726,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
  </p>
 
  <p>
-   One other interesting direction is to add even more constraints in the environment  like food for example. We tried a little bit to add food in Lenia but we're not satisfied with the result. We think that adding food to the environment might be a great leap toward the search of more advanced behavior in Lenia. For example adding competition between individual/species for food. From this competition and new constraints, interesting strategies could emerge as in <dt-cite key="baker2020emergent"></dt-cite>
+   One other interesting direction is to add even more constraints in the environment  like food/energy for example. We tried a little bit to add food in Lenia but we're not satisfied with the result. We think that adding food to the environment might be a great leap toward the search of more advanced behavior in Lenia. For example adding competition between individual/species for food. From this competition and new constraints, interesting strategies could emerge as in <dt-cite key="baker2020emergent"></dt-cite>
    <!---
    and see what are the strategy and complex behavior that emerge from these constraints
  -->
@@ -1024,4 +1142,28 @@ background-color: lightgreen;
 .radio-toolbar label:hover {
   background-color: lightgreen;
 }
+
+/*
+.code {
+white-space: nowrap;
+border-radius: 2px;
+padding: 4px 25px;
+font-size: 15px;
+color: rgba(0, 0, 0, 0.6);
+display: block;
+background: white;
+border-left: 3px solid rgba(0, 0, 0, 0.05);
+text-shadow: 0 1px white;
+font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+text-align: left;
+white-space: pre;
+word-spacing: normal;
+word-break: normal;
+word-wrap: normal;
+line-height: 0.00001;
+tab-size: 4;
+}*/
+
+
+
 </style>
