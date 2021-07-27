@@ -77,12 +77,12 @@
       <li><a href="#walls">Walls</a></li>
       <li><a href="#differentiable">Differentiable Lenia</a></li>
     </ul>
-    <h5><a href="#movingCrea">Can we learn moving Creature in Lenia</a></h5>
+    <h5><a href="#movingCrea">Can we learn moving Creature in Lenia ? </a></h5>
     <ul>
       <li><a href="#movingCrea">Target shape</a></li>
       <li><a href="#IMGEPcurriculum">IMGEP and utility of curriculum</a></li>
     </ul>
-    <h5><a href="#robustCrea">Can we learn robust creatures with sensorimotor capabilities</a></h5>
+    <h5><a href="#robustCrea">Can we learn robust creatures with sensorimotor capabilities ?</a></h5>
     <ul>
       <li><a href="#robustCrea">Method</a></li>
       <li><a href="#badInit">Overcoming bad initialization problem</a></li>
@@ -106,7 +106,7 @@
 
   <h2 id="introduction">Introduction</h2>
 
-  <p> Behavior in living creature is often seen as action output in response to sensory input, these sensorimotor capabilities seem crucial to behave better in their environment and therefore increase their chance of survival. When we think about output from sensory inputs, the first thing we often think of is neural computation. However, we can't deny that a lot of living thing without a brain are also having these sensorimotor capabilities like plant moving to get more sun, slimemolds which seem to use mechanical cues of its environment to choose in which direction to expand <dt-cite key="https://doi.org/10.1002/adma.202008161"></dt-cite>, using their body both for sensing and computing the decision. We also find sensorimotor capabilities at the macro scale  in swarm of  bacterias <dt-cite key="PhysRevE.101.012407"></dt-cite>  where a group of bacteria seem to avoid a wall of antibiotics, making group decision for obstacle avoidance.
+  <p> Behavior in living creature is often seen as action output in response to sensory input, these sensorimotor capabilities seem crucial to behave better in their environment and therefore increase their chance of survival. When we think about output from sensory inputs, the first thing we often think of is neural computation. However, we can't deny that a lot of living thing without a brain are also having these sensorimotor capabilities like plant moving to get more sun, slimemolds which seem to use mechanical cues of its environment to choose in which direction to expand <dt-cite key="https://doi.org/10.1002/adma.201758161"></dt-cite>, using their body both for sensing and computing the decision. We also find sensorimotor capabilities at the macro scale  in swarm of  bacterias <dt-cite key="PhysRevE.101.012407"></dt-cite>  where a group of bacteria seem to avoid a wall of antibiotics, making group decision for obstacle avoidance.
   </p>
 
   <!---
@@ -167,12 +167,15 @@
 
   <div style="position:absolute; left:5%; top:0%;border-radius:5px;">
     <p>
-    $$ A^{t+1}= \left[A^t +\frac{1}{T}  \left(G_{wall}(K_{wall}*A^t_1) +\sum_k h_k G_k(K_k * A^t_0) \right) \right]^1_0 $$
+    $$ A^{t+1}= \left[A^t +\frac{1}{\textcolor{#00c8c8}{T}}  \left(G_{wall}(K_{wall}*A^t_1) +\sum_k \textcolor{#00c800}{h^k} G_k(K_k * A^t_0) \right) \right]^1_0 $$
   </p>
 
+
   <div class="row">
+
+
     <div class="column">
-      $$ K_k= x \rightarrow \left( \sum_i^{n} b_i^k exp(-\frac{(x-{rk}^k_{i})^2}{2(w^k_{i})^2}) \right) \mathbb{I}_{x\leq r^kR}  $$
+      $$ K_k= x \rightarrow \left( \sum_i^{n} \textcolor{#0000c8}{b_i^k} exp(-\frac{(x-\textcolor{#0000c8}{{rk}^k_{i}})^2}{2(\textcolor{#0000c8}{w^k_{i}})^2}) \right) \mathbb{I}_{x\leq \textcolor{#0000c8}{r^k} \textcolor{#baba40}{R}}  $$
       <!---$$K_k=  x \rightarrow \left(\sum_i^{n} b_i\mathcal{N}(\frac{x}{r^kR},{rk}^k_{i},w^k_{i}) \right) \mathbb{I}_{x\leq r^kR}$$--->
       <!---sigmoid(4(1-\frac{x}{r^kR}))--->
     </div>
@@ -182,9 +185,10 @@
 
   </div>
 
+
   <div class="row">
     <div class="column">
-      $$ G_k= x \rightarrow 2*exp(-\frac{(x-m^k)^2}{2(s^k)^2})-1  $$
+      $$ G_k= x \rightarrow 2*exp(-\frac{(x-\textcolor{#c80000}{m^k})^2}{2(\textcolor{#c80000}{s^k} )^2})-1  $$
 
       <!---exp(-\frac{(x-m^k)^2}{2(s^k)^2})\mathcal{N}(\frac{x}{r^kR},m^k,s^k)-->
     </div>
@@ -197,36 +201,40 @@
 
 <p style="text-align: center">
 <b>Parameters:</b><br>
-R maximum radius of a kernel<br>
-T time scale <br>
+<span style="color:rgba(186,186,40,0.8)">
+R maximum radius of a kernel</span><br>
+<span style="color:rgba(0,128,128,0.8)">
+T time scale </span><br>
+
 <span style="text-decoration:underline">For each kernel:<span>
 <div class="row">
   <div class="column">
     <ul>
-    <li>h  \( \in [0,1] \) weight of the kernel </li>
-    <li>r   \( \in [0,1] \) relative radius  </li>
-  </ul>
-  </div>
-  <div class="column">
-    <ul>
-    <li>m mean in growth function</li>
-    <li>s variance/size in growth function </li>
-  </ul>
-
-
-  </div>
-  <div class="column">
-    <ul>
-    <li>w  \( \in [0,1]^n \) width of the guassian bumps</li>
-    <li>b  \( \in [0,1]^n \) height of the guassian bumps </li>
+    <li style="color:rgba(0,0,175,0.8)">w  \( \in [0,1]^n \) width of the guassian bumps</li>
+    <li style="color:rgba(0,0,175,0.8)">b  \( \in [0,1]^n \) height of the guassian bumps </li>
   </ul>
 
   </div>
   <div class="column">
     <ul>
-    <li>rk \( \in [0,1]^n \) shift of gaussian bumps from center of kernel </li>
+    <li style="color:rgba(0,0,175,0.8)">rk \( \in [0,1]^n \) shift of gaussian bumps from center of kernel </li>
+    <li style="color:rgba(0,0,175,0.8)"> r   \( \in [0,1] \) relative radius  </li>
   </ul>
+  </div>
 
+
+  <div class="column">
+    <ul>
+    <li style="color:rgba(175,0,0,0.8)">m mean in growth function</li>
+    <li style="color:rgba(175,0,0,0.8)">s variance/size in growth function </li>
+  </ul>
+  </div>
+
+  <div class="column">
+    <ul>
+    <li style="color:rgba(0,128,0,0.8)"> h   \( \in [0,1] \) weight of the kernel </li>
+
+  </ul>
   </div>
 </div>
 
@@ -471,7 +479,7 @@ T time scale <br>
 
 
  <h2 id="robustCrea"> Can we learn robust creatures with sensorimotor capabilities ?</h2>
- <img src="Merge.svg" alt="schemeLearn" width="100%" class="l-middle-outset" >
+ <img src="Merge.svg" alt="schemeLearn" width="100%" class="l-middle" >
 
      <p  style="font-size: 13px;color:#A0A0A0;">
       Initialization is the yellow square  Green dashed line is at the same position in both.; <br>
@@ -553,7 +561,7 @@ T time scale <br>
               </video>
 </div>
 </div>
-<div style="position:fixed;bottom:0;left :-200px;">
+<div style="position:fixed;bottom:0;left :-175px;">
   <input type="range" min="0.1" max="3"  step="0.1" value="1" class="slider" id="rangeSpeed" >
   <p> Speed of video: <span id="valueSpeed"></span></p>
 </div>
@@ -568,7 +576,7 @@ T time scale <br>
 
 <h4> are the creature long term stable ?</h4>
 <p>
-Even if we can not know if the creature is indefinitively stable, we can test for reasonable number of timesteps. The result is that the creature obtained with IMGEP with obstacles seems stable for 2000 timesteps while it has only been trained to be stable for 50 timesteps. This might be because as it learned to be robust to deformation it has learned a strong preservation of the structure to prevent any explosion or dying when perturbed a little bit. And so when there is no perturbation this layer of "security" strongly preserves the structure. However, Training a creature only for movement(without obstacles  so no perturbation during training) sometimes led to non long term stable creatures. This is similar to what has been observed in <dt-cite key="mordvintsev2020growing"></dt-cite> where training to grow a creature from the same initialization (a pixel) led to pattern that were not long term stable. But adding incomplete/perturbed patterns as initialization to learn to recover from them led to long term stability. (by making the target shape a stronger attractor)
+Even if we can not know if the creature is indefinitively stable, we can test for reasonable number of timesteps. The result is that the creature obtained with IMGEP with obstacles seems stable for 1750 timesteps while it has only been trained to be stable for 50 timesteps. This might be because as it learned to be robust to deformation it has learned a strong preservation of the structure to prevent any explosion or dying when perturbed a little bit. And so when there is no perturbation this layer of "security" strongly preserves the structure. However, Training a creature only for movement(without obstacles  so no perturbation during training) sometimes led to non long term stable creatures. This is similar to what has been observed in <dt-cite key="mordvintsev2020growing"></dt-cite> where training to grow a creature from the same initialization (a pixel) led to pattern that were not long term stable. But adding incomplete/perturbed patterns as initialization to learn to recover from them led to long term stability. (by making the target shape a stronger attractor)
 </p>
 <h4> Are the creatures robust to new obstacles ?</h4>
 <video id="model-editing-level-1-video-1"  autoplay loop muted="" class="videoShow l-middle side">
@@ -701,7 +709,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 
 <h4>Classic CA cognition </h4>
 
-<p> <dt-cite key="autopoiesisBeer2004"></dt-cite><dt-cite key="PMID:24494612"></dt-cite></p>
+<p> <dt-cite key="autopoiesisBeer1754"></dt-cite><dt-cite key="PMID:24494612"></dt-cite></p>
 <h4>Neural CA</h4>
 <p> <dt-cite key="mordvintsev2020growing"></dt-cite><dt-cite key="variengien2021selforganized"></dt-cite></p>
 <h4>Soft robots</h4>
@@ -902,17 +910,17 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
   url       = {http://arxiv.org/abs/1901.01753},
   archivePrefix = {arXiv},
   eprint    = {1901.01753},
-  timestamp = {Tue, 29 Sep 2020 10:47:58 +0200},
+  timestamp = {Tue, 29 Sep 2020 10:47:58 +0175},
   biburl    = {https://dblp.org/rec/journals/corr/abs-1901-01753.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
   }
 
-  @article{autopoiesisBeer2004,
+  @article{autopoiesisBeer1754,
     author    = {Randall D. Beer},
     title     = {Autopoiesis and Cognition in the Game of Life.},
     journal   = {Artif Life},
     volume    = {10(3)},
-    year      = {2004},
+    year      = {1754},
     url       = { https://doi.org/10.1162/1064546041255539},
 
   }
@@ -922,7 +930,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
         title={Lenia and Expanded Universe},
         author={Bert Wang-Chak Chan},
         year={2020},
-        eprint={2005.03742},
+        eprint={1755.03742},
         archivePrefix={arXiv},
         primaryClass={nlin.CG}
   }
@@ -949,7 +957,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
         title={Hierarchically Organized Latent Modules for Exploratory Search in Morphogenetic Systems},
         author={Mayalen Etcheverry and Clement Moulin-Frier and Pierre-Yves Oudeyer},
         year={2020},
-        eprint={2007.01195},
+        eprint={1757.01195},
         archivePrefix={arXiv},
         primaryClass={cs.LG}
   }
@@ -1070,17 +1078,17 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
       archivePrefix={arXiv},
       primaryClass={cs.NE}
   }
-  @article{https://doi.org/10.1002/adma.202008161,
+  @article{https://doi.org/10.1002/adma.201758161,
     author = {Murugan, Nirosha J. and Kaltman, Daniel H. and Jin, Paul H. and Chien, Melanie and Martinez, Ramses and Nguyen, Cuong Q. and Kane, Anna and Novak, Richard and Ingber, Donald E. and Levin, Michael},
     title = {Mechanosensation Mediates Long-Range Spatial Decision-Making in an Aneural Organism},
     journal = {Advanced Materials},
     volume = {n/a},
     number = {n/a},
-    pages = {2008161},
+    pages = {1758161},
     keywords = {basal cognition, decision-making, information processing, mechanosensing, Physarum polycephalum, stiffness, TRP channel},
-    doi = {https://doi.org/10.1002/adma.202008161},
-    url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/adma.202008161},
-    eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/adma.202008161},
+    doi = {https://doi.org/10.1002/adma.201758161},
+    url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/adma.201758161},
+    eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/adma.201758161},
     abstract = {Abstract The unicellular protist Physarum polycephalum is an important emerging model for understanding how aneural organisms process information toward adaptive behavior. Here, it is revealed that Physarum can use mechanosensation to reliably make decisions about distant objects in its environment, preferentially growing in the direction of heavier, substrate-deforming, but chemically inert masses. This long-range sensing is abolished by gentle rhythmic mechanical disruption, changing substrate stiffness, or the addition of an inhibitor of mechanosensitive transient receptor potential channels. Additionally, it is demonstrated that Physarum does not respond to the absolute magnitude of strain. Computational modeling reveales that Physarum may perform this calculation by sensing the fraction of its perimeter that is distorted above a threshold substrate strain—a fundamentally novel method of mechanosensation. Using its body as both a distributed sensor array and computational substrate, this aneural organism leverages its unique morphology to make long-range decisions. Together, these data identify a surprising behavioral preference relying on biomechanical features and quantitatively characterize how the Physarum exploits physics to adaptively regulate its growth and shape.}
     }
 
