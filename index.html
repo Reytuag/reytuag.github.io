@@ -38,13 +38,17 @@
   <div id="showText" onclick="this.style.display='none';">initializing...</div>
   <p class="l-gutter" style="font-size: 12px;color:#A0A0A0;"> Radius 0.5 is good to spawn creatures<br> Some death in corners but always with 2 creatures while creature has only been trained alone. </p>
   <p> press p to pause and enter to clear </p>
-  <div class='l-body'>
-    <input type="range" min="0.1" max="1"  step="0.1" value="0.5" class="slider" id="rangeRadiusWall" >
-    <p> Radius: <span id="valueRadiusWall"></span></p>
-    <input type="range" min="6" max="20"  step="0.1" value="8.5" class="slider" id="rangeRadius" style="display:none">
-    <p style="display:none"> Radius of kernels (size of creature): <span id="valueRadius"></span></p>
-    <input type="range" min="2" max="8"  step="1" value="2" class="slider" id="rangeZoom" >
-    <p> Zoom : <span id="valueZoom"></span></p>
+  <div class='l-body row'>
+    <div class="column">
+      <input type="range" min="0.1" max="1"  step="0.1" value="0.5" class="slider" id="rangeRadiusWall" >
+      <p> Radius: <span id="valueRadiusWall"></span></p>
+      <input type="range" min="6" max="20"  step="0.1" value="8.5" class="slider" id="rangeRadius" style="display:none">
+      <p style="display:none"> Radius of kernels (size of creature): <span id="valueRadius"></span></p>
+    </div>
+    <div class="column">
+      <input type="range" min="2" max="8"  step="1" value="2" class="slider" id="rangeZoom" >
+      <p> Zoom : <span id="valueZoom"></span></p>
+    </div>
   </div>
   <div class="radio-toolbar" id="optionDiv">
     <input type="radio" id="radioErase"  name='option'  value="erase">
@@ -114,7 +118,6 @@
   Current AI focus on neural architecture
 
   --->
-
   <p>
     Furthermore, living behing with neural computation also seem to take advanatge of some morpholocial computation. In fact, morphological computation theory states that the body also plays a role in this sensory to motor flow. ref . Cognition therefore isn't bounded to the brain.
   </p>
@@ -133,7 +136,9 @@
   </p>
 
 
-
+  <video id="robust" width="100%" autoplay loop muted="" class="videoShow l-body side">
+                <source src="pacman.mp4" type="video/mp4">
+              </video>
   <p>
     In Lenia <dt-cite key="chan2020lenia"></dt-cite> <dt-cite key="chan2019lenia"></dt-cite>  which is a continous cellular automata, we can already observe sensorimotor capabilities(see section Lenia). However, even if there are interaction between some entity, there is no well defined environment. Moreover the search for new creature in Lenia was first done manually testing parameters and mutating it or with simple evolutionary algorithm, which might take time and luck to find the type of creature we really expect. Other studies <dt-cite key="etcheverry2020hierarchically"></dt-cite>  <dt-cite key="reinke2020intrinsically"></dt-cite> focused on exploring as much as possible the space of morphology in Lenia using intrinsically motivated explorer  . However this last techniques didn't focused much on finding moving creature.
   </p>
@@ -167,7 +172,7 @@
 
   <div style="position:absolute; left:5%; top:0%;border-radius:5px;">
     <p>
-    $$ A^{t+1}= \left[A^t +\frac{1}{\textcolor{#00c8c8}{T}}  \left(G_{wall}(K_{wall}*A^t_1) +\sum_k \textcolor{#00c800}{h^k} G_k(K_k * A^t_0) \right) \right]^1_0 $$
+    $$ A^{t+1}= \left[A^t +\frac{1}{\textcolor{#00c8c8}{T}}  \left(G_{wall}(K_{wall}*A^t_1) +\sum_k \textcolor{#008000}{h^k} G_k(K_k * A^t_0) \right) \right]^1_0 $$
   </p>
 
 
@@ -203,7 +208,7 @@
 <b>Parameters:</b><br>
 <span style="color:rgba(186,186,40,0.8)">
 R maximum radius of a kernel</span><br>
-<span style="color:rgba(0,128,128,0.8)">
+<span style="color:rgba(0,175,175,0.8)">
 T time scale </span><br>
 
 <span style="text-decoration:underline">For each kernel:<span>
