@@ -687,7 +687,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 <h4>Neural CA</h4>
 <p> <dt-cite key="mordvintsev2020growing"></dt-cite><dt-cite key="variengien2021selforganized"></dt-cite></p>
 <h4>Soft robots</h4>
-<dt-cite key="horibe2021regenerating"></dt-cite>
+<p>automatic(<dt-cite key="horibe2021regenerating"></dt-cite><dt-cite key="10.1145/2739480.2754662"> </dt-cite>) controller using feedback of env (<dt-cite key="10.1162/isal_a_00223"></dt-cite>) shapeshift to recover from injury (<dt-cite key="Kriegman2019AutomatedSF"> </dt-cite>)</p>
 <h4> Swarm robotic <h4>
 <h4>Exploration</h4>
 <p> <dt-cite key="reinke2020intrinsically"></dt-cite><dt-cite key="etcheverry2020hierarchically"></dt-cite></p>
@@ -700,7 +700,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
                <source src="damageHand.mp4" type="video/mp4">
              </video>
  <p>
-   In order to navigate, the creature first need to sense the wall through a deformation of macro creature. Then after this deformation it has to make a collective "decision" on where to grow next and then move and regrow it's shape. We can even do the deformation ourselves by suppressing a part of the creature. It's not clear looking at the kernels activity which ones are responsible for these decision if not all. How the decision is made remains a mystery. Moreover some cells don't even see the deformation because they're too far  so some messages from the one that see have to be transmitted.
+   In order to navigate, <b>the creature first need to sense the wall through a deformation of macro creature </b>. Then after this deformation it has to make a <b> collective "decision" </b> on where to grow next and then move and regrow it's shape. We can even do the deformation ourselves by suppressing a part of the creature. It's not clear looking at the kernels activity which ones are responsible for these decision if not all. How the decision is made remains a mystery. Moreover some cells don't even see the deformation because they're too far  so some messages from the one that see have to be transmitted.
  </p>
 
  <p>
@@ -1063,6 +1063,62 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
     eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/adma.202008161},
     abstract = {Abstract The unicellular protist Physarum polycephalum is an important emerging model for understanding how aneural organisms process information toward adaptive behavior. Here, it is revealed that Physarum can use mechanosensation to reliably make decisions about distant objects in its environment, preferentially growing in the direction of heavier, substrate-deforming, but chemically inert masses. This long-range sensing is abolished by gentle rhythmic mechanical disruption, changing substrate stiffness, or the addition of an inhibitor of mechanosensitive transient receptor potential channels. Additionally, it is demonstrated that Physarum does not respond to the absolute magnitude of strain. Computational modeling reveales that Physarum may perform this calculation by sensing the fraction of its perimeter that is distorted above a threshold substrate strain—a fundamentally novel method of mechanosensation. Using its body as both a distributed sensor array and computational substrate, this aneural organism leverages its unique morphology to make long-range decisions. Together, these data identify a surprising behavioral preference relying on biomechanical features and quantitatively characterize how the Physarum exploits physics to adaptively regulate its growth and shape.}
     }
+
+    @inproceedings{10.1145/2739480.2754662,
+    author = {Cheney, Nick and Bongard, Josh and Lipson, Hod},
+    title = {Evolving Soft Robots in Tight Spaces},
+    year = {2015},
+    isbn = {9781450334723},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/2739480.2754662},
+    doi = {10.1145/2739480.2754662},
+    abstract = {Soft robots have become increasingly popular in recent years -- and justifiably so.
+    Their compliant structures and (theoretically) infinite degrees of freedom allow them
+    to undertake tasks which would be impossible for their rigid body counterparts, such
+    as conforming to uneven surfaces, efficiently distributing stress, and passing through
+    small apertures. Previous work in the automated deign of soft robots has shown examples
+    of these squishy creatures performing traditional robotic task like locomoting over
+    flat ground. However, designing soft robots for traditional robotic tasks fails to
+    fully utilize their unique advantages. In this work, we present the first example
+    of a soft robot evolutionarily designed for reaching or squeezing through a small
+    aperture -- a task naturally suited to its type of morphology. We optimize these creatures
+    with the CPPN-NEAT evolutionary algorithm, introducing a novel implementation of the
+    algorithm which includes multi-objective optimization while retaining its speciation
+    feature for diversity maintenance. We show that more compliant and deformable soft
+    robots perform more effectively at this task than their less flexible counterparts.
+    This work serves mainly as a proof of concept, but we hope that it helps to open the
+    door for the better matching of tasks with appropriate morphologies in robotic design
+    in the future.},
+    booktitle = {Proceedings of the 2015 Annual Conference on Genetic and Evolutionary Computation},
+    pages = {935–942},
+    numpages = {8},
+    keywords = {hyperneat, soft robot, artificial life, morphology, material, generative encoding, cppn, multi-objective},
+    location = {Madrid, Spain},
+    series = {GECCO 15}
+    }
+    @proceedings{10.1162/isal_a_00223,
+    author = {Talamini, Jacopo and Medvet, Eric and Bartoli, Alberto and De Lorenzo, Andrea},
+    title = {Evolutionary Synthesis of Sensing Controllers for Voxel-based Soft Robots},
+    volume = {ALIFE 2019: The 2019 Conference on Artificial Life},
+    series = {ALIFE 2021: The 2021 Conference on Artificial Life},
+    pages = {574-581},
+    year = {2019},
+    month = {07},
+    abstract = {Soft robots allow for interesting morphological and behavioral designs because they exhibit more degrees of freedom than robots composed of rigid parts. In particular, voxel-based soft robots (VSRs)—aggregations of elastic cubic building blocks—have attracted the interest of Robotics and Artificial Life researchers. VSRs can be controlled by changing the volume of individual blocks: simple, yet effective controllers that do not exploit the feedback of the environment, have been automatically designed by means of Evolutionary Algorithms (EAs).In this work we explore the possibility of evolving sensing controllers in the form of artificial neural networks: we hence allow the robot to sense the environment in which it moves. Although the search space for a sensing controller is larger than its non-sensing counterpart, we show that effective sensing controllers can be evolved which realize interesting locomotion behaviors. We also experimentally investigate the impact of the VSR morphology on the effectiveness of the search and verify that the sensing controllers are indeed able to exploit their sensing ability for better solving the locomotion task.},
+    doi = {10.1162/isal_a_00223},
+    url = {https://doi.org/10.1162/isal\_a\_00223},
+    eprint = {https://direct.mit.edu/isal/proceedings-pdf/isal2019/31/574/1903595/isal\_a\_00223.pdf},
+    }
+    @article{Kriegman2019AutomatedSF,
+  title={Automated shapeshifting for function recovery in damaged robots},
+  author={Sam Kriegman and Steph Walker and Dylan S. Shah and Michael Levin and Rebecca Kramer-Bottiglio and J. Bongard},
+  journal={ArXiv},
+  year={2019},
+  volume={abs/1905.09264},
+  url={https://arxiv.org/abs/1905.09264}
+}
+
 
 
 }
