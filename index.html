@@ -67,24 +67,42 @@
 
 
 
+  <d-content class="figcaption" >
+  <nav style="margin-left:2em">
+    <h2>Contents</h2>
+    <h5><a href="#introduction">Introduction</a></h5>
+    <h5><a href="#system">The System</a></h5>
+    <ul>
+      <li><a href="#Lenia">Lenia</a></li>
+      <li><a href="#walls">Walls</a></li>
+      <li><a href="#differentiable">Differentiable Lenia</a></li>
+    </ul>
+    <h5><a href="#movingCrea">Can we learn moving Creature in Lenia</a></h5>
+    <ul>
+      <li><a href="#movingCrea">Target shape</a></li>
+      <li><a href="#IMGEPcurriculum">IMGEP and utility of curriculum</a></li>
+    </ul>
+    <h5><a href="#robustCrea">Can we learn robust creatures with sensorimotor capabilities</a></h5>
+    <ul>
+      <li><a href="#robustCrea">Method</a></li>
+      <li><a href="#badInit">Overcoming bad initialization problem</a></li>
+    </ul>
+    <h5><a href="#results">Results</a></h5>
+    <ul>
+      <li><a href="#generalize"> How well do the creatures obtained generalize ?</a></li>
+      <li><a href="#multicrea">Multi creature setting</a></li>
+    </ul>
+    <h5><a href="#related">Related works</a></h5>
+    <h5><a href="#discussion">Discussion</a></h5>
+    <h5><a href="#appendix">Appendix</a></h5>
+  </nav>
+  </d-content>
 
   <p>Spatially localized patterns in cellular automata have shown a lot of interesting behavior that led to new understanding of self-organizing system. While the notion of environment is a keypoint in Maturana and Varela biology of cognition, studies on cellular automata rarely introduced a well defined environment in their system. In this paper, we propose to add walls in a cellular automata to study how we can learn a self-organizing creature capable of reacting to the perturbations induced by the environment, ie robust creatures with sensorimotor capabilities. We provide a method based on curriculum learning able to learn the CA rule leading to such creature. The creature obtained, using only local update rules, are able to regenerate and preserve their integrity and structure while dealing with the obstacles in their way.</p>
 
 
 
-  <!--
-  <d-contents>
-  <nav class="l-gutter text figcaption">
-    <h4>Contents</h4>
-    <h6><a href="#introduction">Introduction</a></h6>
-    <h6><a href="#system">the system</a></h6>
-    <h6><a href="#movingCrea">Learning Moving Creature in Lenia</a></h6>
-    <h6><a href="#robustCrea">Learning robust creatures with sensorimotor capabilities</a></h6>
-    <h6><a href="#results">Results</a></h6>
-    <h6><a href="#discussion">Discussion</a></h6>
-  </nav>
-  </d-contents>
-  -->
+
 
   <h2 id="introduction">Introduction</h2>
 
@@ -101,7 +119,7 @@
     Furthermore, living behing with neural computation also seem to take advanatge of some morpholocial computation. In fact, morphological computation theory states that the body also plays a role in this sensory to motor flow. ref . Cognition therefore isn't bounded to the brain.
   </p>
   <p>
-     In Maturana and Varela work <dt-cite key="VarelaThompsonEmbo"></dt-cite>, cognition is centered around how an agent "reacts" to the perturbation induced by its environment, ie sensory stimulus. More precisely, they introduce the notion of cognitive domain of a self-organizing system which are all the perturbations induced by the environment which do  not result in the destruction of the self-organizing system. Their notion of cognition is thus deeply linked with how a self-organizing creature will try to preserve its integrity in its environment.
+     In Maturana and Varela work <dt-cite key="VarelaThompsonEmbo"></dt-cite><dt-cite key="Varela1997PatternsOL"></dt-cite>, cognition is centered around how an agent "reacts" to the perturbation induced by its environment, ie sensory stimulus. More precisely, they introduce the notion of cognitive domain of a self-organizing system which are all the perturbations induced by the environment which do  not result in the destruction of the self-organizing system. Their notion of cognition is thus deeply linked with how a self-organizing creature will try to preserve its integrity in its environment.
   </p>
 
   <p>
@@ -222,7 +240,7 @@ T time scale <br>
   </div>
 
 
-  <h4> Lenia </h4>
+  <h4 id="Lenia"> Lenia </h4>
   <p>
      The cellular automaton we will study in this work is Lenia <dt-cite key="chan2020lenia"></dt-cite><dt-cite key="chan2019lenia"></dt-cite>. Lenia is a system of continous cellular automata where a wide variety of complex behavior has already been osberved, including what looks like sensorimotor-capabilities. In this work i will use the multi channel, multi kernel version of Lenia <dt-cite key="chan2020lenia"></dt-cite> but for simplicity we will only use 1 channel for the creature and other ones for the environment.
   </p>
@@ -271,7 +289,7 @@ T time scale <br>
 
 
 
-  <h4> Walls </h4>
+  <h4 id="walls"> Walls </h4>
 
   <p>
     Our work, contrary to previous work on Lenia and most cellular automata, clearly separates what belongs to the environment and what does not. We also hand craft and fix the environment rule to define properly the environment we want. In this work we'll focus on walls in the environment as navigating between obstacle requires sensorimotor capabilites.
@@ -321,7 +339,7 @@ T time scale <br>
   </p>
 
 
-  <h4> Differentiable Lenia </h4>
+  <h4 id="differentiable"> Differentiable Lenia </h4>
   <p>
       Now that the environment is defined, we want to learn both the initialization and the CA rules leading to interesting behaviors. All parameters of the CA rule will be optimized, as well as the initialization which will be a square of fixed size.( each pixel will have its value optimized)
   </p>
@@ -364,7 +382,7 @@ T time scale <br>
 
 
 
- <h3>IMGEP and Utility of curriculum</h3>
+ <h3 id="IMGEPcurriculum">IMGEP and Utility of curriculum</h3>
 
 
  <p>
@@ -431,7 +449,7 @@ T time scale <br>
   </div>
 </div>
 --->
-<div clas=l-body>
+<div class=l-body>
 <pre>
 <code  style="line-height:0.4">
     <p>Initialize randomly the history (sampling random parameters)</p>
@@ -498,7 +516,7 @@ T time scale <br>
  </code>
  </pre>
  </div>
-<h3>Overcoming "bad initialization" problem </h3>
+<h3 id="badInit">Overcoming "bad initialization" problem </h3>
 
 <img src="dependencies.svg" alt="schemeLearn" width="100%" class="l-body" >
 <p  style="font-size: 13px;color:#A0A0A0;">
@@ -546,7 +564,7 @@ T time scale <br>
 <p>
   In this section, we will test the creature to explore its sensorimotor capabilities and robustness. We will also test the creatures obtained in situation that it has not encounterd during training.
 </p>
-<h3> How well do the creatures obtained generalize ? </h3>
+<h3 id="generalize"> How well do the creatures obtained generalize ? </h3>
 
 <h4> are the creature long term stable ?</h4>
 <p>
@@ -595,7 +613,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 <p> We can change the scale of the creature by changing the radius of the kernels as well as the size of the initialization square. This way we can make much smaller creature that therefore have less pixels to do the computation. This scale reduction has a limit but we can get pretty small creature. The creature stil seem to be quite robust and be able to sense and react to their environment while having less space to compute. The creature are even able to reproduce, however they seem to be less robust than the bigger one as we can see some dying from collision. We can also do it the other way and have much bigger creature that therefore have more space to compute. </p>
 
 
-<h4> Are the creatures robust to change of initialization ?</h4>
+<h4 id="multicrea"> Are the creatures robust to change of initialization ?</h4>
 <video id="model-editing-level-1-video-1"   controls="" muted="" class="videoShow l-middle side">
               <source src="initCircleGrad.mp4" type="video/mp4">
             </video>
@@ -658,7 +676,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 
 
 
-<h3>Still failure cases</h3>
+<h3 id="failure">Still failure cases</h3>
 <p>
   Even with the initialization selection and small mutations, sometimes the algorithm doesn't seem able to learn to go past obstacles and  we can't reach goal position beyond a certain limit near the beginning of walls.
 </p>
@@ -679,7 +697,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 
 
 
-<h2> Related works </h2>
+<h2 id="related"> Related works </h2>
 
 <h4>Classic CA cognition </h4>
 
@@ -739,7 +757,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 
 <dt-appendix>
 
-      <h1> Appendix </h1>
+      <h1 id="appendix"> Appendix </h1>
       <h2>Different target shape</h2>
 
        <p>
@@ -1111,7 +1129,7 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
     doi = {10.1162/isal_a_00223},
     url = {https://doi.org/10.1162/isal\_a\_00223},
     eprint = {https://direct.mit.edu/isal/proceedings-pdf/isal2019/31/574/1903595/isal\_a\_00223.pdf},
-    }
+    },
     @article{Kriegman2019AutomatedSF,
   title={Automated shapeshifting for function recovery in damaged robots},
   author={Sam Kriegman and Steph Walker and Dylan S. Shah and Michael Levin and Rebecca Kramer-Bottiglio and J. Bongard},
@@ -1119,6 +1137,14 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
   year={2019},
   volume={abs/1905.09264},
   url={https://arxiv.org/abs/1905.09264}
+},
+@article{Varela1997PatternsOL,
+  title={Patterns of Life: Intertwining Identity and Cognition},
+  author={F. Varela},
+  journal={Brain and Cognition},
+  year={1997},
+  volume={34},
+  pages={72-87}
 }
 
 
@@ -1204,6 +1230,47 @@ background-color: lightgreen;
 .radio-toolbar label:hover {
   background-color: lightgreen;
 }
+
+.figcaption{
+  font-size: 22px;
+  color:#A0A0A0;
+}
+
+d-content li{
+  font-size: 14px;
+  color:#A0A0A0;
+}
+
+d-content {
+    clear: both;
+    float: right;
+    line-height:1.4;
+    padding-top: 1em;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: 0;
+    margin-left: 10px;
+    margin-right: calc((100vw - 1500px) / 2 + 168px);
+    width: calc((1500px - 648px) / 2 - 24px);
+}
+
+d-content h5{
+  margin-block-start: 1.5em;
+  margin-block-end: 0em;
+}
+
+d-content ul{
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+}
+
+d-content h2{
+  margin-top:10px;
+}
+@media (max-width: 1300px)
+d-content {
+    display: none;
+}
+
 
 /*
 .code {
