@@ -30,23 +30,41 @@ const float baseNoise = 0.1;
 uniform float R;  // space resolution = kernel radius
   // time resolution = number of divisions per unit time
 
-const float T = 7.;
-const mat4      b0 = mat4( 0.995, 0.675, 0.675, 0.130, 0.090, 0.565, 0.795, 0.725, 0.635, 0.909, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );  // kernel ring heights
-const mat4      b1 = mat4( 0.330,0.195, 0.250, 0.405, 0.525, 0.495, 0.745, 0.025, 0.525, 0.300, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );
-const mat4      b2 = mat4( 0.275, 0.730, 0.515, 0.800, 0.465, 0.353, 0.720, 0.615, 0.125, 0.672,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );
-const mat4      w0 = mat4( 0.476, 0.207, 0.186, 0.021, 0.377, 0.174, 0.383, 0.220, 0.130, 0.122, 1., 1., 1., 1., 1., 1. );  // kernel ring heights
-const mat4      w1 = mat4( 0.496, 0.322, 0.018, 0.343, 0.179, 0.095, 0.207, 0.493, 0.017, 0.417, 1., 1., 1., 1., 1., 1. );
-const mat4      w2 = mat4( 0.498, 0.344, 0.375, 0.303, 0.126, 0.074, 0.349, 0.043, 0.307, 0.210, 1., 1., 1., 1., 1., 1. );
-const mat4      rk0 = mat4( 0.735, 0.017, 0.356, 0.011, 0.915, 0.727, 0.383, 0.095, 0.455, 0.671,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );   // kernel ring heights
-const mat4      rk1 = mat4( 0.027, 0.313, 0.668, 0.386, 0.678, 0.880, 0.755, 0.841, 0.186, 0.054,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );
-const mat4      rk2 = mat4( 0.284, 0.137, 0.605, 0.292, 0.875, 0.139, 0.490, 0.931, 0.782, 0.681,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );
-const mat4         mu = mat4( 0.222, 0.149, 0.373, 0.356, 0.188, 0.155, 0.284, 0.134, 0.2890, 0.327,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );   // growth center
-const mat4      sigma = mat4( 0.0990, 0.0955, 0.0855, 0.0960, 0.0145, 0.0080, 0.0985, 0.0955, 0.0985, 0.0970,1., 1., 1., 1., 1., 1. );  // growth width
-const mat4        eta = mat4( 0.222, 0.286, 0.098, 0.150, 0.38, 0.597, 0.391, 0.225, 0.319, 0.157,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );   // growth strength
-const mat4       relR = mat4( 0.887, 0.516, 0.751, 0.893, 0.870, 0.995, 0.818, 0.326, 0.986, 0.716,1., 1., 1., 1., 1., 1. );  // relative kernel radius
-const mat4        src = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 0.0, 2 );   // source channels
-const mat4        dst = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );   // destination channels
+const float T = 7.25;
+const mat4      b0 = mat4( 0.995, 0.675, 0.675, 0.130, 0.090, 0.565, 0.795, 0.725, 0.635, 0.909, 0.0,0.0 , 0.0, 0.0, 0.1263, 0.0068);  // kernel ring heights
+const mat4      b1 = mat4( 0.330,0.195, 0.250, 0.405, 0.525, 0.495, 0.745, 0.025, 0.525, 0.300, 0.0,0.0 , 0.0, 0.0, 0.1345, 0.3537 );
+const mat4      b2 = mat4( 0.275, 0.730, 0.515, 0.800, 0.465, 0.353, 0.720, 0.615, 0.125, 0.672,  0.0,0.0 , 0.0, 0.0, 0.5695, 0.7907 );
+const mat4      w0 = mat4( 0.476, 0.207, 0.186, 0.021, 0.377, 0.174, 0.383, 0.220, 0.130, 0.122, 1., 1., 1., 1., 0.2602, 0.4109 );  // kernel ring heights
+const mat4      w1 = mat4( 0.496, 0.322, 0.018, 0.343, 0.179, 0.095, 0.207, 0.493, 0.017, 0.417, 1., 1., 1., 1., 0.1362, 0.2186 );
+const mat4      w2 = mat4( 0.498, 0.344, 0.375, 0.303, 0.126, 0.074, 0.349, 0.043, 0.307, 0.210, 1., 1., 1., 1., 0.2717, 0.1765);
+const mat4      rk0 = mat4( 0.735, 0.017, 0.356, 0.011, 0.915, 0.727, 0.383, 0.095, 0.455, 0.671,  0.0,0.0 , 0.0, 0.0, 0.5257, 0.3147 );   // kernel ring heights
+const mat4      rk1 = mat4( 0.027, 0.313, 0.668, 0.386, 0.678, 0.880, 0.755, 0.841, 0.186, 0.054,  0.0,0.0 , 0.0, 0.0, 0.9010, 0.1560 );
+const mat4      rk2 = mat4( 0.284, 0.137, 0.605, 0.292, 0.875, 0.139, 0.490, 0.931, 0.782, 0.681,  0.0,0.0 , 0.0, 0.0, 0.0872, 0.7179 );
+const mat4         mu = mat4( 0.222, 0.149, 0.373, 0.356, 0.188, 0.155, 0.284, 0.134, 0.2890, 0.327,  0.0,0.0 , 0.0, 0.0, 0.1973, 0.2002 );   // growth center
+const mat4      sigma = mat4( 0.0990, 0.0955, 0.0855, 0.0960, 0.0145, 0.0080, 0.0985, 0.0955, 0.0985, 0.0970,1., 1., 1., 1., 0.1543, 0.1587 );  // growth width
+const mat4        eta = mat4( 0.222, 0.286, 0.098, 0.150, 0.38, 0.597, 0.391, 0.225, 0.319, 0.157,  0.0,0.0 , 0.0, 0.0, 0.3687, 0.4677 );   // growth strength
+const mat4       relR = mat4( 0.887, 0.516, 0.751, 0.893, 0.870, 0.995, 0.818, 0.326, 0.986, 0.716,1., 1., 1., 1., 0.7687, 0.4324 );  // relative kernel radius
+const mat4        src = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 1, 1 );   // source channels
+const mat4        dst = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 0, 0 );   // destination channels
 /*
+
+
+const float T = 7.25;
+const mat4      b0 = mat4( 0.995, 0.675, 0.675, 0.130, 0.090, 0.565, 0.795, 0.725, 0.635, 0.909, 0.0,0.0 , 0.0, 0.0, 0.1263, 0.0068);  // kernel ring heights
+const mat4      b1 = mat4( 0.330,0.195, 0.250, 0.405, 0.525, 0.495, 0.745, 0.025, 0.525, 0.300, 0.0,0.0 , 0.0, 0.0, 0.1345, 0.3537 );
+const mat4      b2 = mat4( 0.275, 0.730, 0.515, 0.800, 0.465, 0.353, 0.720, 0.615, 0.125, 0.672,  0.0,0.0 , 0.0, 0.0, 0.5695, 0.7907 );
+const mat4      w0 = mat4( 0.476, 0.207, 0.186, 0.021, 0.377, 0.174, 0.383, 0.220, 0.130, 0.122, 1., 1., 1., 1., 0.2602, 0.4109 );  // kernel ring heights
+const mat4      w1 = mat4( 0.496, 0.322, 0.018, 0.343, 0.179, 0.095, 0.207, 0.493, 0.017, 0.417, 1., 1., 1., 1., 0.1362, 0.2186 );
+const mat4      w2 = mat4( 0.498, 0.344, 0.375, 0.303, 0.126, 0.074, 0.349, 0.043, 0.307, 0.210, 1., 1., 1., 1., 0.2717, 0.1765);
+const mat4      rk0 = mat4( 0.735, 0.017, 0.356, 0.011, 0.915, 0.727, 0.383, 0.095, 0.455, 0.671,  0.0,0.0 , 0.0, 0.0, 0.5257, 0.3147 );   // kernel ring heights
+const mat4      rk1 = mat4( 0.027, 0.313, 0.668, 0.386, 0.678, 0.880, 0.755, 0.841, 0.186, 0.054,  0.0,0.0 , 0.0, 0.0, 0.9010, 0.1560 );
+const mat4      rk2 = mat4( 0.284, 0.137, 0.605, 0.292, 0.875, 0.139, 0.490, 0.931, 0.782, 0.681,  0.0,0.0 , 0.0, 0.0, 0.0872, 0.7179 );
+const mat4         mu = mat4( 0.222, 0.149, 0.373, 0.356, 0.188, 0.155, 0.284, 0.134, 0.2890, 0.327,  0.0,0.0 , 0.0, 0.0, 0.1973, 0.2002 );   // growth center
+const mat4      sigma = mat4( 0.0990, 0.0955, 0.0855, 0.0960, 0.0145, 0.0080, 0.0985, 0.0955, 0.0985, 0.0970,1., 1., 1., 1., 0.1443, 0.1567 );  // growth width
+const mat4        eta = mat4( 0.222, 0.286, 0.098, 0.150, 0.38, 0.597, 0.391, 0.225, 0.319, 0.157,  0.0,0.0 , 0.0, 0.0, 0.3687, 0.4677 );   // growth strength
+const mat4       relR = mat4( 0.887, 0.516, 0.751, 0.893, 0.870, 0.995, 0.818, 0.326, 0.986, 0.716,1., 1., 1., 1., 0.7687, 0.4324 );  // relative kernel radius
+const mat4        src = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 1, 1 );   // source channels
+const mat4        dst = mat4( 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,  0.0,0.0 , 0.0, 0.0, 0, 0 );   // destination channels
 //glider
 const float T = 12.;
 const mat4      b0 = mat4( 1., 0.675, 0.675, 0.130, 0.090, 0.565, 0.795, 0.725, 0.635, 0.909, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0 );  // kernel ring heights
@@ -209,7 +227,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     fragCoord=fragCoord;
     vec2 uv = (fragCoord) / iResolution.xy;
 
-		if(iMouse.z <= 0. && iFrame !=0)
+		if((iMouse.z <= 0. && iFrame !=0) || (color[1]>0.5))
 		{
 		int intR = int(ceil(R));
 
@@ -264,8 +282,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     mat4 growth = mult(eta, bell(avg, mu, sigma) * 2. - 1.);
     vec3 growthDst = vec3( getDst(growth, iv0), getDst(growth, iv1), getDst(growth, iv2) );
     vec3 val = texture(iChannel0, uv).rgb;
+    //WALL
 		growthDst[0]=growthDst[0]-2.*val[2];
+    //lazy trick for attract /non attract mode
+    if(color[1]<0.5){
+    growthDst[0]=growthDst[0]-growth[3][3]-growth[3][2];
+    }
     rgb = clamp(dt * growthDst + val, 0., 1.);
+    rgb[1]=0.;
 		//rgb[2]=getVal(fragCoord + vec2(+1, 0)*samplingDist)[3][3];
 
     // debug: uncomment to show list of kernels
@@ -284,7 +308,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     }
 		if(iMouse.z > 0.)
 		{
+    if(color[1]<0.5){
 		rgb = texture(iChannel0, uv).rgb;
+    }
 		vec2 st = fragCoord.xy/iResolution.xy;
     float m_x = iMouse.x / iResolution.x;
     float m_y = iMouse.y / iResolution.y;
@@ -292,7 +318,12 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 dist = vec2(m_x, m_y) - st.xy;
     dist.x *= iResolution.x/iResolution.y;
     float mouse_pct = length(dist);
-    mouse_pct = step(radius/10., mouse_pct);
+    if(color[1]>0.5){
+     mouse_pct = step(radius/80., mouse_pct);
+    }
+    else{
+      mouse_pct = step(radius/10., mouse_pct);
+    }
 		if(color[0]+color[1]+color[2]>0.5)
 		{
 			m_color = (1.0-mouse_pct)*color;

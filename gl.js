@@ -513,19 +513,30 @@ gl.uniform1f(zoomLoca, 1/this.value);
 
 var buttonCrea = document.getElementById("radioCreature");
 buttonCrea.onclick= ()=>{
+  var instructionDisplay = document.getElementById("instructionDemo");
   gl.useProgram(simProgram);
   gl.uniform3f(gl.getUniformLocation(simProgram, "color"),1.0,0.0,0.0)
+  instructionDisplay.innerHTML="Radius 0.5 is good to spawn creatures<br> Click on screen to spawn";
   //gl.uniform1f(gl.getUniformLocation(simProgram, "radius"), 0.5);
 }
 var buttonCircle = document.getElementById("radioCircle");
 buttonCircle.onclick= ()=>{
+  var instructionDisplay = document.getElementById("instructionDemo");
   gl.useProgram(simProgram);
   gl.uniform3f(gl.getUniformLocation(simProgram, "color"),0.0,0.0,1.0)
+  instructionDisplay.innerHTML="Click on screen to add walls";
 }
 
 var buttonErase = document.getElementById("radioErase");
 buttonErase.onclick= ()=>{
   gl.useProgram(simProgram);
   gl.uniform3f(gl.getUniformLocation(simProgram, "color"),0.0,0.0,0.0)
+
+}
+
+var buttonErase = document.getElementById("radioAttract");
+buttonErase.onclick= ()=>{
+  gl.useProgram(simProgram);
+  gl.uniform3f(gl.getUniformLocation(simProgram, "color"),0.0,1.0,0.0)
 
 }

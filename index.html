@@ -36,12 +36,12 @@
   <canvas id="glCanvas" width="640" height="360" class='l-body'></canvas>
   <!--shadertoy at mac 840x472, at win 640x360-->
   <div id="showText" onclick="this.style.display='none';">initializing...</div>
-  <p class="l-gutter" style="font-size: 12px;color:#A0A0A0;"> Radius 0.5 is good to spawn creatures<br> Some death in corners but always with 2 creatures while creature has only been trained alone. </p>
+  <p id="instructionDemo"class="l-gutter" style="font-size: 12px;color:#A0A0A0;"> Radius 0.5 is good to spawn creatures<br> Click on screen to spawn </p>
   <p> press p to pause and enter to clear </p>
   <div class='l-body row'>
     <div class="column">
       <input type="range" min="0.1" max="1"  step="0.1" value="0.5" class="slider" id="rangeRadiusWall" >
-      <p> Radius: <span id="valueRadiusWall"></span></p>
+      <p> Brush size: <span id="valueRadiusWall"></span></p>
       <input type="range" min="6" max="20"  step="0.1" value="8.5" class="slider" id="rangeRadius" style="display:none">
       <p style="display:none"> Radius of kernels (size of creature): <span id="valueRadius"></span></p>
     </div>
@@ -55,13 +55,16 @@
     <label for="radioErase">Eraser</label>
 
     <input type="radio" id="radioCircle"  name='option'  value="circle">
-    <label for="radioCircle">Dot</label>
+    <label for="radioCircle">Wall Dot</label>
 
     <input type="radio" id="radioCreature" name='option'  value="creature" checked>
     <label for="radioCreature">Place Creature</label>
 
     <input type="radio" id="radioZoom" name='option'  value="zoom" >
     <label for="radioZoom">Zoom</label>
+
+    <input type="radio" id="radioAttract" name='option'  value="attract" >
+    <label for="radioAttract">Attractor</label>
 </div>
 
 
@@ -718,10 +721,13 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
 <h4>Neural CA</h4>
 <p> <dt-cite key="mordvintsev2020growing"></dt-cite><dt-cite key="variengien2021selforganized"></dt-cite></p>
 <h4>Soft robots</h4>
-<p>automatic(<dt-cite key="horibe2021regenerating"></dt-cite><dt-cite key="10.1145/2739480.2754662"> </dt-cite>) controller using feedback of env (<dt-cite key="10.1162/isal_a_00223"></dt-cite>) shapeshift to recover from injury (<dt-cite key="Kriegman2019AutomatedSF"> </dt-cite>)</p>
-<h4> Swarm robotic <h4>
+<p> Work has focused on designing the morphology of soft robots (articles ) using cellular automata. Those soft robots have a separate controler/ motor which is either automatic(<dt-cite key="horibe2021regenerating"></dt-cite><dt-cite key="10.1145/2739480.2754662"> </dt-cite>) controller using feedback of env (<dt-cite key="10.1162/isal_a_00223"></dt-cite>) shapeshift to recover from injury (<dt-cite key="Kriegman2019AutomatedSF"> </dt-cite>)</p>
+<h4> Swarm robotic </h4>
+
+  <p> We can draw parallels with swarm robotic which dictates how several agent should arange themselves in "harmony" </p>
 <h4>Exploration</h4>
-<p> <dt-cite key="reinke2020intrinsically"></dt-cite><dt-cite key="etcheverry2020hierarchically"></dt-cite></p>
+
+<p> Other works have been focusing on exploring as much as possible the system trying to find diversity in an open ended manneer. <dt-cite key="reinke2020intrinsically"></dt-cite><dt-cite key="etcheverry2020hierarchically"></dt-cite></p>
 
  <h2 id="discussion"> Discussion </h2>
  <p>
@@ -899,6 +905,17 @@ Even if we can not know if the creature is indefinitively stable, we can test fo
                     </video>
       </div>
     </div>
+
+      <h2> Food attraction </h2>
+      <p>
+      Tests of food attraction implemeentation. We added kernels from food to creature. To learn the kernels that will make that the creature will be attracted by the food. <br>
+      ATM: Random search looking only at the kernel that lead to a superposition creature food during a long time using a moving food with simple trajectory (straight line )<br>
+      NEXT : Evolutionary algorithm or gradient descent with target shape displaced on food  orthogonal to bas trajectory.
+      <video id="robust" width="100%" autoplay loop muted="" class="videoShow">
+                    <source src="attractLive.mp4" type="video/mp4">
+                  </video>
+
+    </p>
 </dt-appendix>
 
 <script type="text/bibliography">
