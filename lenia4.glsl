@@ -319,7 +319,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     dist.x *= iResolution.x/iResolution.y;
     float mouse_pct = length(dist);
     if(color[1]>0.5){
-     mouse_pct = step(radius/80., mouse_pct);
+     mouse_pct = step(0.4/80., mouse_pct);
     }
     else{
       mouse_pct = step(radius/10., mouse_pct);
